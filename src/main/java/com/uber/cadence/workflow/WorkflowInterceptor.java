@@ -45,6 +45,8 @@ public interface WorkflowInterceptor {
       this.input = workflowEventStart.getInput();
     }
 
+    public WorkflowExecutionStartedEventAttributes getWorkflowExecutionStartedEventAttributes() {return workflowEventStart;}
+
     public WorkflowType getWorkflowType() {
       return workflowType;
     }
