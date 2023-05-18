@@ -20,9 +20,8 @@ package com.uber.cadence.migration;
 import com.uber.cadence.*;
 import com.uber.cadence.serviceclient.DummyIWorkflowService;
 import com.uber.cadence.serviceclient.IWorkflowService;
-
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.CompletionException;
 import org.apache.thrift.TException;
 
 public class MigrationIWorkflowService extends DummyIWorkflowService {
@@ -51,71 +50,37 @@ public class MigrationIWorkflowService extends DummyIWorkflowService {
     return serviceOld.StartWorkflowExecution(startRequest);
   }
 
-  private boolean shouldStartInNew(String workflowID) {
-      CompletableFuture<DescribeWorkflowExecutionResponse> futureNew = CompletableFuture.supplyAsync(()-> serviceNew.DescribeWorkflowExecution(
-              new DescribeWorkflowExecutionRequest()
-                      .setDomain(domainNew)
-                      .setExecution(new WorkflowExecution().setWorkflowId(workflowID))))
-              .exceptionally(error -> {
+  private Boolean shouldStartInNew(String workflowID) throws TException {
+      try {
+          return describeWorkflowExecution(serviceNew, domainNew, workflowID)
+                  .thenCombine(
+                          describeWorkflowExecution(serviceOld, domainOld, workflowID),
+                          (respNew, respOld) -> respNew != null // execution already in new
+                                  || respOld == null        // execution not exist in new and not exist in old
+                                  || (respOld.isSetWorkflowExecutionInfo() && respOld.getWorkflowExecutionInfo().isSetCloseStatus())  // execution not exist in new and execution is closed in old
+                  ).get();
+      } catch (CompletionException e) {
+          throw e.getCause() instanceof TException? (TException) e.getCause() : new TException("unknown error: " + e.getMessage());
+      } catch (Exception e) {
+          throw new TException("Unknown error: " + e.getMessage());
+      }
+  }
 
+  private CompletableFuture<DescribeWorkflowExecutionResponse> describeWorkflowExecution(IWorkflowService service, String domain, String workflowID) {
+      return CompletableFuture.supplyAsync(
+              () -> {
+                  try {
+                      return service.DescribeWorkflowExecution(
+                              new DescribeWorkflowExecutionRequest()
+                                      .setDomain(domain)
+                                      .setExecution(new WorkflowExecution().setWorkflowId(workflowID)));
+                  }
+                  catch (EntityNotExistsError e) {
+                      return null;
+                  }
+                  catch (Exception e) {
+                      throw new CompletionException(e);
+                  }
               });
-      CompletableFuture<DescribeWorkflowExecutionResponse> futureOld = CompletableFuture.supplyAsync(()-> serviceOld.DescribeWorkflowExecution(
-              new DescribeWorkflowExecutionRequest()
-                      .setDomain(domainOld)
-                      .setExecution(new WorkflowExecution().setWorkflowId(workflowID))));
-
-      return futureNew.thenCombine(futureOld, (respNew, respOld) -> ).get();
-
-//      CompletableFuture
-//              .supplyAsync(()-> serviceNew.DescribeWorkflowExecution(
-//                      new DescribeWorkflowExecutionRequest()
-//                              .setDomain(domainNew)
-//                              .setExecution(new WorkflowExecution().setWorkflowId(workflowID))))
-//              .thenCombine(() -> serviceOld.DescribeWorkflowExecution(
-//                          new DescribeWorkflowExecutionRequest()
-//                                  .setDomain(domainOld)
-//                                  .setExecution(new WorkflowExecution().setWorkflowId(workflowID))),
-//                      , () -> {
-//
-//                });
-
-    AtomicReference<DescribeWorkflowExecutionResponse> executionInNewResponse =
-        new AtomicReference<>();
-    AtomicReference<DescribeWorkflowExecutionResponse> executionInOldResponse =
-        new AtomicReference<>();
-    Thread serviceNewThread =
-        new Thread(
-            () -> {
-
-            });
-    serviceNewThread.start();
-
-    Thread serviceOldThread =
-        new Thread(
-            () -> {
-              try {
-
-              } catch (EntityNotExistsError e) {
-                // TODO perform any logging here
-              } catch (TException e) {
-                // TODO perform any logging here
-              }
-            });
-    serviceOldThread.start();
-
-    try {
-      serviceNewThread.join();
-      serviceOldThread.join();
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
-
-    // exist in both domains or exist in only new - start in new
-    if (executionInNewResponse.get() != null && executionInOldResponse.get() != null) return true;
-    // exist in old and workflow is still open - start in old
-    if (executionInOldResponse.get() != null
-        && executionInOldResponse.get().workflowExecutionInfo.closeStatus == null) return false;
-
-    return true;
   }
 }
