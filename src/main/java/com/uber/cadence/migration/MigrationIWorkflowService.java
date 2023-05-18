@@ -20,6 +20,8 @@ package com.uber.cadence.migration;
 import com.uber.cadence.*;
 import com.uber.cadence.serviceclient.DummyIWorkflowService;
 import com.uber.cadence.serviceclient.IWorkflowService;
+
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
 import org.apache.thrift.TException;
 
@@ -50,6 +52,32 @@ public class MigrationIWorkflowService extends DummyIWorkflowService {
   }
 
   private boolean shouldStartInNew(String workflowID) {
+      CompletableFuture<DescribeWorkflowExecutionResponse> futureNew = CompletableFuture.supplyAsync(()-> serviceNew.DescribeWorkflowExecution(
+              new DescribeWorkflowExecutionRequest()
+                      .setDomain(domainNew)
+                      .setExecution(new WorkflowExecution().setWorkflowId(workflowID))))
+              .exceptionally(error -> {
+
+              });
+      CompletableFuture<DescribeWorkflowExecutionResponse> futureOld = CompletableFuture.supplyAsync(()-> serviceOld.DescribeWorkflowExecution(
+              new DescribeWorkflowExecutionRequest()
+                      .setDomain(domainOld)
+                      .setExecution(new WorkflowExecution().setWorkflowId(workflowID))));
+
+      return futureNew.thenCombine(futureOld, (respNew, respOld) -> ).get();
+
+//      CompletableFuture
+//              .supplyAsync(()-> serviceNew.DescribeWorkflowExecution(
+//                      new DescribeWorkflowExecutionRequest()
+//                              .setDomain(domainNew)
+//                              .setExecution(new WorkflowExecution().setWorkflowId(workflowID))))
+//              .thenCombine(() -> serviceOld.DescribeWorkflowExecution(
+//                          new DescribeWorkflowExecutionRequest()
+//                                  .setDomain(domainOld)
+//                                  .setExecution(new WorkflowExecution().setWorkflowId(workflowID))),
+//                      , () -> {
+//
+//                });
 
     AtomicReference<DescribeWorkflowExecutionResponse> executionInNewResponse =
         new AtomicReference<>();
@@ -58,17 +86,7 @@ public class MigrationIWorkflowService extends DummyIWorkflowService {
     Thread serviceNewThread =
         new Thread(
             () -> {
-              try {
-                executionInNewResponse.set(
-                    serviceNew.DescribeWorkflowExecution(
-                        new DescribeWorkflowExecutionRequest()
-                            .setDomain(domainNew)
-                            .setExecution(new WorkflowExecution().setWorkflowId(workflowID))));
-              } catch (EntityNotExistsError e) {
-                // TODO perform any logging here
-              } catch (TException e) {
-                // TODO perform any logging here
-              }
+
             });
     serviceNewThread.start();
 
@@ -76,11 +94,7 @@ public class MigrationIWorkflowService extends DummyIWorkflowService {
         new Thread(
             () -> {
               try {
-                executionInOldResponse.set(
-                    serviceOld.DescribeWorkflowExecution(
-                        new DescribeWorkflowExecutionRequest()
-                            .setDomain(domainOld)
-                            .setExecution(new WorkflowExecution().setWorkflowId(workflowID))));
+
               } catch (EntityNotExistsError e) {
                 // TODO perform any logging here
               } catch (TException e) {
