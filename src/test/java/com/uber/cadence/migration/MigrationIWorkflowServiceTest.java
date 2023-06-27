@@ -144,37 +144,54 @@ public class MigrationIWorkflowServiceTest {
   }
 
   @Test
-  public void testGetWorkflowExecutionHistory() throws EntityNotExistsError {
+  public void testGetWorkflowExecutionHistoryWithCompletedWFInNew() throws EntityNotExistsError {
+
+    WorkflowExecution execution = new WorkflowExecution().setWorkflowId("wf-completed-in-both");
+
     try {
-      WorkflowExecution execution = new WorkflowExecution().setWorkflowId("wf-completed");
-      GetWorkflowExecutionHistoryRequest request =
-          new GetWorkflowExecutionHistoryRequest()
-              .setDomain(testEnvOld.getDomain())
-              .setExecution(execution);
-
-      try {
-        GetWorkflowExecutionHistoryResponse response =
-            migrationService.GetWorkflowExecutionHistory(request);
-
-        // Check if the workflow is completed
-        if (response.getHistory().getEvents().isEmpty()) {
-          // Workflow is already completed, log a message or handle the error gracefully
-          System.out.println("Workflow is already completed");
-        } else {
-          // Workflow is still running, perform necessary assertions or actions
-          assertEquals(0, response.getHistory().getEvents().size());
-          // assertNumOfExecutions(testEnvNew, "wf-new", 1);
-          assertNumOfExecutions(testEnvOld, "wf-new", 0);
-        }
-      } catch (WorkflowExecutionAlreadyCompletedError e) {
-        // Workflow is already completed, log a message or handle the error gracefully
-        System.out.println("Workflow is already completed");
-        //      } catch (EntityNotExistsError e) {
-        //        fail("Entity searched does not exist");
-      }
-    } catch (TException e) {
-      fail("should not throw error on get workflow execution history: " + e.getMessage());
+      GetWorkflowExecutionHistoryResponse expectedResponse =
+          clientNew
+              .getService()
+              .GetWorkflowExecutionHistory(
+                  new GetWorkflowExecutionHistoryRequest()
+                      .setDomain(testEnvNew.getDomain())
+                      .setExecution(execution));
+      GetWorkflowExecutionHistoryResponse response =
+          migrationService.GetWorkflowExecutionHistory(
+              new GetWorkflowExecutionHistoryRequest()
+                  .setDomain(testEnvOld.getDomain())
+                  .setExecution(execution));
+      assertEquals(expectedResponse, response);
+    } catch (Exception e) {
+      fail("should not throw error on get workflow execution on new client");
     }
+
+    //
+    //
+    //      try {
+    //        GetWorkflowExecutionHistoryResponse response =
+    //            migrationService.GetWorkflowExecutionHistory(
+    //                new GetWorkflowExecutionHistoryRequest()
+    //                    .setDomain(testEnvOld.getDomain())
+    //                    .setExecution(execution));
+    //
+    //        // Check if the workflow is completed
+    //        if (response.getHistory().getEvents().isEmpty()) {
+    //          // Workflow is already completed, log a message or handle the error gracefully
+    //          System.out.println("Workflow is already completed");
+    //        } else {
+    //          assertTrue("completed wf history should have >0 events",
+    // response.getHistory().getEvents().size()>0);
+    //        }
+    //      } catch (WorkflowExecutionAlreadyCompletedError e) {
+    //        // Workflow is already completed, log a message or handle the error gracefully
+    //        System.out.println("Workflow is already completed");
+    //        //      } catch (EntityNotExistsError e) {
+    //        //        fail("Entity searched does not exist");
+    //      }
+    //    } catch (TException e) {
+    //      fail("should not throw error on get workflow execution history: " + e.getMessage());
+    //    }
   }
 
   @Test
