@@ -234,7 +234,7 @@ public class MigrationIWorkflowService extends DummyIWorkflowService {
   @Override
   public QueryWorkflowResponse QueryWorkflow(QueryWorkflowRequest queryRequest) throws TException {
     if (shouldStartInNew(queryRequest.getExecution().getWorkflowId()))
-      return serviceNew.QueryWorkflow(queryRequest);
+      return serviceNew.QueryWorkflow((queryRequest));
     return serviceOld.QueryWorkflow(queryRequest);
   }
 
