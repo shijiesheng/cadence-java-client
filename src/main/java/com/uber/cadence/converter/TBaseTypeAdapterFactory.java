@@ -23,6 +23,7 @@ import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import com.uber.m3.tally.Scope;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import org.apache.thrift.TBase;
@@ -30,12 +31,21 @@ import org.apache.thrift.TDeserializer;
 import org.apache.thrift.TException;
 import org.apache.thrift.TSerializer;
 import org.apache.thrift.protocol.TJSONProtocol;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Special handling of TBase message serialization and deserialization. This is to support for
  * inline Thrift fields in Java class.
  */
 public class TBaseTypeAdapterFactory implements TypeAdapterFactory {
+
+  private static final Logger logger = LoggerFactory.getLogger(TBaseTypeAdapterFactory.class);
+  private final Scope metricsScope;
+
+  public TBaseTypeAdapterFactory(Scope metricsScope) {
+    this.metricsScope = metricsScope;
+  }
 
   @Override
   public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
@@ -47,10 +57,16 @@ public class TBaseTypeAdapterFactory implements TypeAdapterFactory {
         new TypeAdapter<T>() {
           @Override
           public void write(JsonWriter jsonWriter, T value) throws IOException {
+            if (metricsScope != null) {
+              metricsScope.counter("tbase_message_write").inc(1);
+            }
             try {
               String result =
                   newThriftSerializer().toString((TBase) value, StandardCharsets.UTF_8.name());
               jsonWriter.value(result);
+              logger.warn(
+                  "TBase message will no longer be support in cadence-java-client V4, payload {}",
+                  result);
             } catch (TException e) {
               throw new DataConverterException("Failed to serialize TBase", e);
             }
@@ -58,8 +74,14 @@ public class TBaseTypeAdapterFactory implements TypeAdapterFactory {
 
           @Override
           public T read(JsonReader jsonReader) throws IOException {
+            if (metricsScope != null) {
+              metricsScope.counter("tbase_message_read").inc(1);
+            }
             String value = jsonReader.nextString();
             try {
+              logger.warn(
+                  "TBase message will no longer be support in cadence-java-client V4, payload {}",
+                  value);
               @SuppressWarnings("unchecked")
               T instance = (T) typeToken.getRawType().getConstructor().newInstance();
               newThriftDeserializer()

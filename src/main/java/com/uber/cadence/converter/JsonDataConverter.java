@@ -28,6 +28,7 @@ import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import com.uber.m3.tally.Scope;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
@@ -48,10 +49,20 @@ public final class JsonDataConverter implements DataConverter {
   private static final String TYPE_FIELD_NAME = "type";
   private static final String JSON_CONVERTER_TYPE = "JSON";
   private static final String CLASS_NAME_FIELD_NAME = "className";
+  private static Scope metricsScope;
   private final Gson gson;
 
   public static DataConverter getInstance() {
     return INSTANCE;
+  }
+
+  /**
+   * Used to set the metrics scope for this class.
+   *
+   * @param metricsScope metrics scope to set
+   */
+  public static void setMetricsScope(Scope metricsScope) {
+    JsonDataConverter.metricsScope = metricsScope;
   }
 
   private JsonDataConverter() {
@@ -68,7 +79,7 @@ public final class JsonDataConverter implements DataConverter {
         new GsonBuilder()
             .serializeNulls()
             .registerTypeAdapterFactory(new ThrowableTypeAdapterFactory())
-            .registerTypeAdapterFactory(new TBaseTypeAdapterFactory())
+            .registerTypeAdapterFactory(new TBaseTypeAdapterFactory(metricsScope))
             .registerTypeAdapterFactory(new TEnumTypeAdapterFactory());
     GsonBuilder intercepted = builderInterceptor.apply(gsonBuilder);
     gson = intercepted.create();
