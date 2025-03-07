@@ -24,6 +24,7 @@ import com.google.common.base.Strings;
 import com.uber.cadence.PollForDecisionTaskResponse;
 import com.uber.cadence.client.WorkflowClient;
 import com.uber.cadence.converter.DataConverter;
+import com.uber.cadence.converter.JsonDataConverter;
 import com.uber.cadence.internal.common.InternalUtils;
 import com.uber.cadence.internal.metrics.MetricsTag;
 import com.uber.cadence.internal.replay.DeciderCache;
@@ -106,6 +107,9 @@ public final class WorkerFactory {
     if (this.factoryOptions.isDisableStickyExecution()) {
       return;
     }
+
+    // initialize the JsonDataConverter with the metrics scope
+    JsonDataConverter.setMetricsScope(workflowClient.getOptions().getMetricsScope());
 
     Scope stickyScope =
         workflowClient
