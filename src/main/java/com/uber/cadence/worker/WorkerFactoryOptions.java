@@ -48,6 +48,7 @@ public class WorkerFactoryOptions {
     private int maxWorkflowThreadCount = DEFAULT_MAX_WORKFLOW_THREAD_COUNT;
     private boolean enableLoggingInReplay;
     private int stickyPollerCount = DEFAULT_STICKY_POLLER_COUNT;
+    private ThreadFactoryWrapper threadFactoryWrapper = ThreadFactoryWrapper.newDefaultInstance();
 
     private Builder() {}
 
@@ -106,6 +107,11 @@ public class WorkerFactoryOptions {
       return this;
     }
 
+    public Builder setThreadFactoryWrapper(ThreadFactoryWrapper executorServiceWrapper) {
+      this.threadFactoryWrapper = executorServiceWrapper;
+      return this;
+    }
+
     public WorkerFactoryOptions build() {
       return new WorkerFactoryOptions(
           disableStickyExecution,
@@ -113,7 +119,8 @@ public class WorkerFactoryOptions {
           maxWorkflowThreadCount,
           stickyTaskScheduleToStartTimeout,
           stickyPollerCount,
-          enableLoggingInReplay);
+          enableLoggingInReplay,
+          threadFactoryWrapper);
     }
   }
 
@@ -123,6 +130,7 @@ public class WorkerFactoryOptions {
   private Duration stickyTaskScheduleToStartTimeout;
   private boolean enableLoggingInReplay;
   private int stickyPollerCount;
+  private ThreadFactoryWrapper threadFactoryWrapper;
 
   private WorkerFactoryOptions(
       boolean disableStickyExecution,
@@ -130,7 +138,8 @@ public class WorkerFactoryOptions {
       int maxWorkflowThreadCount,
       Duration stickyTaskScheduleToStartTimeout,
       int stickyPollerCount,
-      boolean enableLoggingInReplay) {
+      boolean enableLoggingInReplay,
+      ThreadFactoryWrapper threadServiceWrapper) {
     Preconditions.checkArgument(cacheMaximumSize > 0, "cacheMaximumSize should be greater than 0");
     Preconditions.checkArgument(
         maxWorkflowThreadCount > 0, "maxWorkflowThreadCount should be greater than 0");
@@ -141,6 +150,7 @@ public class WorkerFactoryOptions {
     this.stickyPollerCount = stickyPollerCount;
     this.enableLoggingInReplay = enableLoggingInReplay;
     this.stickyTaskScheduleToStartTimeout = stickyTaskScheduleToStartTimeout;
+    this.threadFactoryWrapper = threadServiceWrapper;
   }
 
   public int getMaxWorkflowThreadCount() {
@@ -165,5 +175,9 @@ public class WorkerFactoryOptions {
 
   public Duration getStickyTaskScheduleToStartTimeout() {
     return stickyTaskScheduleToStartTimeout;
+  }
+
+  public ThreadFactoryWrapper getThreadFactoryWrapper() {
+    return threadFactoryWrapper;
   }
 }

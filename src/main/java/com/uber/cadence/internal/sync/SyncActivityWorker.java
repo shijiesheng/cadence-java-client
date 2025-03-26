@@ -31,10 +31,13 @@ public class SyncActivityWorker implements SuspendableWorker {
 
   private final ActivityWorker worker;
   private final POJOActivityTaskHandler taskHandler;
-  private final ScheduledExecutorService heartbeatExecutor = Executors.newScheduledThreadPool(4);
+  private final ScheduledExecutorService heartbeatExecutor;
 
   public SyncActivityWorker(
       IWorkflowService service, String domain, String taskList, SingleWorkerOptions options) {
+    heartbeatExecutor =
+        Executors.newScheduledThreadPool(
+            4, options.getThreadFactoryWrapper().wrap(Executors.privilegedThreadFactory()));
     taskHandler =
         new POJOActivityTaskHandler(service, domain, options.getDataConverter(), heartbeatExecutor);
     worker = new ActivityWorker(service, domain, taskList, options, taskHandler);

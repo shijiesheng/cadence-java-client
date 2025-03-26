@@ -101,7 +101,10 @@ public final class WorkerFactory {
             TimeUnit.SECONDS,
             new SynchronousQueue<>());
     workflowThreadPool.setThreadFactory(
-        r -> new Thread(r, "workflow-thread-" + workflowThreadCounter.incrementAndGet()));
+        factoryOptions
+            .getThreadFactoryWrapper()
+            .wrap(
+                r -> new Thread(r, "workflow-thread-" + workflowThreadCounter.incrementAndGet())));
 
     if (this.factoryOptions.isDisableStickyExecution()) {
       return;
@@ -136,7 +139,8 @@ public final class WorkerFactory {
                 .setPollThreadNamePrefix(POLL_THREAD_NAME)
                 .setPollThreadCount(this.factoryOptions.getStickyPollerCount())
                 .build(),
-            stickyScope);
+            stickyScope,
+            factoryOptions.getThreadFactoryWrapper());
   }
 
   /**

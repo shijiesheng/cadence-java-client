@@ -83,7 +83,8 @@ public final class LocalActivityWorker extends SuspendableWorkerBase {
               laPollTask,
               new PollTaskExecutor<>(domain, taskList, options, new TaskHandlerImpl(handler)),
               options.getPollerOptions(),
-              options.getMetricsScope());
+              options.getMetricsScope(),
+              options.getThreadFactoryWrapper());
       poller.start();
       setPoller(poller);
       options.getMetricsScope().counter(MetricsType.WORKER_START_COUNTER).inc(1);

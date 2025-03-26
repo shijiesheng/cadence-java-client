@@ -21,6 +21,7 @@ import com.uber.cadence.context.ContextPropagator;
 import com.uber.cadence.converter.DataConverter;
 import com.uber.cadence.converter.JsonDataConverter;
 import com.uber.cadence.internal.metrics.NoopScope;
+import com.uber.cadence.worker.ThreadFactoryWrapper;
 import com.uber.m3.tally.Scope;
 import io.opentracing.Tracer;
 import java.time.Duration;
@@ -46,6 +47,7 @@ public final class SingleWorkerOptions {
     private boolean enableLoggingInReplay;
     private List<ContextPropagator> contextPropagators;
     private Tracer tracer;
+    private ThreadFactoryWrapper threadFactoryWrapper;
 
     private Builder() {}
 
@@ -59,6 +61,7 @@ public final class SingleWorkerOptions {
       this.enableLoggingInReplay = options.getEnableLoggingInReplay();
       this.contextPropagators = options.getContextPropagators();
       this.tracer = options.getTracer();
+      this.threadFactoryWrapper = options.getThreadFactoryWrapper();
     }
 
     public Builder setIdentity(String identity) {
@@ -107,6 +110,11 @@ public final class SingleWorkerOptions {
       return this;
     }
 
+    public Builder setThreadFactoryWrapper(ThreadFactoryWrapper threadFactoryWrapper) {
+      this.threadFactoryWrapper = threadFactoryWrapper;
+      return this;
+    }
+
     public SingleWorkerOptions build() {
       if (pollerOptions == null) {
         pollerOptions =
@@ -134,7 +142,8 @@ public final class SingleWorkerOptions {
           metricsScope,
           enableLoggingInReplay,
           contextPropagators,
-          tracer);
+          tracer,
+          threadFactoryWrapper);
     }
   }
 
@@ -147,6 +156,7 @@ public final class SingleWorkerOptions {
   private final boolean enableLoggingInReplay;
   private List<ContextPropagator> contextPropagators;
   private final Tracer tracer;
+  private final ThreadFactoryWrapper threadFactoryWrapper;
 
   private SingleWorkerOptions(
       String identity,
@@ -157,7 +167,8 @@ public final class SingleWorkerOptions {
       Scope metricsScope,
       boolean enableLoggingInReplay,
       List<ContextPropagator> contextPropagators,
-      Tracer tracer) {
+      Tracer tracer,
+      ThreadFactoryWrapper threadFactoryWrapper) {
     this.identity = identity;
     this.dataConverter = dataConverter;
     this.taskExecutorThreadPoolSize = taskExecutorThreadPoolSize;
@@ -167,6 +178,7 @@ public final class SingleWorkerOptions {
     this.enableLoggingInReplay = enableLoggingInReplay;
     this.contextPropagators = contextPropagators;
     this.tracer = tracer;
+    this.threadFactoryWrapper = threadFactoryWrapper;
   }
 
   public String getIdentity() {
@@ -203,5 +215,9 @@ public final class SingleWorkerOptions {
 
   public Tracer getTracer() {
     return tracer;
+  }
+
+  public ThreadFactoryWrapper getThreadFactoryWrapper() {
+    return threadFactoryWrapper;
   }
 }

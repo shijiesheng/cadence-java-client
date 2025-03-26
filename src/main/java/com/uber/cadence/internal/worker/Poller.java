@@ -22,6 +22,7 @@ import com.uber.cadence.internal.common.InternalUtils;
 import com.uber.cadence.internal.metrics.MetricsType;
 import com.uber.cadence.internal.worker.autoscaler.AutoScaler;
 import com.uber.cadence.internal.worker.autoscaler.AutoScalerFactory;
+import com.uber.cadence.worker.ThreadFactoryWrapper;
 import com.uber.m3.tally.Scope;
 import java.util.Objects;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -72,17 +73,21 @@ public final class Poller<T> implements SuspendableWorker {
 
   private final AutoScaler pollerAutoScaler;
 
+  private final ThreadFactoryWrapper threadFactoryWrapper;
+
   public Poller(
       String identity,
       PollTask<T> pollTask,
       ShutdownableTaskExecutor<T> taskExecutor,
       PollerOptions pollerOptions,
-      Scope metricsScope) {
+      Scope metricsScope,
+      ThreadFactoryWrapper threadFactoryWrapper) {
     Objects.requireNonNull(identity, "identity cannot be null");
     Objects.requireNonNull(pollTask, "poll service should not be null");
     Objects.requireNonNull(taskExecutor, "taskExecutor should not be null");
     Objects.requireNonNull(pollerOptions, "pollerOptions should not be null");
     Objects.requireNonNull(metricsScope, "metricsScope should not be null");
+    Objects.requireNonNull(metricsScope, "threadFactoryWrapper should not be null");
 
     this.identity = identity;
     this.pollTask = pollTask;
@@ -90,6 +95,7 @@ public final class Poller<T> implements SuspendableWorker {
     this.pollerOptions = pollerOptions;
     this.metricsScope = metricsScope;
     this.pollerAutoScaler = AutoScalerFactory.getInstance().createAutoScaler(pollerOptions);
+    this.threadFactoryWrapper = threadFactoryWrapper;
   }
 
   @Override
@@ -116,8 +122,10 @@ public final class Poller<T> implements SuspendableWorker {
             TimeUnit.SECONDS,
             new ArrayBlockingQueue<>(pollerOptions.getPollThreadCount()));
     pollExecutor.setThreadFactory(
-        new ExecutorThreadFactory(
-            pollerOptions.getPollThreadNamePrefix(), pollerOptions.getUncaughtExceptionHandler()));
+        threadFactoryWrapper.wrap(
+            new ExecutorThreadFactory(
+                pollerOptions.getPollThreadNamePrefix(),
+                pollerOptions.getUncaughtExceptionHandler())));
 
     pollBackoffThrottler =
         new BackoffThrottler(
