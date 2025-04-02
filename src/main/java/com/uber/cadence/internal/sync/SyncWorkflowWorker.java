@@ -32,6 +32,7 @@ import com.uber.cadence.internal.worker.SingleWorkerOptions;
 import com.uber.cadence.internal.worker.SuspendableWorker;
 import com.uber.cadence.internal.worker.WorkflowWorker;
 import com.uber.cadence.serviceclient.IWorkflowService;
+import com.uber.cadence.worker.ExecutorWrapper;
 import com.uber.cadence.worker.WorkflowImplementationOptions;
 import com.uber.cadence.workflow.Functions.Func;
 import com.uber.cadence.workflow.WorkflowInterceptor;
@@ -51,8 +52,8 @@ public class SyncWorkflowWorker
   private final POJOWorkflowImplementationFactory factory;
   private final DataConverter dataConverter;
   private final POJOActivityTaskHandler laTaskHandler;
-  private final ScheduledExecutorService heartbeatExecutor = Executors.newScheduledThreadPool(4);
-  private final ScheduledExecutorService ldaHeartbeatExecutor = Executors.newScheduledThreadPool(4);
+  private final ScheduledExecutorService heartbeatExecutor;
+  private final ScheduledExecutorService ldaHeartbeatExecutor;
   private SuspendableWorker ldaWorker;
   private POJOActivityTaskHandler ldaTaskHandler;
   private final IWorkflowService service;
@@ -72,6 +73,11 @@ public class SyncWorkflowWorker
     Objects.requireNonNull(workflowThreadPool);
     this.dataConverter = workflowOptions.getDataConverter();
     this.service = service;
+
+    // heartbeat executors
+    ExecutorWrapper executorWrapper = localActivityOptions.getExecutorWrapper();
+    heartbeatExecutor = executorWrapper.wrap(Executors.newScheduledThreadPool(4));
+    ldaHeartbeatExecutor = executorWrapper.wrap(Executors.newScheduledThreadPool(4));
 
     factory =
         new POJOWorkflowImplementationFactory(

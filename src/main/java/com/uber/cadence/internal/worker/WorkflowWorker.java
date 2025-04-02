@@ -112,7 +112,8 @@ public final class WorkflowWorker extends SuspendableWorkerBase
                   options.getIdentity()),
               pollTaskExecutor,
               options.getPollerOptions(),
-              options.getMetricsScope());
+              options.getMetricsScope(),
+              options.getExecutorWrapper());
       poller.start();
       setPoller(poller);
       options.getMetricsScope().counter(MetricsType.WORKER_START_COUNTER).inc(1);

@@ -48,12 +48,15 @@ final class PollTaskExecutor<T> implements ShutdownableTaskExecutor<T> {
 
     this.options = options;
     taskExecutor =
-        new ThreadPoolExecutor(
-            0,
-            options.getTaskExecutorThreadPoolSize(),
-            1,
-            TimeUnit.SECONDS,
-            new SynchronousQueue<>());
+        options
+            .getExecutorWrapper()
+            .wrap(
+                new ThreadPoolExecutor(
+                    0,
+                    options.getTaskExecutorThreadPoolSize(),
+                    1,
+                    TimeUnit.SECONDS,
+                    new SynchronousQueue<>()));
     taskExecutor.setThreadFactory(
         new ExecutorThreadFactory(
             options.getPollerOptions().getPollThreadNamePrefix().replaceFirst("Poller", "Executor"),

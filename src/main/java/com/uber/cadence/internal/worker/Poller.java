@@ -22,6 +22,7 @@ import com.uber.cadence.internal.common.InternalUtils;
 import com.uber.cadence.internal.metrics.MetricsType;
 import com.uber.cadence.internal.worker.autoscaler.AutoScaler;
 import com.uber.cadence.internal.worker.autoscaler.AutoScalerFactory;
+import com.uber.cadence.worker.ExecutorWrapper;
 import com.uber.m3.tally.Scope;
 import java.util.Objects;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -72,17 +73,21 @@ public final class Poller<T> implements SuspendableWorker {
 
   private final AutoScaler pollerAutoScaler;
 
+  private final ExecutorWrapper executorWrapper;
+
   public Poller(
       String identity,
       PollTask<T> pollTask,
       ShutdownableTaskExecutor<T> taskExecutor,
       PollerOptions pollerOptions,
-      Scope metricsScope) {
+      Scope metricsScope,
+      ExecutorWrapper executorWrapper) {
     Objects.requireNonNull(identity, "identity cannot be null");
     Objects.requireNonNull(pollTask, "poll service should not be null");
     Objects.requireNonNull(taskExecutor, "taskExecutor should not be null");
     Objects.requireNonNull(pollerOptions, "pollerOptions should not be null");
     Objects.requireNonNull(metricsScope, "metricsScope should not be null");
+    Objects.requireNonNull(metricsScope, "executorWrapper should not be null");
 
     this.identity = identity;
     this.pollTask = pollTask;
@@ -90,6 +95,7 @@ public final class Poller<T> implements SuspendableWorker {
     this.pollerOptions = pollerOptions;
     this.metricsScope = metricsScope;
     this.pollerAutoScaler = AutoScalerFactory.getInstance().createAutoScaler(pollerOptions);
+    this.executorWrapper = executorWrapper;
   }
 
   @Override
@@ -109,12 +115,13 @@ public final class Poller<T> implements SuspendableWorker {
     // As task enqueues next task the buffering is needed to queue task until the previous one
     // releases a thread.
     pollExecutor =
-        new ThreadPoolExecutor(
-            pollerOptions.getPollThreadCount(),
-            pollerOptions.getPollThreadCount(),
-            1,
-            TimeUnit.SECONDS,
-            new ArrayBlockingQueue<>(pollerOptions.getPollThreadCount()));
+        executorWrapper.wrap(
+            new ThreadPoolExecutor(
+                pollerOptions.getPollThreadCount(),
+                pollerOptions.getPollThreadCount(),
+                1,
+                TimeUnit.SECONDS,
+                new ArrayBlockingQueue<>(pollerOptions.getPollThreadCount())));
     pollExecutor.setThreadFactory(
         new ExecutorThreadFactory(
             pollerOptions.getPollThreadNamePrefix(), pollerOptions.getUncaughtExceptionHandler()));
