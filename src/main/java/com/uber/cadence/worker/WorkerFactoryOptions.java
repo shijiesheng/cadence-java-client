@@ -48,7 +48,7 @@ public class WorkerFactoryOptions {
     private int maxWorkflowThreadCount = DEFAULT_MAX_WORKFLOW_THREAD_COUNT;
     private boolean enableLoggingInReplay;
     private int stickyPollerCount = DEFAULT_STICKY_POLLER_COUNT;
-    private ThreadFactoryWrapper threadFactoryWrapper = ThreadFactoryWrapper.newDefaultInstance();
+    private ExecutorWrapper executorWrapper = ExecutorWrapper.newDefaultInstance();
 
     private Builder() {}
 
@@ -107,8 +107,8 @@ public class WorkerFactoryOptions {
       return this;
     }
 
-    public Builder setThreadFactoryWrapper(ThreadFactoryWrapper executorServiceWrapper) {
-      this.threadFactoryWrapper = executorServiceWrapper;
+    public Builder setExecutorWrapper(ExecutorWrapper executorWrapper) {
+      this.executorWrapper = executorWrapper;
       return this;
     }
 
@@ -120,7 +120,7 @@ public class WorkerFactoryOptions {
           stickyTaskScheduleToStartTimeout,
           stickyPollerCount,
           enableLoggingInReplay,
-          threadFactoryWrapper);
+          executorWrapper);
     }
   }
 
@@ -130,7 +130,7 @@ public class WorkerFactoryOptions {
   private Duration stickyTaskScheduleToStartTimeout;
   private boolean enableLoggingInReplay;
   private int stickyPollerCount;
-  private ThreadFactoryWrapper threadFactoryWrapper;
+  private ExecutorWrapper executorWrapper;
 
   private WorkerFactoryOptions(
       boolean disableStickyExecution,
@@ -139,7 +139,7 @@ public class WorkerFactoryOptions {
       Duration stickyTaskScheduleToStartTimeout,
       int stickyPollerCount,
       boolean enableLoggingInReplay,
-      ThreadFactoryWrapper threadServiceWrapper) {
+      ExecutorWrapper executorWrapper) {
     Preconditions.checkArgument(cacheMaximumSize > 0, "cacheMaximumSize should be greater than 0");
     Preconditions.checkArgument(
         maxWorkflowThreadCount > 0, "maxWorkflowThreadCount should be greater than 0");
@@ -150,7 +150,7 @@ public class WorkerFactoryOptions {
     this.stickyPollerCount = stickyPollerCount;
     this.enableLoggingInReplay = enableLoggingInReplay;
     this.stickyTaskScheduleToStartTimeout = stickyTaskScheduleToStartTimeout;
-    this.threadFactoryWrapper = threadServiceWrapper;
+    this.executorWrapper = executorWrapper;
   }
 
   public int getMaxWorkflowThreadCount() {
@@ -177,7 +177,7 @@ public class WorkerFactoryOptions {
     return stickyTaskScheduleToStartTimeout;
   }
 
-  public ThreadFactoryWrapper getThreadFactoryWrapper() {
-    return threadFactoryWrapper;
+  public ExecutorWrapper getExecutorWrapper() {
+    return executorWrapper;
   }
 }

@@ -35,9 +35,7 @@ public class SyncActivityWorker implements SuspendableWorker {
 
   public SyncActivityWorker(
       IWorkflowService service, String domain, String taskList, SingleWorkerOptions options) {
-    heartbeatExecutor =
-        Executors.newScheduledThreadPool(
-            4, options.getThreadFactoryWrapper().wrap(Executors.privilegedThreadFactory()));
+    heartbeatExecutor = options.getExecutorWrapper().wrap(Executors.newScheduledThreadPool(4));
     taskHandler =
         new POJOActivityTaskHandler(service, domain, options.getDataConverter(), heartbeatExecutor);
     worker = new ActivityWorker(service, domain, taskList, options, taskHandler);

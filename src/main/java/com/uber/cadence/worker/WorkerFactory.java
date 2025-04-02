@@ -94,17 +94,17 @@ public final class WorkerFactory {
         MoreObjects.firstNonNull(factoryOptions, WorkerFactoryOptions.defaultInstance());
 
     workflowThreadPool =
-        new ThreadPoolExecutor(
-            0,
-            this.factoryOptions.getMaxWorkflowThreadCount(),
-            1,
-            TimeUnit.SECONDS,
-            new SynchronousQueue<>());
-    workflowThreadPool.setThreadFactory(
         factoryOptions
-            .getThreadFactoryWrapper()
+            .getExecutorWrapper()
             .wrap(
-                r -> new Thread(r, "workflow-thread-" + workflowThreadCounter.incrementAndGet())));
+                new ThreadPoolExecutor(
+                    0,
+                    this.factoryOptions.getMaxWorkflowThreadCount(),
+                    1,
+                    TimeUnit.SECONDS,
+                    new SynchronousQueue<>()));
+    workflowThreadPool.setThreadFactory(
+        r -> new Thread(r, "workflow-thread-" + workflowThreadCounter.incrementAndGet()));
 
     if (this.factoryOptions.isDisableStickyExecution()) {
       return;
@@ -140,7 +140,7 @@ public final class WorkerFactory {
                 .setPollThreadCount(this.factoryOptions.getStickyPollerCount())
                 .build(),
             stickyScope,
-            factoryOptions.getThreadFactoryWrapper());
+            factoryOptions.getExecutorWrapper());
   }
 
   /**

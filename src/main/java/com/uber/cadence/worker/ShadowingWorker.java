@@ -113,8 +113,7 @@ public final class ShadowingWorker implements Suspendable {
             .setTaskListActivitiesPerSecond(options.getTaskListActivitiesPerSecond())
             .setPollerOptions(options.getActivityPollerOptions())
             .setMetricsScope(metricsScope)
-            .setThreadFactoryWrapper(
-                testOptions.getWorkerFactoryOptions().getThreadFactoryWrapper())
+            .setExecutorWrapper(testOptions.getWorkerFactoryOptions().getExecutorWrapper())
             .build();
     activityWorker =
         new SyncActivityWorker(
