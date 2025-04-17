@@ -22,82 +22,181 @@ import java.util.concurrent.CompletableFuture;
 import javax.annotation.Nullable;
 
 public interface IWorkflowServiceV4 {
-  CompletableFuture<StartWorkflowExecutionResponse> startWorkflowExecution(
-      StartWorkflowExecutionRequest request, @Nullable CallMetaData meta);
+  Blocking blockingStub();
+  Future futureStub();
+  ClientOptions getOptions();
+  CompletableFuture<Boolean> isHealthy();
 
-  CompletableFuture<StartWorkflowExecutionAsyncResponse> startWorkflowExecutionAsync(
-      StartWorkflowExecutionAsyncRequest request, @Nullable CallMetaData meta);
+  interface Blocking {
+    StartWorkflowExecutionResponse startWorkflowExecution(
+        StartWorkflowExecutionRequest request, @Nullable CallMetaData meta);
 
-  CompletableFuture<SignalWorkflowExecutionResponse> signalWorkflowExecution(
-      SignalWorkflowExecutionRequest request, @Nullable CallMetaData meta);
+    StartWorkflowExecutionAsyncResponse startWorkflowExecutionAsync(
+        StartWorkflowExecutionAsyncRequest request, @Nullable CallMetaData meta);
 
-  CompletableFuture<SignalWithStartWorkflowExecutionResponse> signalWithStartWorkflowExecution(
-      SignalWithStartWorkflowExecutionRequest request, @Nullable CallMetaData meta);
+    SignalWorkflowExecutionResponse signalWorkflowExecution(
+        SignalWorkflowExecutionRequest request, @Nullable CallMetaData meta);
 
-  CompletableFuture<SignalWithStartWorkflowExecutionAsyncResponse>
-      signalWithStartWorkflowExecutionAsync(
-          SignalWithStartWorkflowExecutionAsyncRequest request, @Nullable CallMetaData meta);
+    SignalWithStartWorkflowExecutionResponse signalWithStartWorkflowExecution(
+        SignalWithStartWorkflowExecutionRequest request, @Nullable CallMetaData meta);
 
-  CompletableFuture<GetWorkflowExecutionHistoryResponse> getWorkflowExecutionHistory(
-      GetWorkflowExecutionHistoryRequest request, @Nullable CallMetaData meta);
+    SignalWithStartWorkflowExecutionAsyncResponse signalWithStartWorkflowExecutionAsync(
+        SignalWithStartWorkflowExecutionAsyncRequest request, @Nullable CallMetaData meta);
 
-  CompletableFuture<QueryWorkflowResponse> queryWorkflow(
-      QueryWorkflowRequest request, @Nullable CallMetaData meta);
+    GetWorkflowExecutionHistoryResponse getWorkflowExecutionHistory(
+        GetWorkflowExecutionHistoryRequest request, @Nullable CallMetaData meta);
 
-  CompletableFuture<RequestCancelWorkflowExecutionResponse> requestCancelWorkflowExecution(
-      RequestCancelWorkflowExecutionRequest request, @Nullable CallMetaData meta);
+    QueryWorkflowResponse queryWorkflow(QueryWorkflowRequest request, @Nullable CallMetaData meta);
 
-  CompletableFuture<TerminateWorkflowExecutionResponse> terminateWorkflowExecution(
-      TerminateWorkflowExecutionRequest request, @Nullable CallMetaData meta);
+    RequestCancelWorkflowExecutionResponse requestCancelWorkflowExecution(
+        RequestCancelWorkflowExecutionRequest request, @Nullable CallMetaData meta);
 
-  CompletableFuture<RestartWorkflowExecutionResponse> restartWorkflowExecution(
-      RestartWorkflowExecutionRequest request, @Nullable CallMetaData meta);
+    TerminateWorkflowExecutionResponse terminateWorkflowExecution(
+        TerminateWorkflowExecutionRequest request, @Nullable CallMetaData meta);
 
-  CompletableFuture<ListWorkflowExecutionsResponse> listWorkflowExecutions(
-      ListWorkflowExecutionsRequest request, @Nullable CallMetaData meta);
+    RestartWorkflowExecutionResponse restartWorkflowExecution(
+        RestartWorkflowExecutionRequest request, @Nullable CallMetaData meta);
 
-  CompletableFuture<ScanWorkflowExecutionsResponse> scanWorkflowExecutions(
-      ScanWorkflowExecutionsRequest request, @Nullable CallMetaData meta);
+    ListWorkflowExecutionsResponse listWorkflowExecutions(
+        ListWorkflowExecutionsRequest request, @Nullable CallMetaData meta);
 
-  CompletableFuture<ListOpenWorkflowExecutionsResponse> listOpenWorkflowExecutions(
-      ListOpenWorkflowExecutionsRequest request, @Nullable CallMetaData meta);
+    ListArchivedWorkflowExecutionsResponse listArchivedWorkflowExecutions(
+            ListArchivedWorkflowExecutionsRequest listRequest, @Nullable CallMetaData meta);
 
-  CompletableFuture<ListClosedWorkflowExecutionsResponse> listClosedWorkflowExecutions(
-      ListClosedWorkflowExecutionsRequest request, @Nullable CallMetaData meta);
+    ScanWorkflowExecutionsResponse scanWorkflowExecutions(
+        ScanWorkflowExecutionsRequest request, @Nullable CallMetaData meta);
 
-  CompletableFuture<CountWorkflowExecutionsResponse> countWorkflowExecutions(
-      CountWorkflowExecutionsRequest request, @Nullable CallMetaData meta);
+    ListOpenWorkflowExecutionsResponse listOpenWorkflowExecutions(
+        ListOpenWorkflowExecutionsRequest request, @Nullable CallMetaData meta);
 
-  CompletableFuture<PollForActivityTaskResponse> pollForActivityTask(
-      PollForActivityTaskRequest request, @Nullable CallMetaData meta);
+    ListClosedWorkflowExecutionsResponse listClosedWorkflowExecutions(
+        ListClosedWorkflowExecutionsRequest request, @Nullable CallMetaData meta);
 
-  CompletableFuture<RecordActivityTaskHeartbeatResponse> recordActivityTaskHeartbeat(
-      RecordActivityTaskHeartbeatRequest request, @Nullable CallMetaData meta);
+    CountWorkflowExecutionsResponse countWorkflowExecutions(
+        CountWorkflowExecutionsRequest request, @Nullable CallMetaData meta);
 
-  CompletableFuture<RespondActivityTaskCanceledResponse> respondActivityTaskCanceled(
-      RespondActivityTaskCanceledRequest request, @Nullable CallMetaData meta);
+    PollForActivityTaskResponse pollForActivityTask(
+        PollForActivityTaskRequest request, @Nullable CallMetaData meta);
 
-  CompletableFuture<RespondActivityTaskCanceledByIDResponse> respondActivityTaskCanceledByID(
-      RespondActivityTaskCanceledByIDRequest request, @Nullable CallMetaData meta);
+    RecordActivityTaskHeartbeatResponse recordActivityTaskHeartbeat(
+        RecordActivityTaskHeartbeatRequest request, @Nullable CallMetaData meta);
 
-  CompletableFuture<RespondActivityTaskFailedResponse> respondActivityTaskFailed(
-      RespondActivityTaskFailedRequest request, @Nullable CallMetaData meta);
+    RespondActivityTaskCanceledResponse respondActivityTaskCanceled(
+        RespondActivityTaskCanceledRequest request, @Nullable CallMetaData meta);
 
-  CompletableFuture<RespondActivityTaskFailedByIDResponse> respondActivityTaskFailedByID(
-      RespondActivityTaskFailedByIDRequest request, @Nullable CallMetaData meta);
+    RespondActivityTaskCanceledByIDResponse respondActivityTaskCanceledByID(
+        RespondActivityTaskCanceledByIDRequest request, @Nullable CallMetaData meta);
 
-  CompletableFuture<RespondActivityTaskCompletedResponse> respondActivityTaskCompleted(
-      RespondActivityTaskCompletedRequest request, @Nullable CallMetaData meta);
+    RespondActivityTaskFailedResponse respondActivityTaskFailed(
+        RespondActivityTaskFailedRequest request, @Nullable CallMetaData meta);
 
-  CompletableFuture<RespondActivityTaskCompletedByIDResponse> respondActivityTaskCompletedByID(
-      RespondActivityTaskCompletedByIDRequest request, @Nullable CallMetaData meta);
+    RespondActivityTaskFailedByIDResponse respondActivityTaskFailedByID(
+        RespondActivityTaskFailedByIDRequest request, @Nullable CallMetaData meta);
 
-  CompletableFuture<PollForDecisionTaskResponse> pollForDecisionTask(
-      PollForDecisionTaskRequest request, @Nullable CallMetaData meta);
+    RespondActivityTaskCompletedResponse respondActivityTaskCompleted(
+        RespondActivityTaskCompletedRequest request, @Nullable CallMetaData meta);
 
-  CompletableFuture<RespondDecisionTaskFailedResponse> respondDecisionTaskFailed(
-      RespondDecisionTaskFailedRequest request, @Nullable CallMetaData meta);
+    RespondActivityTaskCompletedByIDResponse respondActivityTaskCompletedByID(
+        RespondActivityTaskCompletedByIDRequest request, @Nullable CallMetaData meta);
 
-  CompletableFuture<RespondDecisionTaskCompletedResponse> respondDecisionTaskCompleted(
-      RespondDecisionTaskCompletedRequest request, @Nullable CallMetaData meta);
+    PollForDecisionTaskResponse pollForDecisionTask(
+        PollForDecisionTaskRequest request, @Nullable CallMetaData meta);
+
+    RespondDecisionTaskFailedResponse respondDecisionTaskFailed(
+        RespondDecisionTaskFailedRequest request, @Nullable CallMetaData meta);
+
+    RespondDecisionTaskCompletedResponse respondDecisionTaskCompleted(
+        RespondDecisionTaskCompletedRequest request, @Nullable CallMetaData meta);
+
+    RefreshWorkflowTasksResponse refreshWorkflowTasks(
+        RefreshWorkflowTasksRequest request, @Nullable CallMetaData meta);
+  }
+
+  interface Future {
+
+    CompletableFuture<StartWorkflowExecutionResponse> startWorkflowExecution(
+        StartWorkflowExecutionRequest request, @Nullable CallMetaData meta);
+
+    CompletableFuture<StartWorkflowExecutionAsyncResponse> startWorkflowExecutionAsync(
+        StartWorkflowExecutionAsyncRequest request, @Nullable CallMetaData meta);
+
+    CompletableFuture<SignalWorkflowExecutionResponse> signalWorkflowExecution(
+        SignalWorkflowExecutionRequest request, @Nullable CallMetaData meta);
+
+    CompletableFuture<SignalWithStartWorkflowExecutionResponse> signalWithStartWorkflowExecution(
+        SignalWithStartWorkflowExecutionRequest request, @Nullable CallMetaData meta);
+
+    CompletableFuture<SignalWithStartWorkflowExecutionAsyncResponse>
+        signalWithStartWorkflowExecutionAsync(
+            SignalWithStartWorkflowExecutionAsyncRequest request, @Nullable CallMetaData meta);
+
+    CompletableFuture<GetWorkflowExecutionHistoryResponse> getWorkflowExecutionHistory(
+        GetWorkflowExecutionHistoryRequest request, @Nullable CallMetaData meta);
+
+    CompletableFuture<QueryWorkflowResponse> queryWorkflow(
+        QueryWorkflowRequest request, @Nullable CallMetaData meta);
+
+    CompletableFuture<RequestCancelWorkflowExecutionResponse> requestCancelWorkflowExecution(
+        RequestCancelWorkflowExecutionRequest request, @Nullable CallMetaData meta);
+
+    CompletableFuture<TerminateWorkflowExecutionResponse> terminateWorkflowExecution(
+        TerminateWorkflowExecutionRequest request, @Nullable CallMetaData meta);
+
+    CompletableFuture<RestartWorkflowExecutionResponse> restartWorkflowExecution(
+        RestartWorkflowExecutionRequest request, @Nullable CallMetaData meta);
+
+    CompletableFuture<ListWorkflowExecutionsResponse> listWorkflowExecutions(
+        ListWorkflowExecutionsRequest request, @Nullable CallMetaData meta);
+
+    CompletableFuture<ScanWorkflowExecutionsResponse> scanWorkflowExecutions(
+        ScanWorkflowExecutionsRequest request, @Nullable CallMetaData meta);
+
+    CompletableFuture<ListOpenWorkflowExecutionsResponse> listOpenWorkflowExecutions(
+        ListOpenWorkflowExecutionsRequest request, @Nullable CallMetaData meta);
+
+    CompletableFuture<ListClosedWorkflowExecutionsResponse> listClosedWorkflowExecutions(
+        ListClosedWorkflowExecutionsRequest request, @Nullable CallMetaData meta);
+
+    CompletableFuture<ListArchivedWorkflowExecutionsResponse> listArchivedWorkflowExecutions(
+            ListArchivedWorkflowExecutionsRequest listRequest, @Nullable CallMetaData meta);
+
+    CompletableFuture<CountWorkflowExecutionsResponse> countWorkflowExecutions(
+        CountWorkflowExecutionsRequest request, @Nullable CallMetaData meta);
+
+    CompletableFuture<PollForActivityTaskResponse> pollForActivityTask(
+        PollForActivityTaskRequest request, @Nullable CallMetaData meta);
+
+    CompletableFuture<RecordActivityTaskHeartbeatResponse> recordActivityTaskHeartbeat(
+        RecordActivityTaskHeartbeatRequest request, @Nullable CallMetaData meta);
+
+    CompletableFuture<RespondActivityTaskCanceledResponse> respondActivityTaskCanceled(
+        RespondActivityTaskCanceledRequest request, @Nullable CallMetaData meta);
+
+    CompletableFuture<RespondActivityTaskCanceledByIDResponse> respondActivityTaskCanceledByID(
+        RespondActivityTaskCanceledByIDRequest request, @Nullable CallMetaData meta);
+
+    CompletableFuture<RespondActivityTaskFailedResponse> respondActivityTaskFailed(
+        RespondActivityTaskFailedRequest request, @Nullable CallMetaData meta);
+
+    CompletableFuture<RespondActivityTaskFailedByIDResponse> respondActivityTaskFailedByID(
+        RespondActivityTaskFailedByIDRequest request, @Nullable CallMetaData meta);
+
+    CompletableFuture<RespondActivityTaskCompletedResponse> respondActivityTaskCompleted(
+        RespondActivityTaskCompletedRequest request, @Nullable CallMetaData meta);
+
+    CompletableFuture<RespondActivityTaskCompletedByIDResponse> respondActivityTaskCompletedByID(
+        RespondActivityTaskCompletedByIDRequest request, @Nullable CallMetaData meta);
+
+    CompletableFuture<PollForDecisionTaskResponse> pollForDecisionTask(
+        PollForDecisionTaskRequest request, @Nullable CallMetaData meta);
+
+    CompletableFuture<RespondDecisionTaskFailedResponse> respondDecisionTaskFailed(
+        RespondDecisionTaskFailedRequest request, @Nullable CallMetaData meta);
+
+    CompletableFuture<RespondDecisionTaskCompletedResponse> respondDecisionTaskCompleted(
+        RespondDecisionTaskCompletedRequest request, @Nullable CallMetaData meta);
+
+    CompletableFuture<RefreshWorkflowTasksResponse> refreshWorkflowTasks(
+            RefreshWorkflowTasksRequest request, @Nullable CallMetaData meta);
+  }
 }
