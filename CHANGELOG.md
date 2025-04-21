@@ -1,5 +1,32 @@
 # Changelog
 
+## 3.12.6
+- Adding logs to internal shadower to check for failures log (#918)
+- Removing fossa as it is migrated to snyk (#919)
+- Add codecov (#920)
+- Add missing proto to thrift enum mappings and unit tests for both EnumMappers (#924)
+- Remove unused code from cadence.internal package (#921)
+- Refactor Test environment initialization to CadenceTestRule from WorkflowTest. (#923)
+- upgrade mockito to 4.5.1 (#929)
+- Report child workflow started synchronously (#928)
+- Fix incorrect exception handling in WorkflowTchannelClient and add unit test coverage (#931)
+- Fix WorkflowQueue#offer and increase test coverage (#932)
+- Fix ActivityCompletionClient cancellation and failure by WorkflowExecution (#930)
+- Fix incorrect exception for unsupported method in WorkflowService (#933)
+- Fix flakiness in ManualActivityCompletionWorkflowTest (#937)
+- Fix Domain GRPC->Thrift mapping and increase test coverage (#934)
+- thrift install script (#939)
+- Fix unimplementented methods of TestWorkflowEnvironment (#945)
+- Fix bug in QueryWorkflowParameters.toString (#948)
+- Fix NPE in RetryParameters and add unit tests to ExecuteActivityParameters (#946)
+- Add copy function and unit tests to StartWorkflowExecutionParameters (#953)
+- Fix Error handling and add test coverage for Thrift2ProtoAdapter (#950)
+- Fix unhandled exceptions in WorkflowServiceTChannel (#954)
+- Fix nil pointer issue (#982)
+- add log and metrics on TBase message dataconverter usage (#986)
+- added ExecutorWrapper in WorkerFactoryOptions (#988)
+- Set skipArchival to true for getResultAsync (#990)
+
 ## 3.12.5
 - Fix transient test failures
 - Fix Request ID handling for server-side idempotency
