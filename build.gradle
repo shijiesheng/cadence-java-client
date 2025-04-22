@@ -29,14 +29,6 @@ apply plugin: 'org.jruyi.thrift'
 apply plugin: 'maven-publish'
 apply plugin: 'com.github.sherter.google-java-format'
 
-if (hasProperty('signing.keyId')) {
-    apply plugin: 'signing'
-    signing {
-        sign configurations.archives
-        sign publishing.publications.mavenJava
-    }
-}
-
 googleJavaFormat {
     toolVersion '1.5'
     include '**/*.java'
@@ -273,6 +265,14 @@ publishing {
                 url 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
             }
         }
+    }
+}
+
+if (hasProperty('signing.keyId')) {
+    apply plugin: 'signing'
+    signing {
+        sign configurations.archives
+        sign publishing.publications.mavenJava
     }
 }
 
