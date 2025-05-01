@@ -1,0 +1,60 @@
+name: Release to Maven Central
+
+on:
+  # Manual trigger
+  workflow_dispatch:
+    inputs:
+      release_version:
+        description: 'Version to release (if empty, derive from project version)'
+        required: false
+  # Automatic trigger on pushing a version tag (e.g., "v1.2.3")
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    container:
+      image: adoptopenjdk/openjdk11:jdk-11.0.10_9
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Install necessary tooling
+        env:
+          APACHE_THRIFT_VERSION: 0.9.3
+        run: |
+          apt-get update &&apt-get install -y wget gcc make build-essential git
+
+          wget https://archive.apache.org/dist/thrift/${APACHE_THRIFT_VERSION}/thrift-${APACHE_THRIFT_VERSION}.tar.gz && \
+          tar -xvf thrift-${APACHE_THRIFT_VERSION}.tar.gz && \
+          rm thrift-${APACHE_THRIFT_VERSION}.tar.gz && \
+          cd thrift-${APACHE_THRIFT_VERSION}/ && \
+          ./configure --enable-libs=no --enable-tests=no --enable-tutorial=no --with-cpp=no --with-c_glib=no --with-java=yes --with-ruby=no --with-erlang=no --with-go=no --with-nodejs=no --with-python=no && \
+          make && \
+          make install && \
+          cd .. && \
+          rm -rf thrift-${APACHE_THRIFT_VERSION}
+
+      - name: Determine release version
+        id: vars
+        run: |
+          # Derive the release version (drop "-SNAPSHOT") from Gradle project or input
+          VERSION_INPUT="${{ github.event.inputs.release_version || '' }}"
+          if [ -n "$VERSION_INPUT" ]; then
+            RELEASE_VERSION="$VERSION_INPUT"
+          else
+            # Read version from build.gradle
+            RELEASE_VERSION=$(grep -E 'version\s*=' build.gradle | sed "s/[[:space:]]*version[[:space:]]*=[[:space:]]*'\(.*\)'/\1/")
+          fi
+          echo "RELEASE_VERSION=$RELEASE_VERSION" >> $GITHUB_ENV
+
+      - name: Publish to Sonatype OSSRH (Maven Central)
+        env:
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+          SIGNING_KEY_ID: ${{ secrets.SIGNING_KEY_ID }}
+          OSSATUBER_PASSWORD: ${{ secrets.OSSATUBER_PASSWORD }}
+          OSSATUBER_USERNAME: ${{ secrets.OSSATUBER_USERNAME }}
+        run: ./gradlew publishToSonatype closeSonatypeStagingRepository
