@@ -47,7 +47,7 @@ googleJavaFormat {
 tasks.googleJavaFormat.dependsOn 'license'
 
 group = 'com.uber.cadence'
-version = '3.12.6'
+version = '3.12.7-SNAPSHOT'
 
 description = '''Uber Cadence Java Client'''
 
