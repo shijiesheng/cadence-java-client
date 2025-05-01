@@ -16,11 +16,11 @@ plugins {
 }
 
 ext {
-    signingKey = System.getenv("SIGNING_KEY")
-    signingPassword = System.getenv("SIGNING_PASSWORD")
-    signingKeyId = System.getenv("SIGNING_KEY_ID")
-    ossrhUsername = hasProperty('ossrhUsername') ? property('ossrhUsername') : System.getenv("OSSATUBER_USERNAME")
-    ossrhPassword = hasProperty('ossrhPassword') ? property('ossrhPassword') : System.getenv("OSSATUBER_PASSWORD")
+    ossrhUsername = findProperty('ossrhUsername')
+    ossrhPassword = findProperty('ossrhPassword')
+    signingKeyId = findProperty('signing.keyId')
+    signingKey = findProperty('signing.key')
+    signingPassword = findProperty('signing.password')
 }
 
 repositories {
@@ -47,7 +47,7 @@ googleJavaFormat {
 tasks.googleJavaFormat.dependsOn 'license'
 
 group = 'com.uber.cadence'
-version = '3.12.7-SNAPSHOT'
+version = '3.12.6'
 
 description = '''Uber Cadence Java Client'''
 
@@ -142,6 +142,7 @@ protobuf {
         }
     }
     generateProtoTasks {
+        all().each { task -> task.dependsOn updateDlsSubmodule }
         all()*.plugins {
             grpc {
                 outputSubDir = 'java'
@@ -284,11 +285,23 @@ nexusPublishing {
     }
 }
 
-if (hasProperty('signing.keyId')) {
+if (signingKeyId) {
     apply plugin: 'signing'
-    signing {
-        sign configurations.archives
-        sign publishing.publications.mavenJava
+    if (signingKey) { // for CI
+        signing {
+            useInMemoryPgpKeys(
+                signingKeyId,
+                signingKey.replace('\\n','\n'),
+                signingPassword
+            )
+            sign configurations.archives
+            sign publishing.publications.mavenJava
+        }
+    } else {
+        signing {
+            sign configurations.archives
+            sign publishing.publications.mavenJava
+        }
     }
 }
 
