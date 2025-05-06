@@ -12,6 +12,15 @@ plugins {
     id 'java-library'
     id 'jacoco'
     id 'com.google.protobuf' version '0.8.11'
+    id("io.github.gradle-nexus.publish-plugin") version "1.3.0"  // Nexus publishing
+}
+
+ext {
+    ossrhUsername = findProperty('ossrhUsername')
+    ossrhPassword = findProperty('ossrhPassword')
+    signingKeyId = findProperty('signing.keyId')
+    signingKey = findProperty('signing.key')
+    signingPassword = findProperty('signing.password')
 }
 
 repositories {
@@ -38,7 +47,7 @@ googleJavaFormat {
 tasks.googleJavaFormat.dependsOn 'license'
 
 group = 'com.uber.cadence'
-version = '3.12.6'
+version = '3.12.7-SNAPSHOT'
 
 description = '''Uber Cadence Java Client'''
 
@@ -214,9 +223,6 @@ artifacts {
     archives javadocJar, sourcesJar
 }
 
-def ossrhUsername = hasProperty('ossrhUsername') ? property('ossrhUsername') : ''
-def ossrhPassword = hasProperty('ossrhPassword') ? property('ossrhPassword') : ''
-
 publishing {
     publications {
         mavenJava(MavenPublication) {
@@ -268,11 +274,34 @@ publishing {
     }
 }
 
-if (hasProperty('signing.keyId')) {
+nexusPublishing {
+    repositories {
+        sonatype {
+            username.set(ossrhUsername)
+            password.set(ossrhPassword)
+            nexusUrl.set(uri("https://oss.sonatype.org/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://oss.sonatype.org/content/repositories/snapshots/"))
+        }
+    }
+}
+
+if (signingKeyId) {
     apply plugin: 'signing'
-    signing {
-        sign configurations.archives
-        sign publishing.publications.mavenJava
+    if (signingKey) { // for CI
+        signing {
+            useInMemoryPgpKeys(
+                signingKeyId,
+                signingKey.replace('\\n','\n'),
+                signingPassword
+            )
+            sign configurations.archives
+            sign publishing.publications.mavenJava
+        }
+    } else {
+        signing {
+            sign configurations.archives
+            sign publishing.publications.mavenJava
+        }
     }
 }
 
