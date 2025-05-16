@@ -113,13 +113,13 @@ public class ResponseMapper {
     return describeWorkflowExecutionResponse;
   }
 
-  public static com.uber.cadence.entities.GetClusterInfoResponse getClusterInfoResponse(
+  public static com.uber.cadence.entities.ClusterInfo getClusterInfoResponse(
       GetClusterInfoResponse t) {
     if (t == null) {
       return null;
     }
-    com.uber.cadence.entities.GetClusterInfoResponse clusterInfo =
-        new com.uber.cadence.entities.GetClusterInfoResponse();
+    com.uber.cadence.entities.ClusterInfo clusterInfo =
+        new com.uber.cadence.entities.ClusterInfo();
     clusterInfo.setSupportedClientVersions(supportedClientVersions(t.getSupportedClientVersions()));
     return clusterInfo;
   }
@@ -488,13 +488,13 @@ public class ResponseMapper {
     return res;
   }
 
-  public static com.uber.cadence.entities.GetClusterInfoResponse clusterInfoResponse(
+  public static com.uber.cadence.entities.ClusterInfo clusterInfoResponse(
       GetClusterInfoResponse clusterInfo) {
     if (clusterInfo == null) {
       return null;
     }
-    com.uber.cadence.entities.GetClusterInfoResponse res =
-        new com.uber.cadence.entities.GetClusterInfoResponse();
+    com.uber.cadence.entities.ClusterInfo res =
+        new com.uber.cadence.entities.ClusterInfo();
     res.setSupportedClientVersions(
         TypeMapper.supportedClientVersions(clusterInfo.getSupportedClientVersions()));
     return res;

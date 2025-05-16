@@ -755,7 +755,7 @@ public class WorkflowServiceGrpc implements IWorkflowServiceV4 {
   }
 
   @Override
-  public GetClusterInfoResponse GetClusterInfo()
+  public ClusterInfo GetClusterInfo()
       throws InternalServiceError, ServiceBusyError, ServiceClientError {
     try {
       return ResponseMapper.clusterInfoResponse(
@@ -1323,7 +1323,7 @@ public class WorkflowServiceGrpc implements IWorkflowServiceV4 {
   }
 
   @Override
-  public void GetClusterInfo(AsyncMethodCallback<GetClusterInfoResponse> resultHandler)
+  public void GetClusterInfo(AsyncMethodCallback<ClusterInfo> resultHandler)
       throws ServiceClientError {
     Futures.addCallback(
         grpcServiceStubs
