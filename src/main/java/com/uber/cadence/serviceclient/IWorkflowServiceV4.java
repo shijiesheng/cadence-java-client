@@ -593,7 +593,7 @@ interface Iface {
           ClientVersionNotSupportedError, ServiceClientError;
 
   /** GetClusterInfo returns information about cadence cluster */
-  public GetClusterInfoResponse GetClusterInfo()
+  public ClusterInfo GetClusterInfo()
       throws InternalServiceError, ServiceBusyError, ServiceClientError;
 
   /**
@@ -805,7 +805,7 @@ interface AsyncIface {
       DescribeTaskListRequest request, AsyncMethodCallback<DescribeTaskListResponse> resultHandler)
       throws ServiceClientError;
 
-  public void GetClusterInfo(AsyncMethodCallback<GetClusterInfoResponse> resultHandler)
+  public void GetClusterInfo(AsyncMethodCallback<ClusterInfo> resultHandler)
       throws ServiceClientError;
 
   public void GetTaskListsByDomain(
