@@ -169,6 +169,12 @@ public class RequestMapper {
             .setDomain(t.getDomain())
             .setWorkflowExecution(workflowExecution(t.getWorkflowExecution()))
             .setRequestId(t.getRequestId());
+    if (t.getCause() != null) {
+      builder.setCause(t.getCause());
+    }
+    if (t.getFirstExecutionRunID() != null) {
+      builder.setFirstExecutionRunId(t.getFirstExecutionRunID());
+    }
     if (t.getIdentity() != null) {
       builder.setIdentity(t.getIdentity());
     }
@@ -437,7 +443,8 @@ public class RequestMapper {
             .setRequestId(t.getRequestId())
             .setMemo(memo(t.getMemo()))
             .setSearchAttributes(searchAttributes(t.getSearchAttributes()))
-            .setHeader(header(t.getHeader()));
+            .setHeader(header(t.getHeader()))
+            .setJitterStart(secondsToDuration(t.getJitterStartSeconds()));
     if (t.getRetryPolicy() != null) {
       builder.setRetryPolicy(retryPolicy(t.getRetryPolicy()));
     }
@@ -521,7 +528,8 @@ public class RequestMapper {
             .setMemo(memo(t.getMemo()))
             .setSearchAttributes(searchAttributes(t.getSearchAttributes()))
             .setHeader(header(t.getHeader()))
-            .setDelayStart(secondsToDuration(t.getDelayStartSeconds()));
+            .setDelayStart(secondsToDuration(t.getDelayStartSeconds()))
+            .setJitterStart(secondsToDuration(t.getJitterStartSeconds()));
     if (t.getRetryPolicy() != null) {
       request.setRetryPolicy(retryPolicy(t.getRetryPolicy()));
     }
@@ -560,6 +568,9 @@ public class RequestMapper {
             .setDetails(payload(t.getDetails()));
     if (t.getIdentity() != null) {
       builder.setIdentity(t.getIdentity());
+    }
+    if (t.getFirstExecutionRunID() != null) {
+      builder.setFirstExecutionRunId(t.getFirstExecutionRunID());
     }
     return builder.build();
   }

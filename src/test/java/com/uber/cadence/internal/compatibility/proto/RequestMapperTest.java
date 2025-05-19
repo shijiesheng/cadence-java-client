@@ -96,8 +96,12 @@ public class RequestMapperTest<
             ThriftObjects.REQUEST_CANCEL_WORKFLOW_EXECUTION_REQUEST,
             ProtoObjects.REQUEST_CANCEL_WORKFLOW_EXECUTION_REQUEST,
             RequestMapper::requestCancelWorkflowExecutionRequest,
-            "firstExecutionRunID",
-            "cause"),
+            "firstExecutionRunID", // optional field
+            "cause"), // optional field
+        testCase(
+            ThriftObjects.REQUEST_CANCEL_WORKFLOW_EXECUTION_REQUEST_FULL,
+            ProtoObjects.REQUEST_CANCEL_WORKFLOW_EXECUTION_REQUEST_FULL,
+            RequestMapper::requestCancelWorkflowExecutionRequest),
         testCase(
             ThriftObjects.RESET_STICKY_TASK_LIST_REQUEST,
             ProtoObjects.RESET_STICKY_TASK_LIST_REQUEST,
@@ -157,13 +161,11 @@ public class RequestMapperTest<
         testCase(
             ThriftObjects.START_WORKFLOW_EXECUTION,
             ProtoObjects.START_WORKFLOW_EXECUTION,
-            RequestMapper::startWorkflowExecutionRequest,
-            "jitterStartSeconds"),
+            RequestMapper::startWorkflowExecutionRequest),
         testCase(
             ThriftObjects.SIGNAL_WITH_START_WORKFLOW_EXECUTION,
             ProtoObjects.SIGNAL_WITH_START_WORKFLOW_EXECUTION,
-            RequestMapper::signalWithStartWorkflowExecutionRequest,
-            "jitterStartSeconds"),
+            RequestMapper::signalWithStartWorkflowExecutionRequest),
         testCase(
             ThriftObjects.START_WORKFLOW_EXECUTION_ASYNC_REQUEST,
             ProtoObjects.START_WORKFLOW_EXECUTION_ASYNC_REQUEST,
@@ -180,7 +182,11 @@ public class RequestMapperTest<
             ThriftObjects.TERMINATE_WORKFLOW_EXECUTION_REQUEST,
             ProtoObjects.TERMINATE_WORKFLOW_EXECUTION_REQUEST,
             RequestMapper::terminateWorkflowExecutionRequest,
-            "firstExecutionRunID"),
+            "firstExecutionRunID"), // optional field
+        testCase(
+            ThriftObjects.TERMINATE_WORKFLOW_EXECUTION_REQUEST_FULL,
+            ProtoObjects.TERMINATE_WORKFLOW_EXECUTION_REQUEST_FULL,
+            RequestMapper::terminateWorkflowExecutionRequest),
         testCase(
             ThriftObjects.DEPRECATE_DOMAIN_REQUEST,
             ProtoObjects.DEPRECATE_DOMAIN_REQUEST,
@@ -189,12 +195,12 @@ public class RequestMapperTest<
             ThriftObjects.DESCRIBE_DOMAIN_BY_ID_REQUEST,
             ProtoObjects.DESCRIBE_DOMAIN_BY_ID_REQUEST,
             RequestMapper::describeDomainRequest,
-            "name"),
+            "name"), // Not needed for query by ID
         testCase(
             ThriftObjects.DESCRIBE_DOMAIN_BY_NAME_REQUEST,
             ProtoObjects.DESCRIBE_DOMAIN_BY_NAME_REQUEST,
             RequestMapper::describeDomainRequest,
-            "uuid"),
+            "uuid"), // Not needed for query by name
         testCase(
             ThriftObjects.LIST_DOMAINS_REQUEST,
             ProtoObjects.LIST_DOMAINS_REQUEST,
@@ -227,7 +233,7 @@ public class RequestMapperTest<
             ThriftObjects.REGISTER_DOMAIN_REQUEST,
             ProtoObjects.REGISTER_DOMAIN_REQUEST,
             RequestMapper::registerDomainRequest,
-            "emitMetric"),
+            "emitMetric"), // Thrift has this field but proto doens't have it
         testCase(
             ThriftObjects.UPDATE_DOMAIN_REQUEST,
             // Data and replicationConfiguration are copied incorrectly due to a bug :(
