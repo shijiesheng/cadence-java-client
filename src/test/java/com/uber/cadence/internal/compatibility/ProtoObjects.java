@@ -874,6 +874,16 @@ public final class ProtoObjects {
               .setRequestId("requestId")
               .setIdentity("identity")
               .build();
+  public static final RequestCancelWorkflowExecutionRequest
+      REQUEST_CANCEL_WORKFLOW_EXECUTION_REQUEST_FULL =
+          RequestCancelWorkflowExecutionRequest.newBuilder()
+              .setDomain("domain")
+              .setWorkflowExecution(WORKFLOW_EXECUTION)
+              .setRequestId("requestId")
+              .setIdentity("identity")
+              .setFirstExecutionRunId("firstExecutionRunID")
+              .setCause("cancel cause")
+              .build();
   public static final ResetStickyTaskListRequest RESET_STICKY_TASK_LIST_REQUEST =
       ResetStickyTaskListRequest.newBuilder()
           .setDomain("domain")
@@ -1005,6 +1015,7 @@ public final class ProtoObjects {
           .setSearchAttributes(SEARCH_ATTRIBUTES)
           .setHeader(HEADER)
           .setDelayStart(seconds(3))
+          .setJitterStart(seconds(0))
           .build();
 
   public static final SignalWithStartWorkflowExecutionRequest SIGNAL_WITH_START_WORKFLOW_EXECUTION =
@@ -1042,6 +1053,16 @@ public final class ProtoObjects {
           .setReason("reason")
           .setDetails(payload("details"))
           .setIdentity("identity")
+          .build();
+
+  public static final TerminateWorkflowExecutionRequest TERMINATE_WORKFLOW_EXECUTION_REQUEST_FULL =
+      TerminateWorkflowExecutionRequest.newBuilder()
+          .setDomain("domain")
+          .setWorkflowExecution(WORKFLOW_EXECUTION)
+          .setReason("reason")
+          .setDetails(payload("details"))
+          .setIdentity("identity")
+          .setFirstExecutionRunId("firstExecutionRunID")
           .build();
 
   public static final DeprecateDomainRequest DEPRECATE_DOMAIN_REQUEST =

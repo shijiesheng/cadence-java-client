@@ -746,6 +746,15 @@ public final class ThriftObjects {
               .setWorkflowExecution(WORKFLOW_EXECUTION)
               .setRequestId("requestId")
               .setIdentity("identity");
+  public static final RequestCancelWorkflowExecutionRequest
+      REQUEST_CANCEL_WORKFLOW_EXECUTION_REQUEST_FULL =
+          new RequestCancelWorkflowExecutionRequest()
+              .setDomain("domain")
+              .setWorkflowExecution(WORKFLOW_EXECUTION)
+              .setRequestId("requestId")
+              .setIdentity("identity")
+              .setFirstExecutionRunID("firstExecutionRunID")
+              .setCause("cancel cause");
   public static final ResetStickyTaskListRequest RESET_STICKY_TASK_LIST_REQUEST =
       new ResetStickyTaskListRequest().setDomain("domain").setExecution(WORKFLOW_EXECUTION);
   public static final ResetWorkflowExecutionRequest RESET_WORKFLOW_EXECUTION_REQUEST =
@@ -863,6 +872,7 @@ public final class ThriftObjects {
           .setMemo(MEMO)
           .setSearchAttributes(SEARCH_ATTRIBUTES)
           .setHeader(HEADER)
+          .setJitterStartSeconds(0)
           .setDelayStartSeconds(3);
   public static final com.uber.cadence.SignalWithStartWorkflowExecutionRequest
       SIGNAL_WITH_START_WORKFLOW_EXECUTION =
@@ -885,7 +895,8 @@ public final class ThriftObjects {
               .setMemo(MEMO)
               .setSearchAttributes(SEARCH_ATTRIBUTES)
               .setHeader(HEADER)
-              .setDelayStartSeconds(3);
+              .setDelayStartSeconds(3)
+              .setJitterStartSeconds(0);
 
   public static final StartWorkflowExecutionAsyncRequest START_WORKFLOW_EXECUTION_ASYNC_REQUEST =
       new StartWorkflowExecutionAsyncRequest().setRequest(START_WORKFLOW_EXECUTION);
@@ -912,6 +923,15 @@ public final class ThriftObjects {
           .setReason("reason")
           .setDetails(utf8("details"))
           .setIdentity("identity");
+
+  public static final TerminateWorkflowExecutionRequest TERMINATE_WORKFLOW_EXECUTION_REQUEST_FULL =
+      new TerminateWorkflowExecutionRequest()
+          .setDomain("domain")
+          .setWorkflowExecution(WORKFLOW_EXECUTION)
+          .setReason("reason")
+          .setDetails(utf8("details"))
+          .setIdentity("identity")
+          .setFirstExecutionRunID("firstExecutionRunID");
 
   public static final DeprecateDomainRequest DEPRECATE_DOMAIN_REQUEST =
       new DeprecateDomainRequest().setName("domain").setSecurityToken("securityToken");
