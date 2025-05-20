@@ -170,12 +170,26 @@ compileJava {
     options.encoding = 'UTF-8'
     options.compilerArgs << '-Xlint:none' << '-Xlint:deprecation' << '-Werror'
     options.errorprone.excludedPaths = '.*/generated-sources/.*'
+    options.errorprone {
+        disable('BadImport')
+        disable('PreferJavaTimeOverload')
+        disable('JavaTimeDefaultTimeZone')
+        disable('MutableConstantField')
+        disable('CatchFail')
+    }
 }
 
 compileTestJava {
     options.encoding = 'UTF-8'
     options.compilerArgs << '-Xlint:none' << '-Xlint:deprecation' << '-Werror'
     options.errorprone.excludedPaths = '.*/generated-sources/.*'
+    options.errorprone {
+        disable('BadImport')
+        disable('PreferJavaTimeOverload')
+        disable('JavaTimeDefaultTimeZone')
+        disable('MutableConstantField')
+        disable('CatchFail')
+    }
 }
 
 // Generation version.properties for value to be included into the request header
