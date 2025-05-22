@@ -47,7 +47,20 @@ googleJavaFormat {
 tasks.googleJavaFormat.dependsOn 'license'
 
 group = 'com.uber.cadence'
-version = '3.12.7-SNAPSHOT'
+
+version = getVersion()
+
+def getVersion() {
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine 'git', 'describe', '--tags'
+        standardOutput = stdout
+    }
+    def gitTag = stdout.toString().trim().replaceFirst("^v", "")
+    return gitTag
+}
+
+println "current version: $version"
 
 description = '''Uber Cadence Java Client'''
 

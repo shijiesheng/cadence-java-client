@@ -55,7 +55,7 @@
 - Fixed NullPointerException in ContextPropagation when Header is present but fields is null
 
 ## 3.11.0
-- Added opentracing support in workflow lifecycles #876 
+- Added opentracing support in workflow lifecycles #876
 
 ## 3.10.1
 - Fixed the bug: workflow already started for migration
@@ -121,12 +121,12 @@
 - Add CadenceChangeVersion support.
 - Allow using other tags in metric reporter.
 - Add metric tag to differentiate long-poll and normal request.
-### Changed 
+### Changed
 - Fix identity for sticky worker.
 - Improve contributing guide.
 
 ## 3.5.0
-### Changed 
+### Changed
 - Fix consistent query interface which caused overloading ambiguity with variable argument
 
 ## 3.4.0
@@ -318,5 +318,3 @@ to disable use FactoryOptions.disableStickyExecution property.
 - Side effects, mutable side effects, random uuid and workflow getVersion support.
 - Activity heartbeat throttling.
 - Deterministic retry of failed operation.
-
-
