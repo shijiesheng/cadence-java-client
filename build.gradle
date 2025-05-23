@@ -47,7 +47,22 @@ googleJavaFormat {
 tasks.googleJavaFormat.dependsOn 'license'
 
 group = 'com.uber.cadence'
-version = '3.12.7-SNAPSHOT'
+
+version = getVersion()
+
+def getVersion() {
+    try {
+        def stdout = new ByteArrayOutputStream()
+        exec {
+            commandLine 'git', 'describe', '--tags'
+            standardOutput = stdout
+        }
+        def gitTag = stdout.toString().trim().replaceFirst("^v", "")
+        return gitTag
+    } catch (Exception e) {
+        return "0.0.0-LOCAL"
+    }
+}
 
 description = '''Uber Cadence Java Client'''
 
@@ -94,6 +109,10 @@ license {
     header rootProject.file('license-header.txt')
     skipExistingHeaders true
     excludes(["**/*.json", "**/idls","com/uber/cadence/*.java", "com/uber/cadence/shadower/*.java"]) // config files and generated code
+}
+
+task printVersion {
+    println "current version: $version"
 }
 
 task initDlsSubmodule(type: Exec) {
