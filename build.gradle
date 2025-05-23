@@ -60,8 +60,6 @@ def getVersion() {
     return gitTag
 }
 
-println "current version: $version"
-
 description = '''Uber Cadence Java Client'''
 
 java {
@@ -107,6 +105,10 @@ license {
     header rootProject.file('license-header.txt')
     skipExistingHeaders true
     excludes(["**/*.json", "**/idls","com/uber/cadence/*.java", "com/uber/cadence/shadower/*.java"]) // config files and generated code
+}
+
+task printVersion {
+    println "current version: $version"
 }
 
 task initDlsSubmodule(type: Exec) {
