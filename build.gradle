@@ -51,13 +51,17 @@ group = 'com.uber.cadence'
 version = getVersion()
 
 def getVersion() {
-    def stdout = new ByteArrayOutputStream()
-    exec {
-        commandLine 'git', 'describe', '--tags'
-        standardOutput = stdout
+    try {
+        def stdout = new ByteArrayOutputStream()
+        exec {
+            commandLine 'git', 'describe', '--tags'
+            standardOutput = stdout
+        }
+        def gitTag = stdout.toString().trim().replaceFirst("^v", "")
+        return gitTag
+    } catch (Exception e) {
+        return "0.0.0-LOCAL"
     }
-    def gitTag = stdout.toString().trim().replaceFirst("^v", "")
-    return gitTag
 }
 
 description = '''Uber Cadence Java Client'''
