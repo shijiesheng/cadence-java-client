@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.12.7
+- Release use versions from git tags instead of static value (#1002)
+- support for testrunner for java in vscode (#1001)
+- Fix(RequestMapper): Correctly map all fields (#1000)
+- add github action for version releases to Sonatype (#996)
+
 ## 3.12.6
 - Adding logs to internal shadower to check for failures log (#918)
 - Removing fossa as it is migrated to snyk (#919)
