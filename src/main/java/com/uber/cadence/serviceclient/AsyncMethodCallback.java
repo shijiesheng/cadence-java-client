@@ -18,12 +18,14 @@ public interface AsyncMethodCallback<T> {
   /**
    * Called when the remote service has completed processing the request and the response has been
    * fully received.
+   *
    * @param response
    */
   public void onComplete(T response);
 
   /**
-   * Called when there is an unexpected expection. Exception is wrapped in {@link ServiceClientError}.
+   * Called when there is an unexpected expection. Exception is wrapped in {@link
+   * ServiceClientError}.
    *
    * @param exception
    */
