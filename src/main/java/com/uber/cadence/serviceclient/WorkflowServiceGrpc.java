@@ -37,7 +37,6 @@ import com.uber.cadence.serviceclient.exceptions.ServiceClientError;
 import com.uber.cadence.serviceclient.exceptions.WorkflowExecutionAlreadyCompletedError;
 import com.uber.cadence.serviceclient.exceptions.WorkflowExecutionAlreadyStartedError;
 import io.grpc.*;
-import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;

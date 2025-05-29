@@ -118,8 +118,7 @@ public class ResponseMapper {
     if (t == null) {
       return null;
     }
-    com.uber.cadence.entities.ClusterInfo clusterInfo =
-        new com.uber.cadence.entities.ClusterInfo();
+    com.uber.cadence.entities.ClusterInfo clusterInfo = new com.uber.cadence.entities.ClusterInfo();
     clusterInfo.setSupportedClientVersions(supportedClientVersions(t.getSupportedClientVersions()));
     return clusterInfo;
   }
@@ -493,8 +492,7 @@ public class ResponseMapper {
     if (clusterInfo == null) {
       return null;
     }
-    com.uber.cadence.entities.ClusterInfo res =
-        new com.uber.cadence.entities.ClusterInfo();
+    com.uber.cadence.entities.ClusterInfo res = new com.uber.cadence.entities.ClusterInfo();
     res.setSupportedClientVersions(
         TypeMapper.supportedClientVersions(clusterInfo.getSupportedClientVersions()));
     return res;
