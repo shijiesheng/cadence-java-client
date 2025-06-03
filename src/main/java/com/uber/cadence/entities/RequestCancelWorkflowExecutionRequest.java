@@ -22,4 +22,6 @@ public class RequestCancelWorkflowExecutionRequest {
   private WorkflowExecution workflowExecution;
   private String requestId;
   private String identity;
+  private String firstExecutionRunID;
+  private String cause;
 }

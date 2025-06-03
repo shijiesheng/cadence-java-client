@@ -19,7 +19,7 @@ import lombok.Data;
 @Data
 public class DomainConfiguration {
   private int workflowExecutionRetentionPeriodInDays;
-  private Boolean emitMetric;
+  private boolean emitMetric;
   private IsolationGroupConfiguration isolationGroups;
   private AsyncWorkflowConfiguration asyncWorkflowConfiguration;
   private BadBinaries badBinaries;

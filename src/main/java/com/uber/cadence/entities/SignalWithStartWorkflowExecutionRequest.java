@@ -33,6 +33,7 @@ public class SignalWithStartWorkflowExecutionRequest {
   private WorkflowIdReusePolicy workflowIdReusePolicy;
   private String cronSchedule;
   private int delayStartSeconds;
+  private int jitterStartSeconds;
   private String identity;
   private String signalName;
   private byte[] signalInput;

@@ -32,5 +32,5 @@ public class WorkflowExecutionInfo {
   private SearchAttributes searchAttributes;
   private ResetPoints autoResetPoints;
   private String taskList;
-  private Boolean isCron;
+  private boolean isCron;
 }

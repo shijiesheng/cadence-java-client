@@ -172,6 +172,12 @@ public class RequestMapper {
     if (t.getIdentity() != null) {
       builder.setIdentity(t.getIdentity());
     }
+    if (t.getFirstExecutionRunID() != null) {
+      builder.setFirstExecutionRunId(t.getFirstExecutionRunID());
+    }
+    if (t.getCause() != null) {
+      builder.setCause(t.getCause());
+    }
     return builder.build();
   }
 
@@ -451,6 +457,9 @@ public class RequestMapper {
     if (t.getDelayStartSeconds() > 0) {
       builder.setDelayStart(secondsToDuration(t.getDelayStartSeconds()));
     }
+    if (t.getJitterStartSeconds() > 0) {
+      builder.setJitterStart(secondsToDuration(t.getJitterStartSeconds()));
+    }
 
     if (t.getIdentity() != null) {
       builder.setIdentity(t.getIdentity());
@@ -521,7 +530,8 @@ public class RequestMapper {
             .setMemo(memo(t.getMemo()))
             .setSearchAttributes(searchAttributes(t.getSearchAttributes()))
             .setHeader(header(t.getHeader()))
-            .setDelayStart(secondsToDuration(t.getDelayStartSeconds()));
+            .setDelayStart(secondsToDuration(t.getDelayStartSeconds()))
+            .setJitterStart(secondsToDuration(t.getJitterStartSeconds()));
     if (t.getRetryPolicy() != null) {
       request.setRetryPolicy(retryPolicy(t.getRetryPolicy()));
     }
@@ -560,6 +570,9 @@ public class RequestMapper {
             .setDetails(payload(t.getDetails()));
     if (t.getIdentity() != null) {
       builder.setIdentity(t.getIdentity());
+    }
+    if (t.getFirstExecutionRunID() != null) {
+      builder.setFirstExecutionRunId(t.getFirstExecutionRunID());
     }
     return builder.build();
   }
@@ -780,7 +793,7 @@ public class RequestMapper {
     if (configuration != null) {
       if (configuration.getWorkflowExecutionRetentionPeriodInDays() > 0) {
         request.setWorkflowExecutionRetentionPeriod(
-                daysToDuration(configuration.getWorkflowExecutionRetentionPeriodInDays()));
+            daysToDuration(configuration.getWorkflowExecutionRetentionPeriodInDays()));
         fields.add(DomainUpdateRetentionPeriodField);
       }
       // if t.EmitMetric != null {} - DEPRECATED
@@ -806,7 +819,8 @@ public class RequestMapper {
         fields.add(DomainUpdateVisibilityArchivalURIField);
       }
     }
-    com.uber.cadence.entities.DomainReplicationConfiguration replicationConfiguration = t.getReplicationConfiguration();
+    com.uber.cadence.entities.DomainReplicationConfiguration replicationConfiguration =
+        t.getReplicationConfiguration();
     if (replicationConfiguration != null) {
       if (replicationConfiguration.getActiveClusterName() != null) {
         request.setActiveClusterName(replicationConfiguration.getActiveClusterName());

@@ -23,4 +23,5 @@ public class TerminateWorkflowExecutionRequest {
   private String reason;
   private byte[] details;
   private String identity;
+  private String firstExecutionRunID;
 }

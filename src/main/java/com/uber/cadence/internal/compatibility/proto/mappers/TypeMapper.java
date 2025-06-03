@@ -615,7 +615,7 @@ class TypeMapper {
     res.setSearchAttributes(searchAttributes(t.getSearchAttributes()));
     res.setAutoResetPoints(resetPoints(t.getAutoResetPoints()));
     res.setTaskList(t.getTaskList());
-    res.setIsCron(t.getIsCron());
+    res.setCron(t.getIsCron());
     return res;
   }
 
@@ -764,7 +764,7 @@ class TypeMapper {
     domainReplicationConfiguration.setClusters(
         clusterReplicationConfigurationArrayFromProto(t.getClustersList()));
     res.setFailoverVersion(t.getFailoverVersion());
-    res.setIsGlobalDomain(t.getIsGlobalDomain());
+    res.setGlobalDomain(t.getIsGlobalDomain());
 
     return res;
   }
