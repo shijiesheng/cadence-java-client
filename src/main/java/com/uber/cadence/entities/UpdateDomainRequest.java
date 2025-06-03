@@ -22,6 +22,7 @@ public class UpdateDomainRequest {
   private String securityToken;
   private UpdateDomainInfo updatedInfo;
   private DomainConfiguration configuration;
+  private DomainReplicationConfiguration replicationConfiguration;
   private String deleteBadBinary;
   private int failoverTimeoutInSeconds;
 }

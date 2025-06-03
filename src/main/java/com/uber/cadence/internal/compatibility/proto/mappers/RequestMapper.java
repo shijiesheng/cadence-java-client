@@ -780,7 +780,7 @@ public class RequestMapper {
     if (configuration != null) {
       if (configuration.getWorkflowExecutionRetentionPeriodInDays() > 0) {
         request.setWorkflowExecutionRetentionPeriod(
-            daysToDuration(configuration.getWorkflowExecutionRetentionPeriodInDays()));
+                daysToDuration(configuration.getWorkflowExecutionRetentionPeriodInDays()));
         fields.add(DomainUpdateRetentionPeriodField);
       }
       // if t.EmitMetric != null {} - DEPRECATED
@@ -806,8 +806,7 @@ public class RequestMapper {
         fields.add(DomainUpdateVisibilityArchivalURIField);
       }
     }
-    com.uber.cadence.entities.DomainReplicationConfiguration replicationConfiguration =
-        new com.uber.cadence.entities.DomainReplicationConfiguration();
+    com.uber.cadence.entities.DomainReplicationConfiguration replicationConfiguration = t.getReplicationConfiguration();
     if (replicationConfiguration != null) {
       if (replicationConfiguration.getActiveClusterName() != null) {
         request.setActiveClusterName(replicationConfiguration.getActiveClusterName());
