@@ -236,7 +236,6 @@ public class RequestMapperTest<
             "emitMetric"), // Thrift has this field but proto doens't have it
         testCase(
             ThriftObjects.UPDATE_DOMAIN_REQUEST,
-            // Data and replicationConfiguration are copied incorrectly due to a bug :(
             ProtoObjects.UPDATE_DOMAIN_REQUEST,
             RequestMapper::updateDomainRequest),
         testCase(
