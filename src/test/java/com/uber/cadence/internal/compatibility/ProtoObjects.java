@@ -1172,6 +1172,8 @@ public final class ProtoObjects {
           .setHistoryArchivalUri("historyArchivalUri")
           .setVisibilityArchivalStatus(ArchivalStatus.ARCHIVAL_STATUS_DISABLED)
           .setVisibilityArchivalUri("visibilityArchivalUri")
+          .addAllClusters(ImmutableList.of(CLUSTER_REPLICATION_CONFIGURATION))
+          .setActiveClusterName("activeCluster")
           .setDeleteBadBinary("deleteBadBinary")
           .setFailoverTimeout(seconds(1))
           .setUpdateMask(
@@ -1185,6 +1187,8 @@ public final class ProtoObjects {
                   .addPaths("history_archival_uri")
                   .addPaths("visibility_archival_status")
                   .addPaths("visibility_archival_uri")
+                  .addPaths("active_cluster_name")
+                  .addPaths("clusters")
                   .addPaths("delete_bad_binary")
                   .addPaths("failover_timeout")
                   .build())

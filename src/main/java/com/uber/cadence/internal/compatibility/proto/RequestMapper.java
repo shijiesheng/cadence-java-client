@@ -800,7 +800,7 @@ public class RequestMapper {
         fields.add(DomainUpdateVisibilityArchivalURIField);
       }
     }
-    DomainReplicationConfiguration replicationConfiguration = new DomainReplicationConfiguration();
+    DomainReplicationConfiguration replicationConfiguration = t.getReplicationConfiguration();
     if (replicationConfiguration != null) {
       if (replicationConfiguration.getActiveClusterName() != null) {
         request.setActiveClusterName(replicationConfiguration.getActiveClusterName());
