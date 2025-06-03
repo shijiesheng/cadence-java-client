@@ -19,5 +19,5 @@ import lombok.Data;
 @Data
 public class StickyExecutionAttributes {
   private TaskList workerTaskList;
-  private Integer scheduleToStartTimeoutSeconds;
+  private int scheduleToStartTimeoutSeconds;
 }

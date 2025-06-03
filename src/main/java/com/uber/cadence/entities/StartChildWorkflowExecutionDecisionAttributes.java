@@ -23,8 +23,8 @@ public class StartChildWorkflowExecutionDecisionAttributes {
   private WorkflowType workflowType;
   private TaskList taskList;
   private byte[] input;
-  private Integer executionStartToCloseTimeoutSeconds;
-  private Integer taskStartToCloseTimeoutSeconds;
+  private int executionStartToCloseTimeoutSeconds;
+  private int taskStartToCloseTimeoutSeconds;
   private ParentClosePolicy parentClosePolicy;
   private WorkflowIdReusePolicy workflowIdReusePolicy;
   private Header header;

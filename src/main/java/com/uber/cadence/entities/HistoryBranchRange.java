@@ -18,6 +18,6 @@ import lombok.Data;
 
 @Data
 public class HistoryBranchRange {
-  private Long beginNodeId;
-  private Long endNodeId;
+  private long beginNodeId;
+  private long endNodeId;
 }

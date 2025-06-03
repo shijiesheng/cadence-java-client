@@ -19,5 +19,5 @@ import lombok.Data;
 @Data
 public class IsolationGroupPartition {
   private String name;
-  private Integer percentage;
+  private int percentage;
 }

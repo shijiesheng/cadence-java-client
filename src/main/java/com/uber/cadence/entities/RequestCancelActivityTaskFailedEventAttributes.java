@@ -20,5 +20,5 @@ import lombok.Data;
 public class RequestCancelActivityTaskFailedEventAttributes {
   private String activityId;
   private String cause;
-  private Long decisionTaskCompletedEventId;
+  private long decisionTaskCompletedEventId;
 }

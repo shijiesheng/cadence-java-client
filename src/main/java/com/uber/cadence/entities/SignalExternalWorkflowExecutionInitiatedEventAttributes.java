@@ -18,7 +18,7 @@ import lombok.Data;
 
 @Data
 public class SignalExternalWorkflowExecutionInitiatedEventAttributes {
-  private Long decisionTaskCompletedEventId;
+  private long decisionTaskCompletedEventId;
   private String domain;
   private WorkflowExecution workflowExecution;
   private String signalName;

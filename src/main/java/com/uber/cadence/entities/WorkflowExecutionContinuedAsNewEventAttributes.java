@@ -22,10 +22,10 @@ public class WorkflowExecutionContinuedAsNewEventAttributes {
   private WorkflowType workflowType;
   private TaskList taskList;
   private byte[] input;
-  private Integer executionStartToCloseTimeoutSeconds;
-  private Integer taskStartToCloseTimeoutSeconds;
-  private Long decisionTaskCompletedEventId;
-  private Integer backoffStartIntervalInSeconds;
+  private int executionStartToCloseTimeoutSeconds;
+  private int taskStartToCloseTimeoutSeconds;
+  private long decisionTaskCompletedEventId;
+  private int backoffStartIntervalInSeconds;
   private ContinueAsNewInitiator initiator;
   private String failureReason;
   private byte[] failureDetails;

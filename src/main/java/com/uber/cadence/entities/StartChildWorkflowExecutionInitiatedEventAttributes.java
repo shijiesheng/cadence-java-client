@@ -23,17 +23,17 @@ public class StartChildWorkflowExecutionInitiatedEventAttributes {
   private WorkflowType workflowType;
   private TaskList taskList;
   private byte[] input;
-  private Integer executionStartToCloseTimeoutSeconds;
-  private Integer taskStartToCloseTimeoutSeconds;
+  private int executionStartToCloseTimeoutSeconds;
+  private int taskStartToCloseTimeoutSeconds;
   private ParentClosePolicy parentClosePolicy;
   private byte[] control;
-  private Long decisionTaskCompletedEventId;
+  private long decisionTaskCompletedEventId;
   private WorkflowIdReusePolicy workflowIdReusePolicy;
   private RetryPolicy retryPolicy;
   private String cronSchedule;
   private Header header;
   private Memo memo;
   private SearchAttributes searchAttributes;
-  private Integer delayStartSeconds;
-  private Integer jitterStartSeconds;
+  private int delayStartSeconds;
+  private int jitterStartSeconds;
 }

@@ -19,8 +19,8 @@ import lombok.Data;
 
 @Data
 public class DecisionTaskCompletedEventAttributes {
-  private Long scheduledEventId;
-  private Long startedEventId;
+  private long scheduledEventId;
+  private long startedEventId;
   private List<Decision> decisions;
   private byte[] executionContext;
   private String identity;

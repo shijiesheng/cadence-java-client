@@ -19,7 +19,7 @@ import lombok.Data;
 @Data
 public class WorkflowExecutionCancelRequestedEventAttributes {
   private String cause;
-  private Long externalInitiatedEventId;
+  private long externalInitiatedEventId;
   private WorkflowExecution externalWorkflowExecution;
   private String identity;
 }

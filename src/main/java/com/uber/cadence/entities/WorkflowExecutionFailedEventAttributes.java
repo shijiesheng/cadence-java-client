@@ -20,5 +20,5 @@ import lombok.Data;
 public class WorkflowExecutionFailedEventAttributes {
   private String reason;
   private byte[] details;
-  private Long decisionTaskCompletedEventId;
+  private long decisionTaskCompletedEventId;
 }

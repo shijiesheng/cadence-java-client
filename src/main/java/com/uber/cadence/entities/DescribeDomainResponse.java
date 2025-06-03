@@ -21,6 +21,6 @@ public class DescribeDomainResponse {
   private DomainInfo domainInfo;
   private DomainConfiguration configuration;
   private DomainReplicationConfiguration replicationConfiguration;
-  private Long failoverVersion;
+  private long failoverVersion;
   private Boolean isGlobalDomain;
 }

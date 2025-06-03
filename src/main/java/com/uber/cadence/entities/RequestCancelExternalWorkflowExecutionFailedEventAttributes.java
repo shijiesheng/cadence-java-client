@@ -18,10 +18,10 @@ import lombok.Data;
 
 @Data
 public class RequestCancelExternalWorkflowExecutionFailedEventAttributes {
-  private Long decisionTaskCompletedEventId;
+  private long decisionTaskCompletedEventId;
   private String domain;
   private WorkflowExecution workflowExecution;
-  private Long initiatedEventId;
+  private long initiatedEventId;
   private CancelExternalWorkflowExecutionFailedCause cause;
   private byte[] control;
 }

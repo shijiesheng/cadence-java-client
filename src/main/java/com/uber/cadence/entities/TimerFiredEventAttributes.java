@@ -19,5 +19,5 @@ import lombok.Data;
 @Data
 public class TimerFiredEventAttributes {
   private String timerId;
-  private Long startedEventId;
+  private long startedEventId;
 }

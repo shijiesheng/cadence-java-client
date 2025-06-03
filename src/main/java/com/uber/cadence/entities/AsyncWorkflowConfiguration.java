@@ -19,6 +19,6 @@ import lombok.Data;
 @Data
 public class AsyncWorkflowConfiguration {
   private boolean enabled;
-  private Integer prefetchTaskListSize;
-  private Integer maxConcurrentTaskExecutionSize;
+  private int prefetchTaskListSize;
+  private int maxConcurrentTaskExecutionSize;
 }

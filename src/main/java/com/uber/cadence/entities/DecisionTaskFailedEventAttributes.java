@@ -18,14 +18,14 @@ import lombok.Data;
 
 @Data
 public class DecisionTaskFailedEventAttributes {
-  private Long scheduledEventId;
-  private Long startedEventId;
+  private long scheduledEventId;
+  private long startedEventId;
   private DecisionTaskFailedCause cause;
   private byte[] details;
   private String identity;
   private String reason;
   private String baseRunId;
   private String newRunId;
-  private Long forkEventVersion;
+  private long forkEventVersion;
   private String binaryChecksum;
 }

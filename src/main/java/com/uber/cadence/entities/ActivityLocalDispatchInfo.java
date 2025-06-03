@@ -19,8 +19,8 @@ import lombok.Data;
 @Data
 public class ActivityLocalDispatchInfo {
   private String activityId;
-  private Long scheduledTimestamp;
-  private Long startedTimestamp;
-  private Long scheduledTimestampOfThisAttempt;
+  private long scheduledTimestamp;
+  private long startedTimestamp;
+  private long scheduledTimestampOfThisAttempt;
   private byte[] taskToken;
 }

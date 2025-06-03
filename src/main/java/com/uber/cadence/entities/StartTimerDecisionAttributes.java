@@ -19,5 +19,5 @@ import lombok.Data;
 @Data
 public class StartTimerDecisionAttributes {
   private String timerId;
-  private Long startToFireTimeoutSeconds;
+  private long startToFireTimeoutSeconds;
 }

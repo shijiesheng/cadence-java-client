@@ -18,6 +18,6 @@ import lombok.Data;
 
 @Data
 public class UpsertWorkflowSearchAttributesEventAttributes {
-  private Long decisionTaskCompletedEventId;
+  private long decisionTaskCompletedEventId;
   private SearchAttributes searchAttributes;
 }

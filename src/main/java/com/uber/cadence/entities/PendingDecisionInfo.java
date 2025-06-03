@@ -19,8 +19,8 @@ import lombok.Data;
 @Data
 public class PendingDecisionInfo {
   private PendingDecisionState state;
-  private Long scheduledTimestamp;
-  private Long startedTimestamp;
-  private Integer attempt;
-  private Long originalScheduledTimestamp;
+  private long scheduledTimestamp;
+  private long startedTimestamp;
+  private int attempt;
+  private long originalScheduledTimestamp;
 }

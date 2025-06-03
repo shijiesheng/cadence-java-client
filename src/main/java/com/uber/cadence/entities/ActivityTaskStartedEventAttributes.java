@@ -18,10 +18,10 @@ import lombok.Data;
 
 @Data
 public class ActivityTaskStartedEventAttributes {
-  private Long scheduledEventId;
+  private long scheduledEventId;
   private String identity;
   private String requestId;
-  private Integer attempt;
+  private int attempt;
   private String lastFailureReason;
   private byte[] lastFailureDetails;
 }

@@ -23,6 +23,6 @@ public class StartChildWorkflowExecutionFailedEventAttributes {
   private WorkflowType workflowType;
   private ChildWorkflowExecutionFailedCause cause;
   private byte[] control;
-  private Long initiatedEventId;
-  private Long decisionTaskCompletedEventId;
+  private long initiatedEventId;
+  private long decisionTaskCompletedEventId;
 }

@@ -18,7 +18,7 @@ import lombok.Data;
 
 @Data
 public class DecisionTaskStartedEventAttributes {
-  private Long scheduledEventId;
+  private long scheduledEventId;
   private String identity;
   private String requestId;
 }

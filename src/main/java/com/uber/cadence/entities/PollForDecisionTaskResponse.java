@@ -22,16 +22,16 @@ public class PollForDecisionTaskResponse {
   private byte[] taskToken;
   private WorkflowExecution workflowExecution;
   private WorkflowType workflowType;
-  private Long previousStartedEventId;
-  private Long startedEventId;
-  private Long attempt;
-  private Long backlogCountHint;
+  private long previousStartedEventId;
+  private long startedEventId;
+  private long attempt;
+  private long backlogCountHint;
   private History history;
   private byte[] nextPageToken;
   private WorkflowQuery query;
   private TaskList workflowExecutionTaskList;
-  private Long scheduledTimestamp;
-  private Long startedTimestamp;
+  private long scheduledTimestamp;
+  private long startedTimestamp;
   private Map<String, WorkflowQuery> queries;
-  private Long nextEventId;
+  private long nextEventId;
 }

@@ -19,7 +19,7 @@ import lombok.Data;
 @Data
 public class ListArchivedWorkflowExecutionsRequest {
   private String domain;
-  private Integer pageSize;
+  private int pageSize;
   private byte[] nextPageToken;
   private String query;
 }

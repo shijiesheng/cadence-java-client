@@ -18,6 +18,6 @@ import lombok.Data;
 
 @Data
 public class TaskIDBlock {
-  private Long startID;
-  private Long endID;
+  private long startID;
+  private long endID;
 }

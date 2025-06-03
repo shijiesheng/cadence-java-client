@@ -20,7 +20,7 @@ import lombok.Data;
 public class ActivityTaskFailedEventAttributes {
   private String reason;
   private byte[] details;
-  private Long scheduledEventId;
-  private Long startedEventId;
+  private long scheduledEventId;
+  private long startedEventId;
   private String identity;
 }

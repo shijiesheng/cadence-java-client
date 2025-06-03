@@ -22,6 +22,6 @@ public class ChildWorkflowExecutionTimedOutEventAttributes {
   private String domain;
   private WorkflowExecution workflowExecution;
   private WorkflowType workflowType;
-  private Long initiatedEventId;
-  private Long startedEventId;
+  private long initiatedEventId;
+  private long startedEventId;
 }

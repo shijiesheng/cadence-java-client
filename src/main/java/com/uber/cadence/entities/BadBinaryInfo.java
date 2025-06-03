@@ -20,5 +20,5 @@ import lombok.Data;
 public class BadBinaryInfo {
   private String reason;
   private String operator;
-  private Long createdTimeNano;
+  private long createdTimeNano;
 }

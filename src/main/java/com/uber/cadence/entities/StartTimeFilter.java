@@ -18,6 +18,6 @@ import lombok.Data;
 
 @Data
 public class StartTimeFilter {
-  private Long earliestTime;
-  private Long latestTime;
+  private long earliestTime;
+  private long latestTime;
 }

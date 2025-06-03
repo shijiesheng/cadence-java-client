@@ -21,7 +21,7 @@ public class ResetWorkflowExecutionRequest {
   private String domain;
   private WorkflowExecution workflowExecution;
   private String reason;
-  private Long decisionFinishEventId;
+  private long decisionFinishEventId;
   private String requestId;
   private boolean skipSignalReapply;
 }

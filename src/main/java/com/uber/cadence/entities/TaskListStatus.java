@@ -18,9 +18,9 @@ import lombok.Data;
 
 @Data
 public class TaskListStatus {
-  private Long backlogCountHint;
-  private Long readLevel;
-  private Long ackLevel;
+  private long backlogCountHint;
+  private long readLevel;
+  private long ackLevel;
   private double ratePerSecond;
   private TaskIDBlock taskIDBlock;
 }

@@ -20,8 +20,8 @@ import lombok.Data;
 public class ResetPointInfo {
   private String binaryChecksum;
   private String runId;
-  private Long firstDecisionCompletedId;
-  private Long createdTimeNano;
-  private Long expiringTimeNano;
+  private long firstDecisionCompletedId;
+  private long createdTimeNano;
+  private long expiringTimeNano;
   private boolean resettable;
 }

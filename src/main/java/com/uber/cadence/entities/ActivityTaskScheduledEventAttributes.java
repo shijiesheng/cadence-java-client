@@ -23,11 +23,11 @@ public class ActivityTaskScheduledEventAttributes {
   private String domain;
   private TaskList taskList;
   private byte[] input;
-  private Integer scheduleToCloseTimeoutSeconds;
-  private Integer scheduleToStartTimeoutSeconds;
-  private Integer startToCloseTimeoutSeconds;
-  private Integer heartbeatTimeoutSeconds;
-  private Long decisionTaskCompletedEventId;
+  private int scheduleToCloseTimeoutSeconds;
+  private int scheduleToStartTimeoutSeconds;
+  private int startToCloseTimeoutSeconds;
+  private int heartbeatTimeoutSeconds;
+  private long decisionTaskCompletedEventId;
   private RetryPolicy retryPolicy;
   private Header header;
   private String requestLocalDispatch;

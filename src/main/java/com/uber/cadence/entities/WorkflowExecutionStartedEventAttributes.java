@@ -22,7 +22,7 @@ public class WorkflowExecutionStartedEventAttributes {
   private WorkflowType workflowType;
   private String parentWorkflowDomain;
   private WorkflowExecution parentWorkflowExecution;
-  private Long parentInitiatedEventId;
+  private long parentInitiatedEventId;
   private TaskList taskList;
   private byte[] input;
   private int executionStartToCloseTimeoutSeconds;
@@ -35,10 +35,10 @@ public class WorkflowExecutionStartedEventAttributes {
   private String originalExecutionRunId;
   private String identity;
   private String firstExecutionRunId;
-  private Long firstScheduledTimeNano;
+  private long firstScheduledTimeNano;
   private RetryPolicy retryPolicy;
   private int attempt;
-  private Long expirationTimestamp;
+  private long expirationTimestamp;
   private String cronSchedule;
   private int firstDecisionTaskBackoffSeconds;
   private Memo memo;
