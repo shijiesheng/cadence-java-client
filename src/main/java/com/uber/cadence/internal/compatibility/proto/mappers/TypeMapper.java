@@ -305,7 +305,7 @@ class TypeMapper {
     if (t == null || t == Payload.getDefaultInstance()) {
       return null;
     }
-    if (t.getData() == null || t.getData().size() == 0) {
+    if (t.getData().isEmpty()) {
       // protoPayload will not generate this case
       // however, Data field will be dropped by the encoding if it's empty
       // and receiver side will see null for the Data field
