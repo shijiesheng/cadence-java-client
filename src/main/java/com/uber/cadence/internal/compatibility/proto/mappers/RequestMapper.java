@@ -457,9 +457,7 @@ public class RequestMapper {
     if (t.getDelayStartSeconds() > 0) {
       builder.setDelayStart(secondsToDuration(t.getDelayStartSeconds()));
     }
-    if (t.getJitterStartSeconds() > 0) {
-      builder.setJitterStart(secondsToDuration(t.getJitterStartSeconds()));
-    }
+    builder.setJitterStart(secondsToDuration(t.getJitterStartSeconds()));
 
     if (t.getIdentity() != null) {
       builder.setIdentity(t.getIdentity());

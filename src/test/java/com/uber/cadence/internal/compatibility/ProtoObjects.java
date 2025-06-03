@@ -1176,6 +1176,8 @@ public final class ProtoObjects {
           .setActiveClusterName("activeCluster")
           .setDeleteBadBinary("deleteBadBinary")
           .setFailoverTimeout(seconds(1))
+          .setActiveClusterName("activeCluster")
+          .addAllClusters(ImmutableList.of(CLUSTER_REPLICATION_CONFIGURATION))
           .setUpdateMask(
               FieldMask.newBuilder()
                   .addPaths("description")

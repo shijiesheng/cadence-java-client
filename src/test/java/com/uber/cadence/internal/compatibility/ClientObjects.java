@@ -180,7 +180,16 @@ public class ClientObjects {
           .setHistoryArchivalURI("historyArchivalUri")
           .setVisibilityArchivalStatus(ArchivalStatus.DISABLED)
           .setVisibilityArchivalURI("visibilityArchivalUri")
-          .setEmitMetric(true);
+          .setEmitMetric(true)
+          .setAsyncWorkflowConfiguration(new AsyncWorkflowConfiguration().setEnabled(true))
+          .setIsolationGroups(
+              new IsolationGroupConfiguration()
+                  .setPartitions(
+                      ImmutableList.of(
+                          new IsolationGroupPartition()
+                              .setName("partitionName")
+                              .setPercentage(100))));
+
   public static final StartTimeFilter START_TIME_FILTER =
       new StartTimeFilter().setEarliestTime(2).setLatestTime(3);
   public static final WorkflowExecutionFilter WORKFLOW_EXECUTION_FILTER =
