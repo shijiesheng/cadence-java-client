@@ -18,12 +18,12 @@ import lombok.Data;
 
 @Data
 public class DecisionTaskTimedOutEventAttributes {
-  private Long scheduledEventId;
-  private Long startedEventId;
+  private long scheduledEventId;
+  private long startedEventId;
   private TimeoutType timeoutType;
   private String baseRunId;
   private String newRunId;
-  private Long forkEventVersion;
+  private long forkEventVersion;
   private String reason;
   private DecisionTaskTimedOutCause cause;
 }

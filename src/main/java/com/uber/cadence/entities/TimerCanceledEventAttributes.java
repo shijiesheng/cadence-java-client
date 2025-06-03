@@ -19,7 +19,7 @@ import lombok.Data;
 @Data
 public class TimerCanceledEventAttributes {
   private String timerId;
-  private Long startedEventId;
-  private Long decisionTaskCompletedEventId;
+  private long startedEventId;
+  private long decisionTaskCompletedEventId;
   private String identity;
 }

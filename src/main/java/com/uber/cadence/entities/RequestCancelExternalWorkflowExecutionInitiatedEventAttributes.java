@@ -18,7 +18,7 @@ import lombok.Data;
 
 @Data
 public class RequestCancelExternalWorkflowExecutionInitiatedEventAttributes {
-  private Long decisionTaskCompletedEventId;
+  private long decisionTaskCompletedEventId;
   private String domain;
   private WorkflowExecution workflowExecution;
   private boolean childWorkflowOnly;

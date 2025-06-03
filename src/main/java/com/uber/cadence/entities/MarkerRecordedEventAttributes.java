@@ -20,6 +20,6 @@ import lombok.Data;
 public class MarkerRecordedEventAttributes {
   private String markerName;
   private byte[] details;
-  private Long decisionTaskCompletedEventId;
+  private long decisionTaskCompletedEventId;
   private Header header;
 }

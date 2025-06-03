@@ -20,6 +20,6 @@ import lombok.Data;
 public class CancelTimerFailedEventAttributes {
   private String timerId;
   private String cause;
-  private Long decisionTaskCompletedEventId;
+  private long decisionTaskCompletedEventId;
   private String identity;
 }

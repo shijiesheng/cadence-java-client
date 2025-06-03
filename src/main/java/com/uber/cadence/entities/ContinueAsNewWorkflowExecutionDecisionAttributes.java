@@ -21,9 +21,9 @@ public class ContinueAsNewWorkflowExecutionDecisionAttributes {
   private WorkflowType workflowType;
   private TaskList taskList;
   private byte[] input;
-  private Integer executionStartToCloseTimeoutSeconds;
-  private Integer taskStartToCloseTimeoutSeconds;
-  private Integer backoffStartIntervalInSeconds;
+  private int executionStartToCloseTimeoutSeconds;
+  private int taskStartToCloseTimeoutSeconds;
+  private int backoffStartIntervalInSeconds;
   private ContinueAsNewInitiator initiator;
   private String failureReason;
   private byte[] failureDetails;

@@ -19,8 +19,8 @@ import lombok.Data;
 @Data
 public class ActivityTaskTimedOutEventAttributes {
   private byte[] details;
-  private Long scheduledEventId;
-  private Long startedEventId;
+  private long scheduledEventId;
+  private long startedEventId;
   private TimeoutType timeoutType;
   private String lastHeartbeatDetails;
   private String lastFailureReason;

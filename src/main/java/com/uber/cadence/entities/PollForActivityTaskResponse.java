@@ -23,13 +23,13 @@ public class PollForActivityTaskResponse {
   private String activityId;
   private ActivityType activityType;
   private byte[] input;
-  private Long scheduledTimestamp;
-  private Long startedTimestamp;
+  private long scheduledTimestamp;
+  private long startedTimestamp;
   private int scheduleToCloseTimeoutSeconds;
   private int startToCloseTimeoutSeconds;
   private int heartbeatTimeoutSeconds;
   private int attempt;
-  private Long scheduledTimestampOfThisAttempt;
+  private long scheduledTimestampOfThisAttempt;
   private byte[] heartbeatDetails;
   private WorkflowType workflowType;
   private String workflowDomain;

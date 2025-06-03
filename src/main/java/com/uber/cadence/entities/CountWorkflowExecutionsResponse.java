@@ -18,5 +18,5 @@ import lombok.Data;
 
 @Data
 public class CountWorkflowExecutionsResponse {
-  private Long count;
+  private long count;
 }

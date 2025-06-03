@@ -19,9 +19,9 @@ import lombok.Data;
 
 @Data
 public class FailoverInfo {
-  private Long failoverVersion;
-  private Long failoverStartTimestamp;
-  private Long failoverExpireTimestamp;
-  private Integer completedShardCount;
-  private List<Integer> pendingShards;
+  private long failoverVersion;
+  private long failoverStartTimestamp;
+  private long failoverExpireTimestamp;
+  private int completedShardCount;
+  private List<int> pendingShards;
 }

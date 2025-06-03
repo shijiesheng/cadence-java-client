@@ -19,5 +19,5 @@ import lombok.Data;
 @Data
 public class WorkflowExecutionTimedOutEventAttributes {
   private TimeoutType timeoutType;
-  private Integer decisionTaskCompletedEventId;
+  private int decisionTaskCompletedEventId;
 }

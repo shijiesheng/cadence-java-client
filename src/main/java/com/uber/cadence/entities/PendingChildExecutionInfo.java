@@ -22,6 +22,6 @@ public class PendingChildExecutionInfo {
   private String workflowID;
   private String runID;
   private String workflowTypName;
-  private Long initiatedID;
+  private long initiatedID;
   private ParentClosePolicy parentClosePolicy;
 }

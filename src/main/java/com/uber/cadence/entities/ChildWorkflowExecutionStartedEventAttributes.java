@@ -21,6 +21,6 @@ public class ChildWorkflowExecutionStartedEventAttributes {
   private String domain;
   private WorkflowExecution workflowExecution;
   private WorkflowType workflowType;
-  private Long initiatedEventId;
+  private long initiatedEventId;
   private Header header;
 }

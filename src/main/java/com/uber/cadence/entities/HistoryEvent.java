@@ -18,11 +18,11 @@ import lombok.Data;
 
 @Data
 public class HistoryEvent {
-  private Long eventId;
-  private Long timestamp;
+  private long eventId;
+  private long timestamp;
   private EventType eventType;
-  private Long version;
-  private Long taskId;
+  private long version;
+  private long taskId;
   private WorkflowExecutionStartedEventAttributes workflowExecutionStartedEventAttributes;
   private WorkflowExecutionCompletedEventAttributes workflowExecutionCompletedEventAttributes;
   private WorkflowExecutionFailedEventAttributes workflowExecutionFailedEventAttributes;

@@ -19,7 +19,7 @@ import lombok.Data;
 @Data
 public class ActivityTaskCompletedEventAttributes {
   private byte[] result;
-  private Long scheduledEventId;
-  private Long startedEventId;
+  private long scheduledEventId;
+  private long startedEventId;
   private String identity;
 }

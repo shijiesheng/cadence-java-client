@@ -19,6 +19,6 @@ import lombok.Data;
 @Data
 public class DecisionTaskScheduledEventAttributes {
   private TaskList taskList;
-  private Integer startToCloseTimeoutSeconds;
-  private Integer attempt;
+  private int startToCloseTimeoutSeconds;
+  private int attempt;
 }

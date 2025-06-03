@@ -20,5 +20,5 @@ import lombok.Data;
 public class TimerStartedEventAttributes {
   private String timerId;
   private int startToFireTimeoutSeconds;
-  private Long decisionTaskCompletedEventId;
+  private long decisionTaskCompletedEventId;
 }

@@ -19,5 +19,5 @@ import lombok.Data;
 @Data
 public class WorkflowExecutionCompletedEventAttributes {
   private byte[] result;
-  private Long decisionTaskCompletedEventId;
+  private long decisionTaskCompletedEventId;
 }

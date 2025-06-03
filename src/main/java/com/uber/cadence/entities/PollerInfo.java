@@ -18,7 +18,7 @@ import lombok.Data;
 
 @Data
 public class PollerInfo {
-  private Long lastAccessTime;
+  private long lastAccessTime;
   private String identity;
   private double ratePerSecond;
 }

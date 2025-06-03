@@ -20,14 +20,14 @@ import lombok.Data;
 public class WorkflowExecutionInfo {
   private WorkflowExecution execution;
   private WorkflowType type;
-  private Long startTime;
-  private Long closeTime;
+  private long startTime;
+  private long closeTime;
   private WorkflowExecutionCloseStatus closeStatus;
-  private Long historyLength;
+  private long historyLength;
   private String parentDomainName;
   private String parentDomainId;
   private WorkflowExecution parentExecution;
-  private Long executionTime;
+  private long executionTime;
   private Memo memo;
   private SearchAttributes searchAttributes;
   private ResetPoints autoResetPoints;

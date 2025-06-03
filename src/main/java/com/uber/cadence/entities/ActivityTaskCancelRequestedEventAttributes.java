@@ -19,5 +19,5 @@ import lombok.Data;
 @Data
 public class ActivityTaskCancelRequestedEventAttributes {
   private String activityId;
-  private Long decisionTaskCompletedEventId;
+  private long decisionTaskCompletedEventId;
 }

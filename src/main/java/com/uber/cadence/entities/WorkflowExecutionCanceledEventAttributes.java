@@ -18,6 +18,6 @@ import lombok.Data;
 
 @Data
 public class WorkflowExecutionCanceledEventAttributes {
-  private Long decisionTaskCompletedEventId;
+  private long decisionTaskCompletedEventId;
   private byte[] details;
 }
