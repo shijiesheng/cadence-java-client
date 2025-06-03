@@ -386,7 +386,7 @@ public class ResponseMapper {
         clusterReplicationConfigurationArrayFromProto(t.getDomain().getClustersList()));
 
     response.setFailoverVersion(t.getDomain().getFailoverVersion());
-    response.setIsGlobalDomain(t.getDomain().getIsGlobalDomain());
+    response.setGlobalDomain(t.getDomain().getIsGlobalDomain());
     return response;
   }
 
@@ -461,7 +461,7 @@ public class ResponseMapper {
     domainReplicationConfiguration.setClusters(
         clusterReplicationConfigurationArrayFromProto(t.getDomain().getClustersList()));
     updateDomainResponse.setFailoverVersion(t.getDomain().getFailoverVersion());
-    updateDomainResponse.setIsGlobalDomain(t.getDomain().getIsGlobalDomain());
+    updateDomainResponse.setGlobalDomain(t.getDomain().getIsGlobalDomain());
     return updateDomainResponse;
   }
 

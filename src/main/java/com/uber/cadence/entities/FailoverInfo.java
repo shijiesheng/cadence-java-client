@@ -23,5 +23,5 @@ public class FailoverInfo {
   private long failoverStartTimestamp;
   private long failoverExpireTimestamp;
   private int completedShardCount;
-  private List<int> pendingShards;
+  private List<Integer> pendingShards;
 }

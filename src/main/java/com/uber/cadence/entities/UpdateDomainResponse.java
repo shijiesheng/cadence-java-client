@@ -22,5 +22,5 @@ public class UpdateDomainResponse {
   private DomainConfiguration configuration;
   private DomainReplicationConfiguration replicationConfiguration;
   private long failoverVersion;
-  private Boolean isGlobalDomain;
+  private boolean isGlobalDomain;
 }

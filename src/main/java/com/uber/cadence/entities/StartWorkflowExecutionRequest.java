@@ -31,6 +31,7 @@ public class StartWorkflowExecutionRequest {
   private SearchAttributes searchAttributes;
   private Header header;
   private int delayStartSeconds;
+  private int jitterStartSeconds;
   private RetryPolicy retryPolicy;
   private String cronSchedule;
   private String identity;
