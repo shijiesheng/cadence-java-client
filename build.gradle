@@ -44,7 +44,7 @@ googleJavaFormat {
     exclude '**/generated-sources/*'
 }
 
-tasks.googleJavaFormat.dependsOn 'license'
+tasks.googleJavaFormat.dependsOn 'licenseFormat'
 
 group = 'com.uber.cadence'
 
@@ -144,6 +144,7 @@ sourceSets {
         }
         java {
             srcDir 'src/main'
+            srcDir '.gen'
         }
     }
 }

@@ -18,7 +18,6 @@
 package com.uber.cadence.serviceclient;
 
 import com.uber.cadence.entities.*;
-import com.uber.cadence.serviceclient.exceptions.*;
 import java.util.concurrent.CompletableFuture;
 
 public interface IWorkflowServiceV4 extends Iface, AsyncIface {
@@ -33,13 +32,13 @@ public interface IWorkflowServiceV4 extends Iface, AsyncIface {
    * @param startRequest
    * @param resultHandler
    * @param timeoutInMillis
-   * @throws ServiceClientError
+   * @throws BaseError
    */
   void StartWorkflowExecutionWithTimeout(
       StartWorkflowExecutionRequest startRequest,
       AsyncMethodCallback<StartWorkflowExecutionResponse> resultHandler,
       Long timeoutInMillis)
-      throws ServiceClientError;
+      throws BaseError;
 
   /**
    * StartWorkflowExecutionAsyncWithTimeout start workflow same as StartWorkflowExecutionAsync but
@@ -48,13 +47,13 @@ public interface IWorkflowServiceV4 extends Iface, AsyncIface {
    * @param startAsyncRequest
    * @param resultHandler
    * @param timeoutInMillis
-   * @throws ServiceClientError
+   * @throws BaseError
    */
   void StartWorkflowExecutionAsyncWithTimeout(
       StartWorkflowExecutionAsyncRequest startAsyncRequest,
       AsyncMethodCallback<StartWorkflowExecutionAsyncResponse> resultHandler,
       Long timeoutInMillis)
-      throws ServiceClientError;
+      throws BaseError;
 
   /**
    * GetWorkflowExecutionHistoryWithTimeout get workflow history same as GetWorkflowExecutionHistory
@@ -63,11 +62,10 @@ public interface IWorkflowServiceV4 extends Iface, AsyncIface {
    * @param getRequest
    * @param timeoutInMillis
    * @return GetWorkflowExecutionHistoryResponse
-   * @throws ServiceClientError
+   * @throws BaseError
    */
   GetWorkflowExecutionHistoryResponse GetWorkflowExecutionHistoryWithTimeout(
-      GetWorkflowExecutionHistoryRequest getRequest, Long timeoutInMillis)
-      throws ServiceClientError;
+      GetWorkflowExecutionHistoryRequest getRequest, Long timeoutInMillis) throws BaseError;
 
   /**
    * GetWorkflowExecutionHistoryWithTimeout get workflow history asynchronously same as
@@ -76,13 +74,13 @@ public interface IWorkflowServiceV4 extends Iface, AsyncIface {
    * @param getRequest
    * @param resultHandler
    * @param timeoutInMillis
-   * @throws ServiceClientError
+   * @throws BaseError
    */
   void GetWorkflowExecutionHistoryWithTimeout(
       GetWorkflowExecutionHistoryRequest getRequest,
       AsyncMethodCallback<GetWorkflowExecutionHistoryResponse> resultHandler,
       Long timeoutInMillis)
-      throws ServiceClientError;
+      throws BaseError;
 
   /**
    * SignalWorkflowExecutionWithTimeout signal workflow same as SignalWorkflowExecution but with
@@ -91,13 +89,13 @@ public interface IWorkflowServiceV4 extends Iface, AsyncIface {
    * @param signalRequest
    * @param resultHandler
    * @param timeoutInMillis
-   * @throws ServiceClientError
+   * @throws BaseError
    */
   void SignalWorkflowExecutionWithTimeout(
       SignalWorkflowExecutionRequest signalRequest,
       AsyncMethodCallback<Void> resultHandler,
       Long timeoutInMillis)
-      throws ServiceClientError;
+      throws BaseError;
 
   /**
    * Checks if we have a valid connection to the Cadence cluster, and potentially resets the peer
@@ -116,36 +114,36 @@ interface Iface {
    *
    * @param registerRequest
    */
-  public void RegisterDomain(RegisterDomainRequest registerRequest)
+  void RegisterDomain(RegisterDomainRequest registerRequest)
       throws BadRequestError, DomainAlreadyExistsError, ServiceBusyError,
-          ClientVersionNotSupportedError, ServiceClientError;
+          ClientVersionNotSupportedError, BaseError;
 
   /**
    * DescribeDomain returns the information and configuration for a registered domain.
    *
    * @param describeRequest
    */
-  public DescribeDomainResponse DescribeDomain(DescribeDomainRequest describeRequest)
+  DescribeDomainResponse DescribeDomain(DescribeDomainRequest describeRequest)
       throws BadRequestError, EntityNotExistsError, ServiceBusyError,
-          ClientVersionNotSupportedError, ServiceClientError;
+          ClientVersionNotSupportedError, BaseError;
 
   /**
    * ListDomains returns the information and configuration for all domains.
    *
    * @param listRequest
    */
-  public ListDomainsResponse ListDomains(ListDomainsRequest listRequest)
+  ListDomainsResponse ListDomains(ListDomainsRequest listRequest)
       throws BadRequestError, EntityNotExistsError, ServiceBusyError,
-          ClientVersionNotSupportedError, ServiceClientError;
+          ClientVersionNotSupportedError, BaseError;
 
   /**
    * UpdateDomain is used to update the information and configuration for a registered domain.
    *
    * @param updateRequest
    */
-  public UpdateDomainResponse UpdateDomain(UpdateDomainRequest updateRequest)
+  UpdateDomainResponse UpdateDomain(UpdateDomainRequest updateRequest)
       throws BadRequestError, EntityNotExistsError, ServiceBusyError, DomainNotActiveError,
-          ClientVersionNotSupportedError, ServiceClientError;
+          ClientVersionNotSupportedError, BaseError;
 
   /**
    * DeprecateDomain us used to update status of a registered domain to DEPRECATED. Once the domain
@@ -154,9 +152,9 @@ interface Iface {
    *
    * @param deprecateRequest
    */
-  public void DeprecateDomain(DeprecateDomainRequest deprecateRequest)
+  void DeprecateDomain(DeprecateDomainRequest deprecateRequest)
       throws BadRequestError, EntityNotExistsError, ServiceBusyError, DomainNotActiveError,
-          ClientVersionNotSupportedError, ServiceClientError;
+          ClientVersionNotSupportedError, BaseError;
 
   /**
    * RestartWorkflowExecution restarts a previous workflow If the workflow is currently running it
@@ -164,10 +162,10 @@ interface Iface {
    *
    * @param restartRequest
    */
-  public RestartWorkflowExecutionResponse RestartWorkflowExecution(
+  RestartWorkflowExecutionResponse RestartWorkflowExecution(
       RestartWorkflowExecutionRequest restartRequest)
       throws BadRequestError, ServiceBusyError, DomainNotActiveError, LimitExceededError,
-          EntityNotExistsError, ClientVersionNotSupportedError, ServiceClientError;
+          EntityNotExistsError, ClientVersionNotSupportedError, BaseError;
 
   /**
    * StartWorkflowExecution starts a new long running workflow instance. It will create the instance
@@ -177,11 +175,10 @@ interface Iface {
    *
    * @param startRequest
    */
-  public StartWorkflowExecutionResponse StartWorkflowExecution(
-      StartWorkflowExecutionRequest startRequest)
+  StartWorkflowExecutionResponse StartWorkflowExecution(StartWorkflowExecutionRequest startRequest)
       throws BadRequestError, WorkflowExecutionAlreadyStartedError, ServiceBusyError,
           DomainNotActiveError, LimitExceededError, EntityNotExistsError,
-          ClientVersionNotSupportedError, ServiceClientError;
+          ClientVersionNotSupportedError, BaseError;
 
   /**
    * StartWorkflowExecutionAsync starts a new long running workflow instance asynchronously. It will
@@ -190,11 +187,11 @@ interface Iface {
    *
    * @param startRequest
    */
-  public StartWorkflowExecutionAsyncResponse StartWorkflowExecutionAsync(
+  StartWorkflowExecutionAsyncResponse StartWorkflowExecutionAsync(
       StartWorkflowExecutionAsyncRequest startRequest)
       throws BadRequestError, WorkflowExecutionAlreadyStartedError, ServiceBusyError,
           DomainNotActiveError, LimitExceededError, EntityNotExistsError,
-          ClientVersionNotSupportedError, ServiceClientError;
+          ClientVersionNotSupportedError, BaseError;
 
   /**
    * Returns the history of specified workflow execution. It fails with 'EntityNotExistError' if
@@ -202,10 +199,10 @@ interface Iface {
    *
    * @param getRequest
    */
-  public GetWorkflowExecutionHistoryResponse GetWorkflowExecutionHistory(
+  GetWorkflowExecutionHistoryResponse GetWorkflowExecutionHistory(
       GetWorkflowExecutionHistoryRequest getRequest)
       throws BadRequestError, EntityNotExistsError, ServiceBusyError,
-          ClientVersionNotSupportedError, ServiceClientError;
+          ClientVersionNotSupportedError, BaseError;
 
   /**
    * PollForDecisionTask is called by application worker to process DecisionTask from a specific
@@ -216,9 +213,9 @@ interface Iface {
    *
    * @param pollRequest
    */
-  public PollForDecisionTaskResponse PollForDecisionTask(PollForDecisionTaskRequest pollRequest)
+  PollForDecisionTaskResponse PollForDecisionTask(PollForDecisionTaskRequest pollRequest)
       throws BadRequestError, ServiceBusyError, LimitExceededError, EntityNotExistsError,
-          DomainNotActiveError, ClientVersionNotSupportedError, ServiceClientError;
+          DomainNotActiveError, ClientVersionNotSupportedError, BaseError;
 
   /**
    * RespondDecisionTaskCompleted is called by application worker to complete a DecisionTask handed
@@ -231,11 +228,11 @@ interface Iface {
    *
    * @param completeRequest
    */
-  public RespondDecisionTaskCompletedResponse RespondDecisionTaskCompleted(
+  RespondDecisionTaskCompletedResponse RespondDecisionTaskCompleted(
       RespondDecisionTaskCompletedRequest completeRequest)
       throws BadRequestError, EntityNotExistsError, DomainNotActiveError, LimitExceededError,
           ServiceBusyError, ClientVersionNotSupportedError, WorkflowExecutionAlreadyCompletedError,
-          ServiceClientError;
+          BaseError;
 
   /**
    * RespondDecisionTaskFailed is called by application worker to indicate failure. This results in
@@ -246,10 +243,10 @@ interface Iface {
    *
    * @param failedRequest
    */
-  public void RespondDecisionTaskFailed(RespondDecisionTaskFailedRequest failedRequest)
+  void RespondDecisionTaskFailed(RespondDecisionTaskFailedRequest failedRequest)
       throws BadRequestError, EntityNotExistsError, DomainNotActiveError, LimitExceededError,
           ServiceBusyError, ClientVersionNotSupportedError, WorkflowExecutionAlreadyCompletedError,
-          ServiceClientError;
+          BaseError;
 
   /**
    * PollForActivityTask is called by application worker to process ActivityTask from a specific
@@ -262,9 +259,9 @@ interface Iface {
    *
    * @param pollRequest
    */
-  public PollForActivityTaskResponse PollForActivityTask(PollForActivityTaskRequest pollRequest)
+  PollForActivityTaskResponse PollForActivityTask(PollForActivityTaskRequest pollRequest)
       throws BadRequestError, ServiceBusyError, LimitExceededError, EntityNotExistsError,
-          DomainNotActiveError, ClientVersionNotSupportedError, ServiceClientError;
+          DomainNotActiveError, ClientVersionNotSupportedError, BaseError;
 
   /**
    * RecordActivityTaskHeartbeat is called by application worker while it is processing an
@@ -276,11 +273,11 @@ interface Iface {
    *
    * @param heartbeatRequest
    */
-  public RecordActivityTaskHeartbeatResponse RecordActivityTaskHeartbeat(
+  RecordActivityTaskHeartbeatResponse RecordActivityTaskHeartbeat(
       RecordActivityTaskHeartbeatRequest heartbeatRequest)
       throws BadRequestError, EntityNotExistsError, DomainNotActiveError, LimitExceededError,
           ServiceBusyError, ClientVersionNotSupportedError, WorkflowExecutionAlreadyCompletedError,
-          ServiceClientError;
+          BaseError;
 
   /**
    * RecordActivityTaskHeartbeatByID is called by application worker while it is processing an
@@ -292,11 +289,11 @@ interface Iface {
    *
    * @param heartbeatRequest
    */
-  public RecordActivityTaskHeartbeatResponse RecordActivityTaskHeartbeatByID(
+  RecordActivityTaskHeartbeatResponse RecordActivityTaskHeartbeatByID(
       RecordActivityTaskHeartbeatByIDRequest heartbeatRequest)
       throws BadRequestError, EntityNotExistsError, DomainNotActiveError, LimitExceededError,
           ServiceBusyError, ClientVersionNotSupportedError, WorkflowExecutionAlreadyCompletedError,
-          ServiceClientError;
+          BaseError;
 
   /**
    * RespondActivityTaskCompleted is called by application worker when it is done processing an
@@ -308,10 +305,10 @@ interface Iface {
    *
    * @param completeRequest
    */
-  public void RespondActivityTaskCompleted(RespondActivityTaskCompletedRequest completeRequest)
+  void RespondActivityTaskCompleted(RespondActivityTaskCompletedRequest completeRequest)
       throws BadRequestError, EntityNotExistsError, DomainNotActiveError, LimitExceededError,
           ServiceBusyError, ClientVersionNotSupportedError, WorkflowExecutionAlreadyCompletedError,
-          ServiceClientError;
+          BaseError;
 
   /**
    * RespondActivityTaskCompletedByID is called by application worker when it is done processing an
@@ -323,11 +320,10 @@ interface Iface {
    *
    * @param completeRequest
    */
-  public void RespondActivityTaskCompletedByID(
-      RespondActivityTaskCompletedByIDRequest completeRequest)
+  void RespondActivityTaskCompletedByID(RespondActivityTaskCompletedByIDRequest completeRequest)
       throws BadRequestError, EntityNotExistsError, DomainNotActiveError, LimitExceededError,
           ServiceBusyError, ClientVersionNotSupportedError, WorkflowExecutionAlreadyCompletedError,
-          ServiceClientError;
+          BaseError;
 
   /**
    * RespondActivityTaskFailed is called by application worker when it is done processing an
@@ -339,10 +335,10 @@ interface Iface {
    *
    * @param failRequest
    */
-  public void RespondActivityTaskFailed(RespondActivityTaskFailedRequest failRequest)
+  void RespondActivityTaskFailed(RespondActivityTaskFailedRequest failRequest)
       throws BadRequestError, EntityNotExistsError, DomainNotActiveError, LimitExceededError,
           ServiceBusyError, ClientVersionNotSupportedError, WorkflowExecutionAlreadyCompletedError,
-          ServiceClientError;
+          BaseError;
 
   /**
    * RespondActivityTaskFailedByID is called by application worker when it is done processing an
@@ -354,10 +350,10 @@ interface Iface {
    *
    * @param failRequest
    */
-  public void RespondActivityTaskFailedByID(RespondActivityTaskFailedByIDRequest failRequest)
+  void RespondActivityTaskFailedByID(RespondActivityTaskFailedByIDRequest failRequest)
       throws BadRequestError, EntityNotExistsError, DomainNotActiveError, LimitExceededError,
           ServiceBusyError, ClientVersionNotSupportedError, WorkflowExecutionAlreadyCompletedError,
-          ServiceClientError;
+          BaseError;
 
   /**
    * RespondActivityTaskCanceled is called by application worker when it is successfully canceled an
@@ -369,10 +365,10 @@ interface Iface {
    *
    * @param canceledRequest
    */
-  public void RespondActivityTaskCanceled(RespondActivityTaskCanceledRequest canceledRequest)
+  void RespondActivityTaskCanceled(RespondActivityTaskCanceledRequest canceledRequest)
       throws BadRequestError, EntityNotExistsError, DomainNotActiveError, LimitExceededError,
           ServiceBusyError, ClientVersionNotSupportedError, WorkflowExecutionAlreadyCompletedError,
-          ServiceClientError;
+          BaseError;
 
   /**
    * RespondActivityTaskCanceledByID is called by application worker when it is successfully
@@ -384,11 +380,10 @@ interface Iface {
    *
    * @param canceledRequest
    */
-  public void RespondActivityTaskCanceledByID(
-      RespondActivityTaskCanceledByIDRequest canceledRequest)
+  void RespondActivityTaskCanceledByID(RespondActivityTaskCanceledByIDRequest canceledRequest)
       throws BadRequestError, EntityNotExistsError, DomainNotActiveError, LimitExceededError,
           ServiceBusyError, ClientVersionNotSupportedError, WorkflowExecutionAlreadyCompletedError,
-          ServiceClientError;
+          BaseError;
 
   /**
    * RequestCancelWorkflowExecution is called by application worker when it wants to request
@@ -399,11 +394,10 @@ interface Iface {
    *
    * @param cancelRequest
    */
-  public void RequestCancelWorkflowExecution(RequestCancelWorkflowExecutionRequest cancelRequest)
+  void RequestCancelWorkflowExecution(RequestCancelWorkflowExecutionRequest cancelRequest)
       throws BadRequestError, EntityNotExistsError, CancellationAlreadyRequestedError,
           ServiceBusyError, DomainNotActiveError, LimitExceededError,
-          ClientVersionNotSupportedError, WorkflowExecutionAlreadyCompletedError,
-          ServiceClientError;
+          ClientVersionNotSupportedError, WorkflowExecutionAlreadyCompletedError, BaseError;
 
   /**
    * SignalWorkflowExecution is used to send a signal event to running workflow execution. This
@@ -412,10 +406,10 @@ interface Iface {
    *
    * @param signalRequest
    */
-  public void SignalWorkflowExecution(SignalWorkflowExecutionRequest signalRequest)
+  void SignalWorkflowExecution(SignalWorkflowExecutionRequest signalRequest)
       throws BadRequestError, EntityNotExistsError, ServiceBusyError, DomainNotActiveError,
           LimitExceededError, ClientVersionNotSupportedError,
-          WorkflowExecutionAlreadyCompletedError, ServiceClientError;
+          WorkflowExecutionAlreadyCompletedError, BaseError;
 
   /**
    * SignalWithStartWorkflowExecution is used to ensure sending signal to a workflow. If the
@@ -426,11 +420,11 @@ interface Iface {
    *
    * @param signalWithStartRequest
    */
-  public StartWorkflowExecutionResponse SignalWithStartWorkflowExecution(
+  StartWorkflowExecutionResponse SignalWithStartWorkflowExecution(
       SignalWithStartWorkflowExecutionRequest signalWithStartRequest)
       throws BadRequestError, EntityNotExistsError, ServiceBusyError, DomainNotActiveError,
           LimitExceededError, WorkflowExecutionAlreadyStartedError, ClientVersionNotSupportedError,
-          ServiceClientError;
+          BaseError;
 
   /**
    * SignalWithStartWorkflowExecutionAsync is used to ensure sending signal to a workflow
@@ -439,11 +433,11 @@ interface Iface {
    *
    * @param signalWithStartRequest
    */
-  public SignalWithStartWorkflowExecutionAsyncResponse SignalWithStartWorkflowExecutionAsync(
+  SignalWithStartWorkflowExecutionAsyncResponse SignalWithStartWorkflowExecutionAsync(
       SignalWithStartWorkflowExecutionAsyncRequest signalWithStartRequest)
       throws BadRequestError, WorkflowExecutionAlreadyStartedError, ServiceBusyError,
           DomainNotActiveError, LimitExceededError, EntityNotExistsError,
-          ClientVersionNotSupportedError, ServiceClientError;
+          ClientVersionNotSupportedError, BaseError;
 
   /**
    * ResetWorkflowExecution reset an existing workflow execution to DecisionTaskCompleted
@@ -451,10 +445,9 @@ interface Iface {
    *
    * @param resetRequest
    */
-  public ResetWorkflowExecutionResponse ResetWorkflowExecution(
-      ResetWorkflowExecutionRequest resetRequest)
+  ResetWorkflowExecutionResponse ResetWorkflowExecution(ResetWorkflowExecutionRequest resetRequest)
       throws BadRequestError, EntityNotExistsError, ServiceBusyError, DomainNotActiveError,
-          LimitExceededError, ClientVersionNotSupportedError, ServiceClientError;
+          LimitExceededError, ClientVersionNotSupportedError, BaseError;
 
   /**
    * TerminateWorkflowExecution terminates an existing workflow execution by recording
@@ -463,10 +456,10 @@ interface Iface {
    *
    * @param terminateRequest
    */
-  public void TerminateWorkflowExecution(TerminateWorkflowExecutionRequest terminateRequest)
+  void TerminateWorkflowExecution(TerminateWorkflowExecutionRequest terminateRequest)
       throws BadRequestError, EntityNotExistsError, ServiceBusyError, DomainNotActiveError,
           LimitExceededError, ClientVersionNotSupportedError,
-          WorkflowExecutionAlreadyCompletedError, ServiceClientError;
+          WorkflowExecutionAlreadyCompletedError, BaseError;
 
   /**
    * ListOpenWorkflowExecutions is a visibility API to list the open executions in a specific
@@ -474,10 +467,10 @@ interface Iface {
    *
    * @param listRequest
    */
-  public ListOpenWorkflowExecutionsResponse ListOpenWorkflowExecutions(
+  ListOpenWorkflowExecutionsResponse ListOpenWorkflowExecutions(
       ListOpenWorkflowExecutionsRequest listRequest)
       throws BadRequestError, EntityNotExistsError, ServiceBusyError, LimitExceededError,
-          ClientVersionNotSupportedError, ServiceClientError;
+          ClientVersionNotSupportedError, BaseError;
 
   /**
    * ListClosedWorkflowExecutions is a visibility API to list the closed executions in a specific
@@ -485,20 +478,19 @@ interface Iface {
    *
    * @param listRequest
    */
-  public ListClosedWorkflowExecutionsResponse ListClosedWorkflowExecutions(
+  ListClosedWorkflowExecutionsResponse ListClosedWorkflowExecutions(
       ListClosedWorkflowExecutionsRequest listRequest)
       throws BadRequestError, EntityNotExistsError, ServiceBusyError,
-          ClientVersionNotSupportedError, ServiceClientError;
+          ClientVersionNotSupportedError, BaseError;
 
   /**
    * ListWorkflowExecutions is a visibility API to list workflow executions in a specific domain.
    *
    * @param listRequest
    */
-  public ListWorkflowExecutionsResponse ListWorkflowExecutions(
-      ListWorkflowExecutionsRequest listRequest)
+  ListWorkflowExecutionsResponse ListWorkflowExecutions(ListWorkflowExecutionsRequest listRequest)
       throws BadRequestError, EntityNotExistsError, ServiceBusyError,
-          ClientVersionNotSupportedError, ServiceClientError;
+          ClientVersionNotSupportedError, BaseError;
 
   /**
    * ListArchivedWorkflowExecutions is a visibility API to list archived workflow executions in a
@@ -506,10 +498,10 @@ interface Iface {
    *
    * @param listRequest
    */
-  public ListArchivedWorkflowExecutionsResponse ListArchivedWorkflowExecutions(
+  ListArchivedWorkflowExecutionsResponse ListArchivedWorkflowExecutions(
       ListArchivedWorkflowExecutionsRequest listRequest)
       throws BadRequestError, EntityNotExistsError, ServiceBusyError,
-          ClientVersionNotSupportedError, ServiceClientError;
+          ClientVersionNotSupportedError, BaseError;
 
   /**
    * ScanWorkflowExecutions is a visibility API to list large amount of workflow executions in a
@@ -517,10 +509,9 @@ interface Iface {
    *
    * @param listRequest
    */
-  public ListWorkflowExecutionsResponse ScanWorkflowExecutions(
-      ListWorkflowExecutionsRequest listRequest)
+  ListWorkflowExecutionsResponse ScanWorkflowExecutions(ListWorkflowExecutionsRequest listRequest)
       throws BadRequestError, EntityNotExistsError, ServiceBusyError,
-          ClientVersionNotSupportedError, ServiceClientError;
+          ClientVersionNotSupportedError, BaseError;
 
   /**
    * CountWorkflowExecutions is a visibility API to count of workflow executions in a specific
@@ -528,16 +519,16 @@ interface Iface {
    *
    * @param countRequest
    */
-  public CountWorkflowExecutionsResponse CountWorkflowExecutions(
+  CountWorkflowExecutionsResponse CountWorkflowExecutions(
       CountWorkflowExecutionsRequest countRequest)
       throws BadRequestError, EntityNotExistsError, ServiceBusyError,
-          ClientVersionNotSupportedError, ServiceClientError;
+          ClientVersionNotSupportedError, BaseError;
 
   /**
    * GetSearchAttributes is a visibility API to get all legal keys that could be used in list APIs
    */
-  public GetSearchAttributesResponse GetSearchAttributes()
-      throws ServiceBusyError, ClientVersionNotSupportedError, ServiceClientError;
+  GetSearchAttributesResponse GetSearchAttributes()
+      throws ServiceBusyError, ClientVersionNotSupportedError, BaseError;
 
   /**
    * RespondQueryTaskCompleted is called by application worker to complete a QueryTask (which is a
@@ -547,9 +538,9 @@ interface Iface {
    *
    * @param completeRequest
    */
-  public void RespondQueryTaskCompleted(RespondQueryTaskCompletedRequest completeRequest)
+  void RespondQueryTaskCompleted(RespondQueryTaskCompletedRequest completeRequest)
       throws BadRequestError, EntityNotExistsError, LimitExceededError, ServiceBusyError,
-          DomainNotActiveError, ClientVersionNotSupportedError, ServiceClientError;
+          DomainNotActiveError, ClientVersionNotSupportedError, BaseError;
 
   /**
    * Reset the sticky tasklist related information in mutable state of a given workflow. Things
@@ -558,29 +549,29 @@ interface Iface {
    *
    * @param resetRequest
    */
-  public ResetStickyTaskListResponse ResetStickyTaskList(ResetStickyTaskListRequest resetRequest)
+  ResetStickyTaskListResponse ResetStickyTaskList(ResetStickyTaskListRequest resetRequest)
       throws BadRequestError, EntityNotExistsError, LimitExceededError, ServiceBusyError,
           DomainNotActiveError, ClientVersionNotSupportedError,
-          WorkflowExecutionAlreadyCompletedError, ServiceClientError;
+          WorkflowExecutionAlreadyCompletedError, BaseError;
 
   /**
    * QueryWorkflow returns query result for a specified workflow execution
    *
    * @param queryRequest
    */
-  public QueryWorkflowResponse QueryWorkflow(QueryWorkflowRequest queryRequest)
+  QueryWorkflowResponse QueryWorkflow(QueryWorkflowRequest queryRequest)
       throws BadRequestError, EntityNotExistsError, QueryFailedError, LimitExceededError,
-          ServiceBusyError, ClientVersionNotSupportedError, ServiceClientError;
+          ServiceBusyError, ClientVersionNotSupportedError, BaseError;
 
   /**
    * DescribeWorkflowExecution returns information about the specified workflow execution.
    *
    * @param describeRequest
    */
-  public DescribeWorkflowExecutionResponse DescribeWorkflowExecution(
+  DescribeWorkflowExecutionResponse DescribeWorkflowExecution(
       DescribeWorkflowExecutionRequest describeRequest)
       throws BadRequestError, EntityNotExistsError, LimitExceededError, ServiceBusyError,
-          ClientVersionNotSupportedError, ServiceClientError;
+          ClientVersionNotSupportedError, BaseError;
 
   /**
    * DescribeTaskList returns information about the target tasklist, right now this API returns the
@@ -588,237 +579,233 @@ interface Iface {
    *
    * @param request
    */
-  public DescribeTaskListResponse DescribeTaskList(DescribeTaskListRequest request)
+  DescribeTaskListResponse DescribeTaskList(DescribeTaskListRequest request)
       throws BadRequestError, EntityNotExistsError, LimitExceededError, ServiceBusyError,
-          ClientVersionNotSupportedError, ServiceClientError;
+          ClientVersionNotSupportedError, BaseError;
 
   /** GetClusterInfo returns information about cadence cluster */
-  public ClusterInfo GetClusterInfo()
-      throws InternalServiceError, ServiceBusyError, ServiceClientError;
+  ClusterInfo GetClusterInfo() throws InternalServiceError, ServiceBusyError, BaseError;
 
   /**
    * GetTaskListsByDomain returns the list of all the task lists for a domainName.
    *
    * @param request
    */
-  public GetTaskListsByDomainResponse GetTaskListsByDomain(GetTaskListsByDomainRequest request)
+  GetTaskListsByDomainResponse GetTaskListsByDomain(GetTaskListsByDomainRequest request)
       throws BadRequestError, EntityNotExistsError, LimitExceededError, ServiceBusyError,
-          ClientVersionNotSupportedError, ServiceClientError;
+          ClientVersionNotSupportedError, BaseError;
 
   /**
    * ReapplyEvents applies stale events to the current workflow and current run
    *
    * @param request
    */
-  public ListTaskListPartitionsResponse ListTaskListPartitions(
-      ListTaskListPartitionsRequest request)
-      throws BadRequestError, EntityNotExistsError, LimitExceededError, ServiceBusyError,
-          ServiceClientError;
+  ListTaskListPartitionsResponse ListTaskListPartitions(ListTaskListPartitionsRequest request)
+      throws BadRequestError, EntityNotExistsError, LimitExceededError, ServiceBusyError, BaseError;
 
   /**
    * RefreshWorkflowTasks refreshes all tasks of a workflow
    *
    * @param request
    */
-  public void RefreshWorkflowTasks(RefreshWorkflowTasksRequest request)
+  void RefreshWorkflowTasks(RefreshWorkflowTasksRequest request)
       throws BadRequestError, DomainNotActiveError, ServiceBusyError, EntityNotExistsError,
-          ServiceClientError;
+          BaseError;
 }
 
 interface AsyncIface {
 
-  public void RegisterDomain(
+  void RegisterDomain(
       RegisterDomainRequest registerRequest, AsyncMethodCallback<Void> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void DescribeDomain(
+  void DescribeDomain(
       DescribeDomainRequest describeRequest,
       AsyncMethodCallback<DescribeDomainResponse> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void ListDomains(
+  void ListDomains(
       ListDomainsRequest listRequest, AsyncMethodCallback<ListDomainsResponse> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void UpdateDomain(
+  void UpdateDomain(
       UpdateDomainRequest updateRequest, AsyncMethodCallback<UpdateDomainResponse> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void DeprecateDomain(
+  void DeprecateDomain(
       DeprecateDomainRequest deprecateRequest, AsyncMethodCallback<Void> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void RestartWorkflowExecution(
+  void RestartWorkflowExecution(
       RestartWorkflowExecutionRequest restartRequest,
       AsyncMethodCallback<RestartWorkflowExecutionResponse> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void StartWorkflowExecution(
+  void StartWorkflowExecution(
       StartWorkflowExecutionRequest startRequest,
       AsyncMethodCallback<StartWorkflowExecutionResponse> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void StartWorkflowExecutionAsync(
+  void StartWorkflowExecutionAsync(
       StartWorkflowExecutionAsyncRequest startRequest,
       AsyncMethodCallback<StartWorkflowExecutionAsyncResponse> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void GetWorkflowExecutionHistory(
+  void GetWorkflowExecutionHistory(
       GetWorkflowExecutionHistoryRequest getRequest,
       AsyncMethodCallback<GetWorkflowExecutionHistoryResponse> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void PollForDecisionTask(
+  void PollForDecisionTask(
       PollForDecisionTaskRequest pollRequest,
       AsyncMethodCallback<PollForDecisionTaskResponse> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void RespondDecisionTaskCompleted(
+  void RespondDecisionTaskCompleted(
       RespondDecisionTaskCompletedRequest completeRequest,
       AsyncMethodCallback<RespondDecisionTaskCompletedResponse> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void RespondDecisionTaskFailed(
+  void RespondDecisionTaskFailed(
       RespondDecisionTaskFailedRequest failedRequest, AsyncMethodCallback<Void> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void PollForActivityTask(
+  void PollForActivityTask(
       PollForActivityTaskRequest pollRequest,
       AsyncMethodCallback<PollForActivityTaskResponse> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void RecordActivityTaskHeartbeat(
+  void RecordActivityTaskHeartbeat(
       RecordActivityTaskHeartbeatRequest heartbeatRequest,
       AsyncMethodCallback<RecordActivityTaskHeartbeatResponse> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void RecordActivityTaskHeartbeatByID(
+  void RecordActivityTaskHeartbeatByID(
       RecordActivityTaskHeartbeatByIDRequest heartbeatRequest,
       AsyncMethodCallback<RecordActivityTaskHeartbeatResponse> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void RespondActivityTaskCompleted(
+  void RespondActivityTaskCompleted(
       RespondActivityTaskCompletedRequest completeRequest, AsyncMethodCallback<Void> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void RespondActivityTaskCompletedByID(
+  void RespondActivityTaskCompletedByID(
       RespondActivityTaskCompletedByIDRequest completeRequest,
       AsyncMethodCallback<Void> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void RespondActivityTaskFailed(
+  void RespondActivityTaskFailed(
       RespondActivityTaskFailedRequest failRequest, AsyncMethodCallback<Void> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void RespondActivityTaskFailedByID(
+  void RespondActivityTaskFailedByID(
       RespondActivityTaskFailedByIDRequest failRequest, AsyncMethodCallback<Void> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void RespondActivityTaskCanceled(
+  void RespondActivityTaskCanceled(
       RespondActivityTaskCanceledRequest canceledRequest, AsyncMethodCallback<Void> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void RespondActivityTaskCanceledByID(
+  void RespondActivityTaskCanceledByID(
       RespondActivityTaskCanceledByIDRequest canceledRequest,
       AsyncMethodCallback<Void> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void RequestCancelWorkflowExecution(
+  void RequestCancelWorkflowExecution(
       RequestCancelWorkflowExecutionRequest cancelRequest, AsyncMethodCallback<Void> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void SignalWorkflowExecution(
+  void SignalWorkflowExecution(
       SignalWorkflowExecutionRequest signalRequest, AsyncMethodCallback<Void> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void SignalWithStartWorkflowExecution(
+  void SignalWithStartWorkflowExecution(
       SignalWithStartWorkflowExecutionRequest signalWithStartRequest,
       AsyncMethodCallback<StartWorkflowExecutionResponse> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void SignalWithStartWorkflowExecutionAsync(
+  void SignalWithStartWorkflowExecutionAsync(
       SignalWithStartWorkflowExecutionAsyncRequest signalWithStartRequest,
       AsyncMethodCallback<SignalWithStartWorkflowExecutionAsyncResponse> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void ResetWorkflowExecution(
+  void ResetWorkflowExecution(
       ResetWorkflowExecutionRequest resetRequest,
       AsyncMethodCallback<ResetWorkflowExecutionResponse> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void TerminateWorkflowExecution(
+  void TerminateWorkflowExecution(
       TerminateWorkflowExecutionRequest terminateRequest, AsyncMethodCallback<Void> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void ListOpenWorkflowExecutions(
+  void ListOpenWorkflowExecutions(
       ListOpenWorkflowExecutionsRequest listRequest,
       AsyncMethodCallback<ListOpenWorkflowExecutionsResponse> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void ListClosedWorkflowExecutions(
+  void ListClosedWorkflowExecutions(
       ListClosedWorkflowExecutionsRequest listRequest,
       AsyncMethodCallback<ListClosedWorkflowExecutionsResponse> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void ListWorkflowExecutions(
+  void ListWorkflowExecutions(
       ListWorkflowExecutionsRequest listRequest,
       AsyncMethodCallback<ListWorkflowExecutionsResponse> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void ListArchivedWorkflowExecutions(
+  void ListArchivedWorkflowExecutions(
       ListArchivedWorkflowExecutionsRequest listRequest,
       AsyncMethodCallback<ListArchivedWorkflowExecutionsResponse> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void ScanWorkflowExecutions(
+  void ScanWorkflowExecutions(
       ListWorkflowExecutionsRequest listRequest,
       AsyncMethodCallback<ListWorkflowExecutionsResponse> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void CountWorkflowExecutions(
+  void CountWorkflowExecutions(
       CountWorkflowExecutionsRequest countRequest,
       AsyncMethodCallback<CountWorkflowExecutionsResponse> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void GetSearchAttributes(AsyncMethodCallback<GetSearchAttributesResponse> resultHandler)
-      throws ServiceClientError;
+  void GetSearchAttributes(AsyncMethodCallback<GetSearchAttributesResponse> resultHandler)
+      throws BaseError;
 
-  public void RespondQueryTaskCompleted(
+  void RespondQueryTaskCompleted(
       RespondQueryTaskCompletedRequest completeRequest, AsyncMethodCallback<Void> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void ResetStickyTaskList(
+  void ResetStickyTaskList(
       ResetStickyTaskListRequest resetRequest,
       AsyncMethodCallback<ResetStickyTaskListResponse> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void QueryWorkflow(
+  void QueryWorkflow(
       QueryWorkflowRequest queryRequest, AsyncMethodCallback<QueryWorkflowResponse> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void DescribeWorkflowExecution(
+  void DescribeWorkflowExecution(
       DescribeWorkflowExecutionRequest describeRequest,
       AsyncMethodCallback<DescribeWorkflowExecutionResponse> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void DescribeTaskList(
+  void DescribeTaskList(
       DescribeTaskListRequest request, AsyncMethodCallback<DescribeTaskListResponse> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void GetClusterInfo(AsyncMethodCallback<ClusterInfo> resultHandler)
-      throws ServiceClientError;
+  void GetClusterInfo(AsyncMethodCallback<ClusterInfo> resultHandler) throws BaseError;
 
-  public void GetTaskListsByDomain(
+  void GetTaskListsByDomain(
       GetTaskListsByDomainRequest request,
       AsyncMethodCallback<GetTaskListsByDomainResponse> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void ListTaskListPartitions(
+  void ListTaskListPartitions(
       ListTaskListPartitionsRequest request,
       AsyncMethodCallback<ListTaskListPartitionsResponse> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 
-  public void RefreshWorkflowTasks(
+  void RefreshWorkflowTasks(
       RefreshWorkflowTasksRequest request, AsyncMethodCallback<Void> resultHandler)
-      throws ServiceClientError;
+      throws BaseError;
 }

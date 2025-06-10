@@ -20,29 +20,29 @@ package com.uber.cadence.internal.compatibility.proto.mappers;
 import com.google.protobuf.Any;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.rpc.Status;
-import com.uber.cadence.serviceclient.exceptions.AccessDeniedError;
-import com.uber.cadence.serviceclient.exceptions.CancellationAlreadyRequestedError;
-import com.uber.cadence.serviceclient.exceptions.ClientVersionNotSupportedError;
-import com.uber.cadence.serviceclient.exceptions.DomainAlreadyExistsError;
-import com.uber.cadence.serviceclient.exceptions.DomainNotActiveError;
-import com.uber.cadence.serviceclient.exceptions.EntityNotExistsError;
-import com.uber.cadence.serviceclient.exceptions.FeatureNotEnabledError;
-import com.uber.cadence.serviceclient.exceptions.InternalDataInconsistencyError;
-import com.uber.cadence.serviceclient.exceptions.InternalServiceError;
-import com.uber.cadence.serviceclient.exceptions.LimitExceededError;
-import com.uber.cadence.serviceclient.exceptions.ServiceBusyError;
-import com.uber.cadence.serviceclient.exceptions.ServiceClientError;
-import com.uber.cadence.serviceclient.exceptions.WorkflowExecutionAlreadyCompletedError;
-import com.uber.cadence.serviceclient.exceptions.WorkflowExecutionAlreadyStartedError;
+import com.uber.cadence.entities.AccessDeniedError;
+import com.uber.cadence.entities.BaseError;
+import com.uber.cadence.entities.CancellationAlreadyRequestedError;
+import com.uber.cadence.entities.ClientVersionNotSupportedError;
+import com.uber.cadence.entities.DomainAlreadyExistsError;
+import com.uber.cadence.entities.DomainNotActiveError;
+import com.uber.cadence.entities.EntityNotExistsError;
+import com.uber.cadence.entities.FeatureNotEnabledError;
+import com.uber.cadence.entities.InternalDataInconsistencyError;
+import com.uber.cadence.entities.InternalServiceError;
+import com.uber.cadence.entities.LimitExceededError;
+import com.uber.cadence.entities.ServiceBusyError;
+import com.uber.cadence.entities.WorkflowExecutionAlreadyCompletedError;
+import com.uber.cadence.entities.WorkflowExecutionAlreadyStartedError;
 import io.grpc.StatusRuntimeException;
 import io.grpc.protobuf.StatusProto;
 
 public class ErrorMapper {
-  public static ServiceClientError Error(StatusRuntimeException e) {
+  public static BaseError Error(StatusRuntimeException e) {
 
     Status status = StatusProto.fromThrowable(e);
     if (status == null) {
-      return new ServiceClientError("empty status", e);
+      return new BaseError("empty status", e);
     }
 
     Any detail = Any.getDefaultInstance();
@@ -100,10 +100,10 @@ public class ErrorMapper {
           }
         case UNKNOWN:
         default:
-          return new ServiceClientError(e);
+          return new BaseError(e);
       }
     } catch (InvalidProtocolBufferException ex) {
-      return new ServiceClientError(ex);
+      return new BaseError(ex);
     }
   }
 }
