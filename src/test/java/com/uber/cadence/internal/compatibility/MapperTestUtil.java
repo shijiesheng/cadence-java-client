@@ -47,24 +47,18 @@ public class MapperTestUtil {
   }
 
   public static void assertNoMissingFields(Object message) {
-    List<String> nullFields = getMissingFields(message.toString());
+    Set<String> nullFields = getMissingFields(message.toString());
 
-    Assert.assertArrayEquals(
-        "All fields expected to be set in the text",
-        new String[0],
-        nullFields.toArray(new String[0]));
+    Assert.assertEquals("All fields expected to be set in the text", new HashSet<>(), nullFields);
   }
 
   public static void assertMissingFields(Object message, Set<String> values) {
-    List<String> nullFields = getMissingFields(message.toString());
-    Assert.assertArrayEquals(
-        "Expected missing fields but get different",
-        values.toArray(new String[0]),
-        nullFields.toArray(new String[0]));
+    Set<String> nullFields = getMissingFields(message.toString());
+    Assert.assertEquals("Expected missing fields but get different", values, nullFields);
   }
 
-  private static List<String> getMissingFields(String text) {
-    List<String> nullFields = new ArrayList<>();
+  private static Set<String> getMissingFields(String text) {
+    Set<String> nullFields = new HashSet<>();
     // Regex to find fieldName=null
     Pattern pattern = Pattern.compile("(\\w+)=null");
     Matcher matcher = pattern.matcher(text);

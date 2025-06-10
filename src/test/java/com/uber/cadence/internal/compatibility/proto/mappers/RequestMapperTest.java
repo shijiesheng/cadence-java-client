@@ -247,7 +247,11 @@ public class RequestMapperTest<T, P extends Message> {
             ClientObjects.UPDATE_DOMAIN_REQUEST,
             // Data and replicationConfiguration are copied incorrectly due to a bug :(
             ProtoObjects.UPDATE_DOMAIN_REQUEST,
-            RequestMapper::updateDomainRequest),
+            RequestMapper::updateDomainRequest,
+            // TODO new fields that are not yet supported
+            "queueConfig",
+            "predefinedQueueName",
+            "queueType"),
         testCase(
             ClientObjects.LIST_CLOSED_WORKFLOW_EXECUTIONS_REQUEST,
             ProtoObjects.LIST_CLOSED_WORKFLOW_EXECUTIONS_REQUEST,
