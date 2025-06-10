@@ -17,7 +17,6 @@ package com.uber.cadence.internal.compatibility;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.uber.cadence.entities.*;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
@@ -119,7 +118,7 @@ public class ClientObjects {
           .setActivityID("activityId")
           .setActivityType(ACTIVITY_TYPE)
           .setState(PendingActivityState.STARTED)
-          .setHeartbeatDetails(utf8("heartbeatDetails").array())
+          .setHeartbeatDetails(utf8("heartbeatDetails"))
           .setLastHeartbeatTimestamp(1)
           .setLastStartedTimestamp(2)
           .setAttempt(3)
@@ -128,7 +127,7 @@ public class ClientObjects {
           .setExpirationTimestamp(6)
           .setLastWorkerIdentity("lastWorkerIdentity")
           .setLastFailureReason("lastFailureReason")
-          .setLastFailureDetails(utf8("lastFailureDetails").array());
+          .setLastFailureDetails(utf8("lastFailureDetails"));
   public static final PendingChildExecutionInfo PENDING_CHILD_EXECUTION_INFO =
       new PendingChildExecutionInfo()
           .setWorkflowID(WORKFLOW_ID)
@@ -159,7 +158,7 @@ public class ClientObjects {
           .setScheduledTimestamp(1)
           .setStartedTimestamp(2)
           .setScheduledTimestampOfThisAttempt(3)
-          .setTaskToken(utf8("taskToken").array());
+          .setTaskToken(utf8("taskToken"));
   public static final DomainInfo DOMAIN_INFO =
       new DomainInfo()
           .setName("domain")
@@ -182,13 +181,13 @@ public class ClientObjects {
           .setVisibilityArchivalURI("visibilityArchivalUri")
           .setEmitMetric(true)
           .setAsyncWorkflowConfiguration(new AsyncWorkflowConfiguration().setEnabled(true))
-          .setIsolationGroups(
+          .setIsolationgroups(
               new IsolationGroupConfiguration()
-                  .setPartitions(
+                  .setIsolationGroups(
                       ImmutableList.of(
                           new IsolationGroupPartition()
                               .setName("partitionName")
-                              .setPercentage(100))));
+                              .setState(IsolationGroupState.HEALTHY))));
 
   public static final StartTimeFilter START_TIME_FILTER =
       new StartTimeFilter().setEarliestTime(2).setLatestTime(3);
@@ -210,7 +209,7 @@ public class ClientObjects {
                   .setActivityId("activityId")
                   .setActivityType(ACTIVITY_TYPE)
                   .setTaskList(TASK_LIST)
-                  .setInput(utf8("input").array())
+                  .setInput(utf8("input"))
                   .setScheduleToCloseTimeoutSeconds(1)
                   .setScheduleToStartTimeoutSeconds(2)
                   .setStartToCloseTimeoutSeconds(3)
@@ -235,14 +234,14 @@ public class ClientObjects {
       new Decision()
           .setDecisionType(DecisionType.CompleteWorkflowExecution)
           .setCompleteWorkflowExecutionDecisionAttributes(
-              new CompleteWorkflowExecutionDecisionAttributes().setResult(utf8("result").array()));
+              new CompleteWorkflowExecutionDecisionAttributes().setResult(utf8("result")));
   public static Decision DECISION_FAIL_WORKFLOW_EXECUTION =
       new Decision()
           .setDecisionType(DecisionType.FailWorkflowExecution)
           .setFailWorkflowExecutionDecisionAttributes(
               new FailWorkflowExecutionDecisionAttributes()
                   .setReason("reason")
-                  .setDetails(utf8("details").array()));
+                  .setDetails(utf8("details")));
   public static Decision DECISION_CANCEL_TIMER =
       new Decision()
           .setDecisionType(DecisionType.CancelTimer)
@@ -252,7 +251,7 @@ public class ClientObjects {
       new Decision()
           .setDecisionType(DecisionType.CancelWorkflowExecution)
           .setCancelWorkflowExecutionDecisionAttributes(
-              new CancelWorkflowExecutionDecisionAttributes().setDetails(utf8("details").array()));
+              new CancelWorkflowExecutionDecisionAttributes().setDetails(utf8("details")));
   public static Decision DECISION_REQUEST_CANCEL_EXTERNAL_WORKFLOW_EXECUTION =
       new Decision()
           .setDecisionType(DecisionType.RequestCancelExternalWorkflowExecution)
@@ -262,7 +261,7 @@ public class ClientObjects {
                   .setWorkflowId(WORKFLOW_ID)
                   .setRunId(RUN_ID)
                   .setChildWorkflowOnly(true)
-                  .setControl(utf8("control").array()));
+                  .setControl(utf8("control")));
   public static Decision DECISION_CONTINUE_AS_NEW_WORKFLOW_EXECUTION =
       new Decision()
           .setDecisionType(DecisionType.ContinueAsNewWorkflowExecution)
@@ -270,14 +269,14 @@ public class ClientObjects {
               new ContinueAsNewWorkflowExecutionDecisionAttributes()
                   .setWorkflowType(WORKFLOW_TYPE)
                   .setTaskList(TASK_LIST)
-                  .setInput(utf8("input").array())
+                  .setInput(utf8("input"))
                   .setExecutionStartToCloseTimeoutSeconds(1)
                   .setTaskStartToCloseTimeoutSeconds(2)
                   .setBackoffStartIntervalInSeconds(3)
                   .setInitiator(ContinueAsNewInitiator.Decider)
-                  .setFailureDetails(utf8("details").array())
+                  .setFailureDetails(utf8("details"))
                   .setFailureReason("reason")
-                  .setLastCompletionResult(utf8("lastCompletionResult").array())
+                  .setLastCompletionResult(utf8("lastCompletionResult"))
                   .setHeader(HEADER)
                   .setMemo(MEMO)
                   .setSearchAttributes(SEARCH_ATTRIBUTES)
@@ -292,7 +291,7 @@ public class ClientObjects {
                   .setWorkflowId(WORKFLOW_ID)
                   .setWorkflowType(WORKFLOW_TYPE)
                   .setTaskList(TASK_LIST)
-                  .setInput(utf8("input").array())
+                  .setInput(utf8("input"))
                   .setExecutionStartToCloseTimeoutSeconds(1)
                   .setTaskStartToCloseTimeoutSeconds(2)
                   .setHeader(HEADER)
@@ -300,7 +299,7 @@ public class ClientObjects {
                   .setSearchAttributes(SEARCH_ATTRIBUTES)
                   .setRetryPolicy(RETRY_POLICY)
                   .setCronSchedule("cron")
-                  .setControl(utf8("control").array())
+                  .setControl(utf8("control"))
                   .setParentClosePolicy(ParentClosePolicy.ABANDON)
                   .setWorkflowIdReusePolicy(WorkflowIdReusePolicy.AllowDuplicate));
   public static Decision DECISION_SIGNAL_EXTERNAL_WORKFLOW_EXECUTION =
@@ -311,9 +310,9 @@ public class ClientObjects {
                   .setDomain("domain")
                   .setExecution(WORKFLOW_EXECUTION)
                   .setSignalName("signalName")
-                  .setInput(utf8("input").array())
+                  .setInput(utf8("input"))
                   .setChildWorkflowOnly(true)
-                  .setControl(utf8("control").array()));
+                  .setControl(utf8("control")));
   public static Decision DECISION_UPSERT_WORKFLOW_SEARCH_ATTRIBUTES =
       new Decision()
           .setDecisionType(DecisionType.UpsertWorkflowSearchAttributes)
@@ -326,7 +325,7 @@ public class ClientObjects {
           .setRecordMarkerDecisionAttributes(
               new RecordMarkerDecisionAttributes()
                   .setMarkerName("markerName")
-                  .setDetails(utf8("details").array())
+                  .setDetails(utf8("details"))
                   .setHeader(HEADER));
 
   public static final WorkflowExecutionStartedEventAttributes
@@ -337,14 +336,14 @@ public class ClientObjects {
               .setParentWorkflowExecution(PARENT_WORKFLOW_EXECUTION)
               .setParentInitiatedEventId(1)
               .setTaskList(TASK_LIST)
-              .setInput(utf8("input").array())
+              .setInput(utf8("input"))
               .setExecutionStartToCloseTimeoutSeconds(2)
               .setTaskStartToCloseTimeoutSeconds(3)
               .setContinuedExecutionRunId("continuedExecutionRunId")
               .setInitiator(ContinueAsNewInitiator.RetryPolicy)
               .setContinuedFailureReason("continuedFailureReason")
-              .setContinuedFailureDetails(utf8("continuedFailureDetails").array())
-              .setLastCompletionResult(utf8("lastCompletionResult").array())
+              .setContinuedFailureDetails(utf8("continuedFailureDetails"))
+              .setLastCompletionResult(utf8("lastCompletionResult"))
               .setOriginalExecutionRunId("originalExecutionRunId")
               .setIdentity("identity")
               .setFirstExecutionRunId("firstExecutionRunId")
@@ -361,14 +360,14 @@ public class ClientObjects {
   public static final WorkflowExecutionCompletedEventAttributes
       WORKFLOW_EXECUTION_COMPLETED_EVENT_ATTRIBUTES =
           new WorkflowExecutionCompletedEventAttributes()
-              .setResult(utf8("result").array())
+              .setResult(utf8("result"))
               .setDecisionTaskCompletedEventId(1);
 
   public static final WorkflowExecutionFailedEventAttributes
       WORKFLOW_EXECUTION_FAILED_EVENT_ATTRIBUTES =
           new WorkflowExecutionFailedEventAttributes()
               .setReason("reason")
-              .setDetails(utf8("details").array())
+              .setDetails(utf8("details"))
               .setDecisionTaskCompletedEventId(1);
 
   public static final WorkflowExecutionTimedOutEventAttributes
@@ -396,7 +395,7 @@ public class ClientObjects {
               .setStartedEventId(2)
               .setIdentity("identity")
               .setBinaryChecksum("binaryChecksum")
-              .setExecutionContext(utf8("executionContext").array());
+              .setExecutionContext(utf8("executionContext"));
 
   public static final DecisionTaskTimedOutEventAttributes DECISION_TASK_TIMED_OUT_EVENT_ATTRIBUTES =
       new DecisionTaskTimedOutEventAttributes()
@@ -415,7 +414,7 @@ public class ClientObjects {
           .setStartedEventId(2)
           .setCause(DecisionTaskFailedCause.BAD_BINARY)
           .setReason("reason")
-          .setDetails(utf8("details").array())
+          .setDetails(utf8("details"))
           .setIdentity("identity")
           .setBaseRunId("baseRun")
           .setNewRunId("newRun")
@@ -429,7 +428,7 @@ public class ClientObjects {
               .setActivityType(ACTIVITY_TYPE)
               .setDomain("domain")
               .setTaskList(TASK_LIST)
-              .setInput(utf8("input").array())
+              .setInput(utf8("input"))
               .setScheduleToCloseTimeoutSeconds(1)
               .setScheduleToStartTimeoutSeconds(2)
               .setStartToCloseTimeoutSeconds(3)
@@ -445,12 +444,12 @@ public class ClientObjects {
           .setRequestId("requestId")
           .setAttempt(2)
           .setLastFailureReason("failureReason")
-          .setLastFailureDetails(utf8("failureDetails").array());
+          .setLastFailureDetails(utf8("failureDetails"));
 
   public static final ActivityTaskCompletedEventAttributes
       ACTIVITY_TASK_COMPLETED_EVENT_ATTRIBUTES =
           new ActivityTaskCompletedEventAttributes()
-              .setResult(utf8("result").array())
+              .setResult(utf8("result"))
               .setScheduledEventId(1)
               .setStartedEventId(2)
               .setIdentity("identity");
@@ -458,19 +457,19 @@ public class ClientObjects {
   public static final ActivityTaskFailedEventAttributes ACTIVITY_TASK_FAILED_EVENT_ATTRIBUTES =
       new ActivityTaskFailedEventAttributes()
           .setReason("reason")
-          .setDetails(utf8("details").array())
+          .setDetails(utf8("details"))
           .setScheduledEventId(1)
           .setStartedEventId(2)
           .setIdentity("identity");
 
   public static final ActivityTaskTimedOutEventAttributes ACTIVITY_TASK_TIMED_OUT_EVENT_ATTRIBUTES =
       new ActivityTaskTimedOutEventAttributes()
-          .setDetails(utf8("details").array())
+          .setDetails(utf8("details"))
           .setScheduledEventId(1)
           .setStartedEventId(2)
           .setTimeoutType(TimeoutType.SCHEDULE_TO_CLOSE)
           .setLastFailureReason("failureReason")
-          .setLastFailureDetails(utf8("failureDetails").array());
+          .setLastFailureDetails(utf8("failureDetails"));
 
   public static final ActivityTaskCancelRequestedEventAttributes
       ACTIVITY_TASK_CANCEL_REQUESTED_EVENT_ATTRIBUTES =
@@ -480,7 +479,7 @@ public class ClientObjects {
 
   public static final ActivityTaskCanceledEventAttributes ACTIVITY_TASK_CANCELED_EVENT_ATTRIBUTES =
       new ActivityTaskCanceledEventAttributes()
-          .setDetails(utf8("details").array())
+          .setDetails(utf8("details"))
           .setLatestCancelRequestedEventId(1)
           .setScheduledEventId(2)
           .setStartedEventId(3)
@@ -496,7 +495,7 @@ public class ClientObjects {
   public static final MarkerRecordedEventAttributes MARKER_RECORDED_EVENT_ATTRIBUTES =
       new MarkerRecordedEventAttributes()
           .setMarkerName("markerName")
-          .setDetails(utf8("details").array())
+          .setDetails(utf8("details"))
           .setDecisionTaskCompletedEventId(1)
           .setHeader(HEADER);
 
@@ -536,11 +535,11 @@ public class ClientObjects {
               .setWorkflowId(WORKFLOW_ID)
               .setWorkflowType(WORKFLOW_TYPE)
               .setTaskList(TASK_LIST)
-              .setInput(utf8("input").array())
+              .setInput(utf8("input"))
               .setExecutionStartToCloseTimeoutSeconds(1)
               .setTaskStartToCloseTimeoutSeconds(2)
               .setParentClosePolicy(ParentClosePolicy.REQUEST_CANCEL)
-              .setControl(utf8("control").array())
+              .setControl(utf8("control"))
               .setDecisionTaskCompletedEventId(3)
               .setWorkflowIdReusePolicy(WorkflowIdReusePolicy.AllowDuplicate)
               .setRetryPolicy(RETRY_POLICY)
@@ -557,7 +556,7 @@ public class ClientObjects {
               .setWorkflowId(WORKFLOW_ID)
               .setWorkflowType(WORKFLOW_TYPE)
               .setCause(ChildWorkflowExecutionFailedCause.WORKFLOW_ALREADY_RUNNING)
-              .setControl(utf8("control").array())
+              .setControl(utf8("control"))
               .setInitiatedEventId(1)
               .setDecisionTaskCompletedEventId(2);
 
@@ -569,7 +568,7 @@ public class ClientObjects {
               .setWorkflowType(WORKFLOW_TYPE)
               .setInitiatedEventId(1)
               .setStartedEventId(2)
-              .setDetails(utf8("details").array());
+              .setDetails(utf8("details"));
 
   public static final ChildWorkflowExecutionCompletedEventAttributes
       CHILD_WORKFLOW_EXECUTION_COMPLETED_EVENT_ATTRIBUTES =
@@ -579,7 +578,7 @@ public class ClientObjects {
               .setWorkflowType(WORKFLOW_TYPE)
               .setInitiatedEventId(1)
               .setStartedEventId(2)
-              .setResult(utf8("result").array());
+              .setResult(utf8("result"));
 
   public static final ChildWorkflowExecutionFailedEventAttributes
       CHILD_WORKFLOW_EXECUTION_FAILED_EVENT_ATTRIBUTES =
@@ -590,7 +589,7 @@ public class ClientObjects {
               .setInitiatedEventId(1)
               .setStartedEventId(2)
               .setReason("reason")
-              .setDetails(utf8("details").array());
+              .setDetails(utf8("details"));
 
   public static final ChildWorkflowExecutionStartedEventAttributes
       CHILD_WORKFLOW_EXECUTION_STARTED_EVENT_ATTRIBUTES =
@@ -624,7 +623,7 @@ public class ClientObjects {
       WORKFLOW_EXECUTION_TERMINATED_EVENT_ATTRIBUTES =
           new WorkflowExecutionTerminatedEventAttributes()
               .setReason("reason")
-              .setDetails(utf8("details").array())
+              .setDetails(utf8("details"))
               .setIdentity("identity");
 
   public static final WorkflowExecutionCancelRequestedEventAttributes
@@ -639,7 +638,7 @@ public class ClientObjects {
       WORKFLOW_EXECUTION_CANCELED_EVENT_ATTRIBUTES =
           new WorkflowExecutionCanceledEventAttributes()
               .setDecisionTaskCompletedEventId(1)
-              .setDetails(utf8("details").array());
+              .setDetails(utf8("details"));
 
   public static final RequestCancelExternalWorkflowExecutionInitiatedEventAttributes
       REQUEST_CANCEL_EXTERNAL_WORKFLOW_EXECUTION_INITIATED_EVENT_ATTRIBUTES =
@@ -647,7 +646,7 @@ public class ClientObjects {
               .setDecisionTaskCompletedEventId(1)
               .setDomain("domain")
               .setWorkflowExecution(WORKFLOW_EXECUTION)
-              .setControl(utf8("control").array())
+              .setControl(utf8("control"))
               .setChildWorkflowOnly(true);
 
   public static final RequestCancelExternalWorkflowExecutionFailedEventAttributes
@@ -658,7 +657,7 @@ public class ClientObjects {
               .setDomain("domain")
               .setWorkflowExecution(WORKFLOW_EXECUTION)
               .setInitiatedEventId(2)
-              .setControl(utf8("control").array());
+              .setControl(utf8("control"));
 
   public static final ExternalWorkflowExecutionCancelRequestedEventAttributes
       EXTERNAL_WORKFLOW_EXECUTION_CANCEL_REQUESTED_EVENT_ATTRIBUTES =
@@ -673,15 +672,15 @@ public class ClientObjects {
               .setNewExecutionRunId("newRunId")
               .setWorkflowType(WORKFLOW_TYPE)
               .setTaskList(TASK_LIST)
-              .setInput(utf8("input").array())
+              .setInput(utf8("input"))
               .setExecutionStartToCloseTimeoutSeconds(1)
               .setTaskStartToCloseTimeoutSeconds(2)
               .setDecisionTaskCompletedEventId(3)
               .setBackoffStartIntervalInSeconds(4)
               .setInitiator(ContinueAsNewInitiator.RetryPolicy)
               .setFailureReason("failureReason")
-              .setFailureDetails(utf8("failureDetails").array())
-              .setLastCompletionResult(utf8("lastCompletionResult").array())
+              .setFailureDetails(utf8("failureDetails"))
+              .setLastCompletionResult(utf8("lastCompletionResult"))
               .setHeader(HEADER)
               .setMemo(MEMO)
               .setSearchAttributes(SEARCH_ATTRIBUTES);
@@ -693,8 +692,8 @@ public class ClientObjects {
               .setDomain("domain")
               .setWorkflowExecution(WORKFLOW_EXECUTION)
               .setSignalName("signalName")
-              .setInput(utf8("input").array())
-              .setControl(utf8("control").array())
+              .setInput(utf8("input"))
+              .setControl(utf8("control"))
               .setChildWorkflowOnly(true);
 
   public static final SignalExternalWorkflowExecutionFailedEventAttributes
@@ -705,13 +704,13 @@ public class ClientObjects {
               .setDomain("domain")
               .setWorkflowExecution(WORKFLOW_EXECUTION)
               .setInitiatedEventId(2)
-              .setControl(utf8("control").array());
+              .setControl(utf8("control"));
 
   public static final WorkflowExecutionSignaledEventAttributes
       WORKFLOW_EXECUTION_SIGNALED_EVENT_ATTRIBUTES =
           new WorkflowExecutionSignaledEventAttributes()
               .setSignalName("signalName")
-              .setInput(utf8("input").array())
+              .setInput(utf8("input"))
               .setIdentity("identity");
 
   public static final ExternalWorkflowExecutionSignaledEventAttributes
@@ -720,7 +719,7 @@ public class ClientObjects {
               .setInitiatedEventId(1)
               .setDomain("domain")
               .setWorkflowExecution(WORKFLOW_EXECUTION)
-              .setControl(utf8("control").array());
+              .setControl(utf8("control"));
 
   public static final HistoryEvent HISTORY_EVENT =
       new HistoryEvent()
@@ -781,12 +780,12 @@ public class ClientObjects {
               .setWorkflowID(WORKFLOW_ID)
               .setRunID(RUN_ID)
               .setActivityID("activityId")
-              .setDetails(utf8("details").array())
+              .setDetails(utf8("details"))
               .setIdentity("identity");
   public static final RespondActivityTaskCanceledRequest RESPOND_ACTIVITY_TASK_CANCELED_REQUEST =
       new RespondActivityTaskCanceledRequest()
-          .setTaskToken(utf8("taskToken").array())
-          .setDetails(utf8("details").array())
+          .setTaskToken(utf8("taskToken"))
+          .setDetails(utf8("details"))
           .setIdentity("identity");
   public static final RespondActivityTaskCompletedByIDRequest
       RESPOND_ACTIVITY_TASK_COMPLETED_BY_ID_REQUEST =
@@ -795,13 +794,13 @@ public class ClientObjects {
               .setWorkflowID(WORKFLOW_ID)
               .setRunID(RUN_ID)
               .setActivityID("activityId")
-              .setResult(utf8("result").array())
+              .setResult(utf8("result"))
               .setIdentity("identity");
   public static final RespondActivityTaskCompletedRequest RESPOND_ACTIVITY_TASK_COMPLETED_REQUEST =
       new RespondActivityTaskCompletedRequest()
-          .setTaskToken(utf8("taskToken").array())
+          .setTaskToken(utf8("taskToken"))
           .setIdentity("identity")
-          .setResult(utf8("result").array());
+          .setResult(utf8("result"));
   public static final RespondActivityTaskFailedByIDRequest
       RESPOND_ACTIVITY_TASK_FAILED_BY_ID_REQUEST =
           new RespondActivityTaskFailedByIDRequest()
@@ -810,12 +809,12 @@ public class ClientObjects {
               .setRunID(RUN_ID)
               .setActivityID("activityId")
               .setReason("reason")
-              .setDetails(utf8("details").array())
+              .setDetails(utf8("details"))
               .setIdentity("identity");
   public static final RespondActivityTaskFailedRequest RESPOND_ACTIVITY_TASK_FAILED_REQUEST =
       new RespondActivityTaskFailedRequest()
-          .setTaskToken(utf8("taskToken").array())
-          .setDetails(utf8("details").array())
+          .setTaskToken(utf8("taskToken"))
+          .setDetails(utf8("details"))
           .setReason("reason")
           .setIdentity("identity");
   public static final RespondDecisionTaskCompletedRequest RESPOND_DECISION_TASK_COMPLETED_REQUEST =
@@ -825,30 +824,30 @@ public class ClientObjects {
           .setReturnNewDecisionTask(true)
           .setForceCreateNewDecisionTask(false)
           .setQueryResults(ImmutableMap.of("query", WORKFLOW_QUERY_RESULT))
-          .setExecutionContext(utf8("executionContext").array())
+          .setExecutionContext(utf8("executionContext"))
           .setBinaryChecksum("binaryChecksum")
-          .setTaskToken(utf8("taskToken").array())
+          .setTaskToken(utf8("taskToken"))
           .setIdentity("identity");
   public static final RespondDecisionTaskFailedRequest RESPOND_DECISION_TASK_FAILED_REQUEST =
       new RespondDecisionTaskFailedRequest()
           .setCause(DecisionTaskFailedCause.BAD_BINARY)
-          .setDetails(utf8("details").array())
+          .setDetails(utf8("details"))
           .setBinaryChecksum("binaryChecksum")
-          .setTaskToken(utf8("taskToken").array())
+          .setTaskToken(utf8("taskToken"))
           .setIdentity("identity");
   public static final RespondQueryTaskCompletedRequest RESPOND_QUERY_TASK_COMPLETED_REQUEST =
       new RespondQueryTaskCompletedRequest()
           .setCompletedType(QueryTaskCompletedType.COMPLETED)
-          .setQueryResult(utf8("queryResult").array())
+          .setQueryResult(utf8("queryResult"))
           .setErrorMessage("errorMessage")
           .setWorkerVersionInfo(WORKER_VERSION_INFO)
-          .setTaskToken(utf8("taskToken").array());
+          .setTaskToken(utf8("taskToken"));
 
   public static final ListWorkflowExecutionsRequest LIST_WORKFLOW_EXECUTIONS_REQUEST =
       new ListWorkflowExecutionsRequest()
           .setDomain("domain")
           .setPageSize(1)
-          .setNextPageToken(utf8("nextPageToken").array())
+          .setNextPageToken(utf8("nextPageToken"))
           .setQuery("query");
 
   public static final DescribeWorkflowExecutionRequest DESCRIBE_WORKFLOW_EXECUTION_REQUEST =
@@ -862,7 +861,7 @@ public class ClientObjects {
           .setWaitForNewEvent(true)
           .setHistoryEventFilterType(HistoryEventFilterType.CLOSE_EVENT)
           .setSkipArchival(true)
-          .setNextPageToken(utf8("nextPageToken").array());
+          .setNextPageToken(utf8("nextPageToken"));
 
   public static final StartWorkflowExecutionRequest START_WORKFLOW_EXECUTION =
       new StartWorkflowExecutionRequest()
@@ -919,9 +918,9 @@ public class ClientObjects {
           .setDomain("domain")
           .setWorkflowExecution(WORKFLOW_EXECUTION)
           .setSignalName("signalName")
-          .setInput(utf8("input").array())
+          .setInput(utf8("input"))
           .setRequestId("requestId")
-          .setControl(utf8("control").array())
+          .setControl(utf8("control"))
           .setIdentity("identity");
 
   public static final TerminateWorkflowExecutionRequest TERMINATE_WORKFLOW_EXECUTION_REQUEST =
@@ -929,7 +928,7 @@ public class ClientObjects {
           .setDomain("domain")
           .setWorkflowExecution(WORKFLOW_EXECUTION)
           .setReason("reason")
-          .setDetails(utf8("details").array())
+          .setDetails(utf8("details"))
           .setIdentity("identity");
 
   public static final TerminateWorkflowExecutionRequest TERMINATE_WORKFLOW_EXECUTION_REQUEST_FULL =
@@ -937,7 +936,7 @@ public class ClientObjects {
           .setDomain("domain")
           .setWorkflowExecution(WORKFLOW_EXECUTION)
           .setReason("reason")
-          .setDetails(utf8("details").array())
+          .setDetails(utf8("details"))
           .setIdentity("identity")
           .setFirstExecutionRunID("firstExecutionRunID");
 
@@ -951,7 +950,7 @@ public class ClientObjects {
       new DescribeDomainRequest().setName("name");
 
   public static final ListDomainsRequest LIST_DOMAINS_REQUEST =
-      new ListDomainsRequest().setPageSize(1).setNextPageToken(utf8("nextPageToken").array());
+      new ListDomainsRequest().setPageSize(1).setNextPageToken(utf8("nextPageToken"));
 
   public static final ListTaskListPartitionsRequest LIST_TASK_LIST_PARTITIONS_REQUEST =
       new ListTaskListPartitionsRequest().setDomain("domain").setTaskList(TASK_LIST);
@@ -983,13 +982,13 @@ public class ClientObjects {
               .setWorkflowID(WORKFLOW_ID)
               .setRunID(RUN_ID)
               .setActivityID("activityId")
-              .setDetails(utf8("details").array())
+              .setDetails(utf8("details"))
               .setIdentity("identity");
 
   public static final RecordActivityTaskHeartbeatRequest RECORD_ACTIVITY_TASK_HEARTBEAT_REQUEST =
       new RecordActivityTaskHeartbeatRequest()
-          .setDetails(utf8("details").array())
-          .setTaskToken(utf8("taskToken").array())
+          .setDetails(utf8("details"))
+          .setTaskToken(utf8("taskToken"))
           .setIdentity("identity");
 
   public static final RegisterDomainRequest REGISTER_DOMAIN_REQUEST =
@@ -1029,7 +1028,7 @@ public class ClientObjects {
           .setExecutionFilter(WORKFLOW_EXECUTION_FILTER)
           .setTypeFilter(WORKFLOW_TYPE_FILTER)
           .setStatusFilter(WorkflowExecutionCloseStatus.COMPLETED)
-          .setNextPageToken(utf8("nextPageToken").array())
+          .setNextPageToken(utf8("nextPageToken"))
           .setStartTimeFilter(START_TIME_FILTER);
 
   public static final ListOpenWorkflowExecutionsRequest LIST_OPEN_WORKFLOW_EXECUTIONS_REQUEST =
@@ -1038,7 +1037,7 @@ public class ClientObjects {
           .setMaximumPageSize(1)
           .setExecutionFilter(WORKFLOW_EXECUTION_FILTER)
           .setTypeFilter(WORKFLOW_TYPE_FILTER)
-          .setNextPageToken(utf8("nextPageToken").array())
+          .setNextPageToken(utf8("nextPageToken"))
           .setStartTimeFilter(START_TIME_FILTER);
 
   public static final StartWorkflowExecutionResponse START_WORKFLOW_EXECUTION_RESPONSE =
@@ -1068,24 +1067,24 @@ public class ClientObjects {
       new GetWorkflowExecutionHistoryResponse()
           .setHistory(HISTORY)
           .setRawHistory(ImmutableList.of(DATA_BLOB))
-          .setNextPageToken(utf8("nextPageToken").array())
+          .setNextPageToken(utf8("nextPageToken"))
           .setArchived(true);
 
   public static final ListArchivedWorkflowExecutionsResponse
       LIST_ARCHIVED_WORKFLOW_EXECUTIONS_RESPONSE =
           new ListArchivedWorkflowExecutionsResponse()
               .setExecutions(ImmutableList.of(WORKFLOW_EXECUTION_INFO))
-              .setNextPageToken(utf8("nextPageToken").array());
+              .setNextPageToken(utf8("nextPageToken"));
 
   public static final ListClosedWorkflowExecutionsResponse
       LIST_CLOSED_WORKFLOW_EXECUTIONS_RESPONSE =
           new ListClosedWorkflowExecutionsResponse()
               .setExecutions(ImmutableList.of(WORKFLOW_EXECUTION_INFO))
-              .setNextPageToken(utf8("nextPageToken").array());
+              .setNextPageToken(utf8("nextPageToken"));
   public static final ListOpenWorkflowExecutionsResponse LIST_OPEN_WORKFLOW_EXECUTIONS_RESPONSE =
       new ListOpenWorkflowExecutionsResponse()
           .setExecutions(ImmutableList.of(WORKFLOW_EXECUTION_INFO))
-          .setNextPageToken(utf8("nextPageToken").array());
+          .setNextPageToken(utf8("nextPageToken"));
   public static final ListTaskListPartitionsResponse LIST_TASK_LIST_PARTITIONS_RESPONSE =
       new ListTaskListPartitionsResponse()
           .setActivityTaskListPartitions(ImmutableList.of(TASK_LIST_PARTITION_METADATA))
@@ -1093,14 +1092,14 @@ public class ClientObjects {
   public static final ListWorkflowExecutionsResponse LIST_WORKFLOW_EXECUTIONS_RESPONSE =
       new ListWorkflowExecutionsResponse()
           .setExecutions(ImmutableList.of(WORKFLOW_EXECUTION_INFO))
-          .setNextPageToken(utf8("nextPageToken").array());
+          .setNextPageToken(utf8("nextPageToken"));
   public static final PollForActivityTaskResponse POLL_FOR_ACTIVITY_TASK_RESPONSE =
       new PollForActivityTaskResponse()
-          .setTaskToken(utf8("taskToken").array())
+          .setTaskToken(utf8("taskToken"))
           .setWorkflowExecution(WORKFLOW_EXECUTION)
           .setActivityId("activityId")
           .setActivityType(ACTIVITY_TYPE)
-          .setInput(utf8("input").array())
+          .setInput(utf8("input"))
           .setScheduledTimestamp(1)
           .setStartedTimestamp(2)
           .setScheduleToCloseTimeoutSeconds(3)
@@ -1108,13 +1107,13 @@ public class ClientObjects {
           .setHeartbeatTimeoutSeconds(5)
           .setAttempt(6)
           .setScheduledTimestampOfThisAttempt(7)
-          .setHeartbeatDetails(utf8("heartbeatDetails").array())
+          .setHeartbeatDetails(utf8("heartbeatDetails"))
           .setWorkflowType(WORKFLOW_TYPE)
           .setWorkflowDomain("domain")
           .setHeader(HEADER);
   public static final PollForDecisionTaskResponse POLL_FOR_DECISION_TASK_RESPONSE =
       new PollForDecisionTaskResponse()
-          .setTaskToken(utf8("taskToken").array())
+          .setTaskToken(utf8("taskToken"))
           .setWorkflowExecution(WORKFLOW_EXECUTION)
           .setWorkflowType(WORKFLOW_TYPE)
           .setPreviousStartedEventId(1)
@@ -1122,7 +1121,7 @@ public class ClientObjects {
           .setAttempt(3)
           .setBacklogCountHint(4)
           .setHistory(HISTORY)
-          .setNextPageToken(utf8("nextPageToken").array())
+          .setNextPageToken(utf8("nextPageToken"))
           .setQuery(WORKFLOW_QUERY)
           .setWorkflowExecutionTaskList(TASK_LIST)
           .setScheduledTimestamp(5)
@@ -1132,7 +1131,7 @@ public class ClientObjects {
 
   public static final QueryWorkflowResponse QUERY_WORKFLOW_RESPONSE =
       new QueryWorkflowResponse()
-          .setQueryResult(utf8("result").array())
+          .setQueryResult(utf8("result"))
           .setQueryRejected(
               new QueryRejected().setCloseStatus(WorkflowExecutionCloseStatus.FAILED));
 
@@ -1158,7 +1157,7 @@ public class ClientObjects {
   public static final ListDomainsResponse LIST_DOMAINS_RESPONSE =
       new ListDomainsResponse()
           .setDomains(ImmutableList.of(DESCRIBE_DOMAIN_RESPONSE))
-          .setNextPageToken(utf8("nextPageToken").array());
+          .setNextPageToken(utf8("nextPageToken"));
   public static final SignalWithStartWorkflowExecutionAsyncResponse
       SIGNAL_WITH_START_WORKFLOW_EXECUTION_ASYNC_RESPONSE =
           new SignalWithStartWorkflowExecutionAsyncResponse();
@@ -1172,8 +1171,8 @@ public class ClientObjects {
 
   private ClientObjects() {}
 
-  public static ByteBuffer utf8(String value) {
-    return ByteBuffer.wrap(utf8Bytes(value));
+  public static byte[] utf8(String value) {
+    return utf8Bytes(value);
   }
 
   public static byte[] utf8Bytes(String value) {

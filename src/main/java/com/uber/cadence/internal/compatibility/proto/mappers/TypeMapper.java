@@ -36,7 +36,6 @@ import static com.uber.cadence.internal.compatibility.proto.mappers.Helpers.unix
 
 import com.google.common.base.Strings;
 import com.uber.cadence.api.v1.*;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -254,13 +253,13 @@ class TypeMapper {
     return StatusFilter.newBuilder().setStatus(workflowExecutionCloseStatus(t)).build();
   }
 
-  static Map<String, Payload> payloadByteBufferMap(Map<String, ByteBuffer> t) {
+  static Map<String, Payload> payloadByteBufferMap(Map<String, byte[]> t) {
     if (t == null) {
       return Collections.emptyMap();
     }
     Map<String, Payload> v = new HashMap<>();
     for (String key : t.keySet()) {
-      v.put(key, payload(t.get(key).array()));
+      v.put(key, payload(t.get(key)));
     }
     return v;
   }
@@ -467,13 +466,13 @@ class TypeMapper {
     return res;
   }
 
-  static Map<String, ByteBuffer> payloadMap(Map<String, Payload> t) {
+  static Map<String, byte[]> payloadMap(Map<String, Payload> t) {
     if (t == null) {
       return null;
     }
-    Map<String, ByteBuffer> v = new HashMap<>();
+    Map<String, byte[]> v = new HashMap<>();
     for (String key : t.keySet()) {
-      v.put(key, ByteBuffer.wrap(payload(t.get(key))));
+      v.put(key, payload(t.get(key)));
     }
     return v;
   }
