@@ -26,9 +26,8 @@ import com.uber.cadence.client.WorkflowClient;
 import com.uber.cadence.client.WorkflowClientOptions;
 import com.uber.cadence.client.WorkflowOptions;
 import com.uber.cadence.client.WorkflowStub;
-import com.uber.cadence.serviceclient.ClientOptions;
 import com.uber.cadence.serviceclient.IWorkflowService;
-import com.uber.cadence.serviceclient.WorkflowServiceTChannel;
+import com.uber.cadence.testUtils.TestEnvironment;
 import com.uber.cadence.testing.TestEnvironmentOptions;
 import com.uber.cadence.testing.TestWorkflowEnvironment;
 import com.uber.cadence.workflow.Async;
@@ -53,8 +52,7 @@ import org.slf4j.LoggerFactory;
 @RunWith(Parameterized.class)
 public class WorkerStressTests {
 
-  private static final boolean useDockerService =
-      Boolean.parseBoolean(System.getenv("USE_DOCKER_SERVICE"));
+  private static final boolean useDockerService = true || TestEnvironment.isUseDockerService();
 
   @Parameterized.Parameter public boolean useExternalService;
 
@@ -181,7 +179,7 @@ public class WorkerStressTests {
       WorkflowClientOptions clientOptions =
           WorkflowClientOptions.newBuilder().setDomain(DOMAIN).build();
       if (useDockerService) {
-        IWorkflowService service = new WorkflowServiceTChannel(ClientOptions.defaultInstance());
+        IWorkflowService service = TestEnvironment.getDockerService();
         WorkflowClient client = WorkflowClient.newInstance(service, clientOptions);
         factory = WorkerFactory.newInstance(client, options);
       } else {

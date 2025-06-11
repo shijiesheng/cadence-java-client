@@ -32,9 +32,8 @@ import com.uber.cadence.client.ActivityWorkerShutdownException;
 import com.uber.cadence.client.WorkflowClient;
 import com.uber.cadence.client.WorkflowClientOptions;
 import com.uber.cadence.client.WorkflowOptions;
-import com.uber.cadence.serviceclient.ClientOptions;
 import com.uber.cadence.serviceclient.IWorkflowService;
-import com.uber.cadence.serviceclient.WorkflowServiceTChannel;
+import com.uber.cadence.testUtils.TestEnvironment;
 import com.uber.cadence.testing.TestEnvironmentOptions;
 import com.uber.cadence.testing.TestWorkflowEnvironment;
 import com.uber.cadence.workflow.Workflow;
@@ -57,8 +56,7 @@ import org.junit.runners.Parameterized;
 @RunWith(Parameterized.class)
 public class CleanWorkerShutdownTest {
 
-  private static final boolean useDockerService =
-      Boolean.parseBoolean(System.getenv("USE_DOCKER_SERVICE"));
+  private static final boolean useDockerService = TestEnvironment.isUseDockerService();
 
   @Parameterized.Parameter public boolean useExternalService;
 
@@ -81,7 +79,7 @@ public class CleanWorkerShutdownTest {
   @Before
   public void setUp() {
     if (useExternalService) {
-      service = new WorkflowServiceTChannel(ClientOptions.defaultInstance());
+      service = TestEnvironment.getDockerService();
     }
   }
 
