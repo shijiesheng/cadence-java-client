@@ -347,7 +347,6 @@ test {
     dependsOn 'registerDomain'
     dependsOn 'licenseMain'
     finalizedBy jacocoTestReport // report is always generated after tests run
-    maxParallelForks = Math.max(2.0, (Runtime.runtime.availableProcessors() / 2))
     testLogging {
         events 'passed', 'skipped', 'failed'
         exceptionFormat 'full'
