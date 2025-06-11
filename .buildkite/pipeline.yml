@@ -81,6 +81,8 @@ steps:
       automatic:
         - exit_status: "*"
           limit: 3
+    artifact_paths:
+      - "build/reports/tests/test/**/*"
     plugins:
       - kubernetes:
           <<: *kubernetes
@@ -101,6 +103,8 @@ steps:
       automatic:
         - exit_status: "*"
           limit: 3
+    artifact_paths:
+      - "build/reports/tests/test/**/*"
     plugins:
       - kubernetes:
           <<: *kubernetes

@@ -71,7 +71,7 @@ import org.slf4j.LoggerFactory;
 @RunWith(Parameterized.class)
 public class StickyWorkerTest {
 
-  private static final boolean useDockerService = TestEnvironment.isUseDockerService();
+  private static final boolean useDockerService = true || TestEnvironment.isUseDockerService();
   private static final String STICKY_TASK_LIST_METRIC_TAG = "__sticky__";
 
   @Parameterized.Parameter public boolean useExternalService;
@@ -478,14 +478,12 @@ public class StickyWorkerTest {
     // Act
     WorkflowClient.start(workflow::getGreeting);
 
-    Thread.sleep(200); // Wait for workflow to start
+    // Assert
+    assertEquals(workflow.getProgress(), GreetingSignalWorkflow.Status.WAITING_FOR_NAME);
 
     DeciderCache cache = factory.getCache();
     assertNotNull(cache);
     assertEquals(1, cache.size());
-
-    // Assert
-    assertEquals(workflow.getProgress(), GreetingSignalWorkflow.Status.WAITING_FOR_NAME);
 
     workflow.waitForName("World");
     String greeting = workflow.getGreeting();
