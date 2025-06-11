@@ -3,9 +3,6 @@ package com.uber.cadence;
 import static com.uber.cadence.testUtils.TestEnvironment.DOMAIN;
 import static com.uber.cadence.testUtils.TestEnvironment.DOMAIN2;
 
-import com.uber.cadence.internal.compatibility.Thrift2ProtoAdapter;
-import com.uber.cadence.internal.compatibility.proto.serviceclient.IGrpcServiceStubs;
-import com.uber.cadence.serviceclient.ClientOptions;
 import com.uber.cadence.serviceclient.IWorkflowService;
 import com.uber.cadence.testUtils.TestEnvironment;
 import org.apache.thrift.TException;
@@ -19,10 +16,7 @@ public class RegisterTestDomain {
       return;
     }
 
-    IWorkflowService service =
-        new Thrift2ProtoAdapter(
-            IGrpcServiceStubs.newInstance(
-                ClientOptions.newBuilder().setHost("localhost").setPort(7833).build()));
+    IWorkflowService service = TestEnvironment.getDockerService();
     registerDomain(service, DOMAIN);
     registerDomain(service, DOMAIN2);
     System.exit(0);

@@ -36,8 +36,8 @@ import com.uber.cadence.internal.metrics.MetricsTag;
 import com.uber.cadence.internal.metrics.MetricsType;
 import com.uber.cadence.internal.metrics.NoopScope;
 import com.uber.cadence.internal.replay.DeciderCache;
-import com.uber.cadence.serviceclient.ClientOptions;
-import com.uber.cadence.serviceclient.WorkflowServiceTChannel;
+import com.uber.cadence.serviceclient.IWorkflowService;
+import com.uber.cadence.testUtils.TestEnvironment;
 import com.uber.cadence.testing.TestEnvironmentOptions;
 import com.uber.cadence.testing.TestWorkflowEnvironment;
 import com.uber.cadence.workflow.Async;
@@ -71,8 +71,7 @@ import org.slf4j.LoggerFactory;
 @RunWith(Parameterized.class)
 public class StickyWorkerTest {
 
-  private static final boolean useDockerService =
-      Boolean.parseBoolean(System.getenv("USE_DOCKER_SERVICE"));
+  private static final boolean useDockerService = TestEnvironment.isUseDockerService();
   private static final String STICKY_TASK_LIST_METRIC_TAG = "__sticky__";
 
   @Parameterized.Parameter public boolean useExternalService;
@@ -91,12 +90,12 @@ public class StickyWorkerTest {
 
   @Rule public TestName testName = new TestName();
 
-  private static WorkflowServiceTChannel service;
+  private static IWorkflowService service;
 
   @BeforeClass
   public static void setUp() {
     if (useDockerService) {
-      service = new WorkflowServiceTChannel(ClientOptions.defaultInstance());
+      service = TestEnvironment.getDockerService();
     }
   }
 

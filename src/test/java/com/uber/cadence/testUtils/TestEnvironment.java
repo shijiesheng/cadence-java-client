@@ -14,6 +14,11 @@
  */
 package com.uber.cadence.testUtils;
 
+import com.uber.cadence.internal.compatibility.Thrift2ProtoAdapter;
+import com.uber.cadence.internal.compatibility.proto.serviceclient.IGrpcServiceStubs;
+import com.uber.cadence.serviceclient.ClientOptions;
+import com.uber.cadence.serviceclient.IWorkflowService;
+
 public final class TestEnvironment {
   public static final String DOMAIN = "UnitTest";
   public static final String DOMAIN2 = "UnitTest2";
@@ -24,7 +29,7 @@ public final class TestEnvironment {
   private static final boolean DEBUGGER_TIMEOUTS = false;
 
   private static final boolean USE_DOCKER_SERVICE =
-      Boolean.parseBoolean(System.getenv("USE_DOCKER_SERVICE"));
+      true || Boolean.parseBoolean(System.getenv("USE_DOCKER_SERVICE"));
 
   private TestEnvironment() {}
 
@@ -34,5 +39,11 @@ public final class TestEnvironment {
 
   public static boolean isUseDockerService() {
     return USE_DOCKER_SERVICE;
+  }
+
+  public static IWorkflowService getDockerService() {
+    return new Thrift2ProtoAdapter(
+        IGrpcServiceStubs.newInstance(
+            ClientOptions.newBuilder().setHost("localhost").setPort(7833).build()));
   }
 }

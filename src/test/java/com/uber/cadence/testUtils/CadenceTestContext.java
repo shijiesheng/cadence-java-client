@@ -14,13 +14,9 @@
  */
 package com.uber.cadence.testUtils;
 
-import com.uber.cadence.FeatureFlags;
 import com.uber.cadence.client.WorkflowClient;
 import com.uber.cadence.client.WorkflowClientOptions;
-import com.uber.cadence.internal.compatibility.Thrift2ProtoAdapter;
-import com.uber.cadence.internal.compatibility.proto.serviceclient.IGrpcServiceStubs;
 import com.uber.cadence.internal.worker.PollerOptions;
-import com.uber.cadence.serviceclient.ClientOptions;
 import com.uber.cadence.serviceclient.IWorkflowService;
 import com.uber.cadence.testing.TestEnvironmentOptions;
 import com.uber.cadence.testing.TestWorkflowEnvironment;
@@ -224,15 +220,7 @@ public class CadenceTestContext {
       WorkerFactoryOptions workerFactoryOptions) {
     TracingWorkflowInterceptorFactory tracer = new TracingWorkflowInterceptorFactory();
 
-    IWorkflowService wfService =
-        new Thrift2ProtoAdapter(
-            IGrpcServiceStubs.newInstance(
-                ClientOptions.newBuilder()
-                    .setFeatureFlags(
-                        new FeatureFlags().setWorkflowExecutionAlreadyCompletedErrorEnabled(true))
-                    .setHost("localhost")
-                    .setPort(7833)
-                    .build()));
+    IWorkflowService wfService = TestEnvironment.getDockerService();
     WorkflowClient workflowClient = WorkflowClient.newInstance(wfService, clientOptions);
     WorkerFactory workerFactory = new WorkerFactory(workflowClient, workerFactoryOptions);
     ScheduledExecutorService scheduledExecutor = new ScheduledThreadPoolExecutor(1);
