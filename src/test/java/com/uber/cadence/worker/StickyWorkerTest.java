@@ -71,7 +71,7 @@ import org.slf4j.LoggerFactory;
 @RunWith(Parameterized.class)
 public class StickyWorkerTest {
 
-  private static final boolean useDockerService = true || TestEnvironment.isUseDockerService();
+  private static final boolean useDockerService = TestEnvironment.isUseDockerService();
   private static final String STICKY_TASK_LIST_METRIC_TAG = "__sticky__";
 
   @Parameterized.Parameter public boolean useExternalService;

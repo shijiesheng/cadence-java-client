@@ -52,7 +52,7 @@ import org.slf4j.LoggerFactory;
 @RunWith(Parameterized.class)
 public class WorkerStressTests {
 
-  private static final boolean useDockerService = true || TestEnvironment.isUseDockerService();
+  private static final boolean useDockerService = TestEnvironment.isUseDockerService();
 
   @Parameterized.Parameter public boolean useExternalService;
 

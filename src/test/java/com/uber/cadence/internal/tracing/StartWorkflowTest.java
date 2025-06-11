@@ -139,7 +139,7 @@ public class StartWorkflowTest {
     }
   }
 
-  private static final boolean useDockerService = true || TestEnvironment.isUseDockerService();
+  private static final boolean useDockerService = TestEnvironment.isUseDockerService();
   private static final Logger logger = LoggerFactory.getLogger(StartWorkflowTest.class);
   private static final String DOMAIN = "test-domain";
   private static final String TASK_LIST = "test-tasklist";
