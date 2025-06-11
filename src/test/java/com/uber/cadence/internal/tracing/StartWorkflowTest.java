@@ -30,6 +30,7 @@ import com.uber.cadence.internal.compatibility.proto.serviceclient.IGrpcServiceS
 import com.uber.cadence.serviceclient.ClientOptions;
 import com.uber.cadence.serviceclient.IWorkflowService;
 import com.uber.cadence.serviceclient.WorkflowServiceTChannel;
+import com.uber.cadence.testUtils.TestEnvironment;
 import com.uber.cadence.worker.Worker;
 import com.uber.cadence.worker.WorkerFactory;
 import com.uber.cadence.worker.WorkerFactoryOptions;
@@ -138,8 +139,7 @@ public class StartWorkflowTest {
     }
   }
 
-  private static final boolean useDockerService =
-      Boolean.parseBoolean(System.getenv("USE_DOCKER_SERVICE"));
+  private static final boolean useDockerService = true || TestEnvironment.isUseDockerService();
   private static final Logger logger = LoggerFactory.getLogger(StartWorkflowTest.class);
   private static final String DOMAIN = "test-domain";
   private static final String TASK_LIST = "test-tasklist";
@@ -160,7 +160,11 @@ public class StartWorkflowTest {
     IWorkflowService service =
         new Thrift2ProtoAdapter(
             IGrpcServiceStubs.newInstance(
-                ClientOptions.newBuilder().setTracer(mockTracer).setPort(7833).build()));
+                ClientOptions.newBuilder()
+                    .setTracer(mockTracer)
+                    .setHost("localhost")
+                    .setPort(7833)
+                    .build()));
     testStartWorkflowHelper(service, mockTracer, true);
   }
 
@@ -171,7 +175,11 @@ public class StartWorkflowTest {
     IWorkflowService service =
         new Thrift2ProtoAdapter(
             IGrpcServiceStubs.newInstance(
-                ClientOptions.newBuilder().setTracer(mockTracer).setPort(7833).build()));
+                ClientOptions.newBuilder()
+                    .setTracer(mockTracer)
+                    .setHost("localhost")
+                    .setPort(7833)
+                    .build()));
     try {
       service.RegisterDomain(new RegisterDomainRequest().setName(DOMAIN));
     } catch (DomainAlreadyExistsError e) {
@@ -259,7 +267,11 @@ public class StartWorkflowTest {
     IWorkflowService service =
         new Thrift2ProtoAdapter(
             IGrpcServiceStubs.newInstance(
-                ClientOptions.newBuilder().setTracer(mockTracer).setPort(7833).build()));
+                ClientOptions.newBuilder()
+                    .setTracer(mockTracer)
+                    .setHost("localhost")
+                    .setPort(7833)
+                    .build()));
     testSignalWithStartWorkflowHelper(service, mockTracer, true);
   }
 
@@ -277,7 +289,8 @@ public class StartWorkflowTest {
     MockTracer mockTracer = new MockTracer();
     IWorkflowService service =
         new Thrift2ProtoAdapter(
-            IGrpcServiceStubs.newInstance(ClientOptions.newBuilder().setPort(7833).build()));
+            IGrpcServiceStubs.newInstance(
+                ClientOptions.newBuilder().setHost("localhost").setPort(7833).build()));
     testStartWorkflowHelper(service, mockTracer, false);
   }
 
@@ -295,7 +308,8 @@ public class StartWorkflowTest {
     MockTracer mockTracer = new MockTracer();
     IWorkflowService service =
         new Thrift2ProtoAdapter(
-            IGrpcServiceStubs.newInstance(ClientOptions.newBuilder().setPort(7833).build()));
+            IGrpcServiceStubs.newInstance(
+                ClientOptions.newBuilder().setHost("localhost").setPort(7833).build()));
     testSignalWithStartWorkflowHelper(service, mockTracer, false);
   }
 
