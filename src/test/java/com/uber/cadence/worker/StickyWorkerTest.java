@@ -481,16 +481,18 @@ public class StickyWorkerTest {
     // Assert
     assertEquals(workflow.getProgress(), GreetingSignalWorkflow.Status.WAITING_FOR_NAME);
 
-    DeciderCache cache = factory.getCache();
-    assertNotNull(cache);
-    assertEquals(1, cache.size());
-
     workflow.waitForName("World");
     String greeting = workflow.getGreeting();
 
     assertEquals("Hello World!", greeting);
     assertEquals(workflow.getProgress(), GreetingSignalWorkflow.Status.GREETING_GENERATED);
+
+    DeciderCache cache = factory.getCache();
+    assertNotNull(cache);
+    assertEquals(1, cache.size());
+
     wrapper.close();
+    factory.shutdown();
   }
 
   @Test
