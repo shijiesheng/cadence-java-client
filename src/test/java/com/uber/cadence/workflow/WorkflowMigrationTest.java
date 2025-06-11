@@ -32,6 +32,7 @@ import com.uber.cadence.migration.MigrationIWorkflowService;
 import com.uber.cadence.migration.MigrationInterceptorFactory;
 import com.uber.cadence.serviceclient.IWorkflowService;
 import com.uber.cadence.testUtils.CadenceTestRule;
+import com.uber.cadence.testUtils.RequiresDockerService;
 import com.uber.cadence.worker.Worker;
 import com.uber.cadence.worker.WorkerFactory;
 import com.uber.cadence.worker.WorkerFactoryOptions;
@@ -149,6 +150,7 @@ public class WorkflowMigrationTest {
   }
 
   @Test
+  @RequiresDockerService // test service doesn't support describe API yet
   public void cronWorkflowMigration() {
     String workflowID = UUID.randomUUID().toString();
     try {
@@ -166,6 +168,7 @@ public class WorkflowMigrationTest {
   }
 
   @Test
+  @RequiresDockerService // test service doesn't support describe API yet
   public void continueAsNewWorkflowMigration() {
     String workflowID = UUID.randomUUID().toString();
     try {
