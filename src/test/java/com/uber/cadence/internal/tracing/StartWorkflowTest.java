@@ -160,11 +160,7 @@ public class StartWorkflowTest {
     IWorkflowService service =
         new Thrift2ProtoAdapter(
             IGrpcServiceStubs.newInstance(
-                ClientOptions.newBuilder()
-                    .setTracer(mockTracer)
-                    .setHost("localhost")
-                    .setPort(7833)
-                    .build()));
+                ClientOptions.newBuilder().setTracer(mockTracer).setPort(7833).build()));
     testStartWorkflowHelper(service, mockTracer, true);
   }
 
@@ -175,11 +171,7 @@ public class StartWorkflowTest {
     IWorkflowService service =
         new Thrift2ProtoAdapter(
             IGrpcServiceStubs.newInstance(
-                ClientOptions.newBuilder()
-                    .setTracer(mockTracer)
-                    .setHost("localhost")
-                    .setPort(7833)
-                    .build()));
+                ClientOptions.newBuilder().setTracer(mockTracer).setPort(7833).build()));
     try {
       service.RegisterDomain(new RegisterDomainRequest().setName(DOMAIN));
     } catch (DomainAlreadyExistsError e) {
@@ -267,11 +259,7 @@ public class StartWorkflowTest {
     IWorkflowService service =
         new Thrift2ProtoAdapter(
             IGrpcServiceStubs.newInstance(
-                ClientOptions.newBuilder()
-                    .setTracer(mockTracer)
-                    .setHost("localhost")
-                    .setPort(7833)
-                    .build()));
+                ClientOptions.newBuilder().setTracer(mockTracer).setPort(7833).build()));
     testSignalWithStartWorkflowHelper(service, mockTracer, true);
   }
 
@@ -289,8 +277,7 @@ public class StartWorkflowTest {
     MockTracer mockTracer = new MockTracer();
     IWorkflowService service =
         new Thrift2ProtoAdapter(
-            IGrpcServiceStubs.newInstance(
-                ClientOptions.newBuilder().setHost("localhost").setPort(7833).build()));
+            IGrpcServiceStubs.newInstance(ClientOptions.newBuilder().setPort(7833).build()));
     testStartWorkflowHelper(service, mockTracer, false);
   }
 
@@ -308,8 +295,7 @@ public class StartWorkflowTest {
     MockTracer mockTracer = new MockTracer();
     IWorkflowService service =
         new Thrift2ProtoAdapter(
-            IGrpcServiceStubs.newInstance(
-                ClientOptions.newBuilder().setHost("localhost").setPort(7833).build()));
+            IGrpcServiceStubs.newInstance(ClientOptions.newBuilder().setPort(7833).build()));
     testSignalWithStartWorkflowHelper(service, mockTracer, false);
   }
 

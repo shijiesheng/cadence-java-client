@@ -43,7 +43,6 @@ public final class TestEnvironment {
 
   public static IWorkflowService getDockerService() {
     return new Thrift2ProtoAdapter(
-        IGrpcServiceStubs.newInstance(
-            ClientOptions.newBuilder().setHost("localhost").setPort(7833).build()));
+        IGrpcServiceStubs.newInstance(ClientOptions.newBuilder().setPort(7833).build()));
   }
 }
