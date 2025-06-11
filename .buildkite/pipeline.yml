@@ -52,6 +52,7 @@ steps:
 
   - label: ":java: Unit test with test services"
     artifact_paths:
+      - "build/reports/tests/test/**/*"
       - "build/reports/jacoco/test/jacocoTestReport.xml"
       - "build/reports/metadata.txt"
     timeout_in_minutes: 30
