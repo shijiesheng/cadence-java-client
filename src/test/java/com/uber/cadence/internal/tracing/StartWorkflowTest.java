@@ -30,6 +30,7 @@ import com.uber.cadence.internal.compatibility.proto.serviceclient.IGrpcServiceS
 import com.uber.cadence.serviceclient.ClientOptions;
 import com.uber.cadence.serviceclient.IWorkflowService;
 import com.uber.cadence.serviceclient.WorkflowServiceTChannel;
+import com.uber.cadence.testUtils.TestEnvironment;
 import com.uber.cadence.worker.Worker;
 import com.uber.cadence.worker.WorkerFactory;
 import com.uber.cadence.worker.WorkerFactoryOptions;
@@ -138,8 +139,7 @@ public class StartWorkflowTest {
     }
   }
 
-  private static final boolean useDockerService =
-      Boolean.parseBoolean(System.getenv("USE_DOCKER_SERVICE"));
+  private static final boolean useDockerService = TestEnvironment.isUseDockerService();
   private static final Logger logger = LoggerFactory.getLogger(StartWorkflowTest.class);
   private static final String DOMAIN = "test-domain";
   private static final String TASK_LIST = "test-tasklist";

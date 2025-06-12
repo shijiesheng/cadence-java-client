@@ -26,7 +26,7 @@ container:
           resources:
             requests:
               cpu: 7500m
-              memory: 30G
+              memory: 60G
       volumes:
       - name: docker-sock
         emptyDir: {}
@@ -52,6 +52,7 @@ steps:
 
   - label: ":java: Unit test with test services"
     artifact_paths:
+      - "build/reports/tests/test/**/*"
       - "build/reports/jacoco/test/jacocoTestReport.xml"
       - "build/reports/metadata.txt"
     timeout_in_minutes: 30
@@ -80,6 +81,8 @@ steps:
       automatic:
         - exit_status: "*"
           limit: 3
+    artifact_paths:
+      - "build/reports/tests/test/**/*"
     plugins:
       - kubernetes:
           <<: *kubernetes
@@ -100,6 +103,8 @@ steps:
       automatic:
         - exit_status: "*"
           limit: 3
+    artifact_paths:
+      - "build/reports/tests/test/**/*"
     plugins:
       - kubernetes:
           <<: *kubernetes

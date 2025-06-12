@@ -20,9 +20,8 @@ package com.uber.cadence.workerFactory;
 import static org.junit.Assert.*;
 
 import com.uber.cadence.client.WorkflowClient;
-import com.uber.cadence.serviceclient.ClientOptions;
 import com.uber.cadence.serviceclient.IWorkflowService;
-import com.uber.cadence.serviceclient.WorkflowServiceTChannel;
+import com.uber.cadence.testUtils.TestEnvironment;
 import com.uber.cadence.worker.WorkerFactory;
 import java.util.concurrent.TimeUnit;
 import org.junit.After;
@@ -33,8 +32,7 @@ import org.junit.Test;
 
 public class WorkerFactoryTests {
 
-  private static final boolean useDockerService =
-      Boolean.parseBoolean(System.getenv("USE_DOCKER_SERVICE"));
+  private static final boolean useDockerService = TestEnvironment.isUseDockerService();
 
   @BeforeClass
   public static void beforeClass() {
@@ -47,7 +45,7 @@ public class WorkerFactoryTests {
 
   @Before
   public void setUp() {
-    service = new WorkflowServiceTChannel(ClientOptions.defaultInstance());
+    service = TestEnvironment.getDockerService();
     client = WorkflowClient.newInstance(service);
     factory = WorkerFactory.newInstance(client);
   }

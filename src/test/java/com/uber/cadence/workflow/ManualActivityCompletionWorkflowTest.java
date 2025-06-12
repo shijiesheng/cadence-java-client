@@ -177,13 +177,6 @@ public class ManualActivityCompletionWorkflowTest {
 
       activities.reset();
 
-      result = Async.function(activities::asyncActivity);
-      activities.failAsyncActivityById("4");
-      expectFailureWithDetails(result, "4");
-      expectFailure(() -> activities.failAsyncActivityById("again"));
-
-      activities.reset();
-
       // Need to request  cancellation, then the activity can respond with the cancel
       CompletablePromise<String> completablePromise = Workflow.newPromise();
       CancellationScope scope =

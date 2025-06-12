@@ -3,22 +3,20 @@ package com.uber.cadence;
 import static com.uber.cadence.testUtils.TestEnvironment.DOMAIN;
 import static com.uber.cadence.testUtils.TestEnvironment.DOMAIN2;
 
-import com.uber.cadence.serviceclient.ClientOptions;
 import com.uber.cadence.serviceclient.IWorkflowService;
-import com.uber.cadence.serviceclient.WorkflowServiceTChannel;
+import com.uber.cadence.testUtils.TestEnvironment;
 import org.apache.thrift.TException;
 
 /** Waits for local service to become available and registers UnitTest domain. */
 public class RegisterTestDomain {
-  private static final boolean useDockerService =
-      Boolean.parseBoolean(System.getenv("USE_DOCKER_SERVICE"));
+  private static final boolean useDockerService = TestEnvironment.isUseDockerService();
 
   public static void main(String[] args) throws InterruptedException {
     if (!useDockerService) {
       return;
     }
 
-    IWorkflowService service = new WorkflowServiceTChannel(ClientOptions.defaultInstance());
+    IWorkflowService service = TestEnvironment.getDockerService();
     registerDomain(service, DOMAIN);
     registerDomain(service, DOMAIN2);
     System.exit(0);
