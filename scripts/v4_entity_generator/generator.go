@@ -297,10 +297,7 @@ func baseTypeMapper(t ast.BaseType, usePrimitive bool) (string, error) {
 	case ast.StringTypeID:
 		return "String", nil
 	case ast.BinaryTypeID:
-		if usePrimitive {
-			return "byte[]", nil
-		}
-		return "BytesBuffer", nil
+		return "byte[]", nil
 	default:
 		return "", fmt.Errorf("unknown base type: %v", t.ID)
 	}

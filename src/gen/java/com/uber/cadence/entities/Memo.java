@@ -21,5 +21,5 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class Memo {
-  private Map<String, BytesBuffer> fields;
+  private Map<String, byte[]> fields;
 }
