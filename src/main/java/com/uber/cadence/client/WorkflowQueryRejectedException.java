@@ -17,9 +17,9 @@
 
 package com.uber.cadence.client;
 
-import com.uber.cadence.QueryRejectCondition;
-import com.uber.cadence.WorkflowExecution;
-import com.uber.cadence.WorkflowExecutionCloseStatus;
+import com.uber.cadence.entities.QueryRejectCondition;
+import com.uber.cadence.entities.WorkflowExecution;
+import com.uber.cadence.entities.WorkflowExecutionCloseStatus;
 
 public final class WorkflowQueryRejectedException extends WorkflowQueryException {
 

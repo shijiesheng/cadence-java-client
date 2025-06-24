@@ -17,9 +17,9 @@
 
 package com.uber.cadence.internal.tracing;
 
-import com.uber.cadence.Header;
-import com.uber.cadence.PollForActivityTaskResponse;
-import com.uber.cadence.WorkflowExecutionStartedEventAttributes;
+import com.uber.cadence.entities.Header;
+import com.uber.cadence.entities.PollForActivityTaskResponse;
+import com.uber.cadence.entities.WorkflowExecutionStartedEventAttributes;
 import com.uber.cadence.internal.replay.DecisionContext;
 import com.uber.cadence.internal.replay.ExecuteLocalActivityParameters;
 import com.uber.cadence.internal.worker.LocalActivityWorker.Task;
@@ -30,7 +30,6 @@ import io.opentracing.Tracer;
 import io.opentracing.noop.NoopSpan;
 import io.opentracing.propagation.*;
 import io.opentracing.propagation.Format;
-import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -83,15 +82,19 @@ public class TracingPropagator {
         .addReference(
             References.FOLLOWS_FROM, parent != NoopSpan.INSTANCE.context() ? parent : null)
         .withTag(
-            TAG_WORKFLOW_TYPE, task.isSetWorkflowType() ? task.getWorkflowType().getName() : "null")
+            TAG_WORKFLOW_TYPE,
+            task.getWorkflowType() != null ? task.getWorkflowType().getName() : "null")
         .withTag(
             TAG_WORKFLOW_ID,
-            task.isSetWorkflowExecution() ? task.getWorkflowExecution().getWorkflowId() : "null")
+            task.getWorkflowExecution() != null
+                ? task.getWorkflowExecution().getWorkflowId()
+                : "null")
         .withTag(
             TAG_WORKFLOW_RUN_ID,
-            task.isSetWorkflowExecution() ? task.getWorkflowExecution().getRunId() : "null")
+            task.getWorkflowExecution() != null ? task.getWorkflowExecution().getRunId() : "null")
         .withTag(
-            TAG_ACTIVITY_TYPE, task.isSetActivityType() ? task.getActivityType().getName() : "null")
+            TAG_ACTIVITY_TYPE,
+            task.getActivityType() != null ? task.getActivityType().getName() : "null")
         .start();
   }
 
@@ -121,10 +124,9 @@ public class TracingPropagator {
 
   public void inject(Header header) {
     Map<String, String> context = getCurrentContext();
-    context.forEach(
-        (k, v) -> {
-          header.putToFields(k, ByteBuffer.wrap(v.getBytes()));
-        });
+    Map<String, byte[]> fields = new HashMap<>();
+    context.forEach((k, v) -> fields.put(k, v.getBytes()));
+    header.setFields(fields);
   }
 
   private Map<String, String> getCurrentContext() {
@@ -156,13 +158,6 @@ public class TracingPropagator {
                 .getFields()
                 .entrySet()
                 .stream()
-                .collect(
-                    Collectors.toMap(
-                        Map.Entry::getKey,
-                        e -> {
-                          byte[] bytes = new byte[e.getValue().remaining()];
-                          e.getValue().duplicate().get(bytes);
-                          return new String(bytes);
-                        }))));
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> new String(e.getValue())))));
   }
 }

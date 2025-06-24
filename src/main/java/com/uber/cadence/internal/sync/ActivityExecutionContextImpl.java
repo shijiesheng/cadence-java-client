@@ -17,12 +17,6 @@
 
 package com.uber.cadence.internal.sync;
 
-import com.uber.cadence.BadRequestError;
-import com.uber.cadence.EntityNotExistsError;
-import com.uber.cadence.RecordActivityTaskHeartbeatRequest;
-import com.uber.cadence.RecordActivityTaskHeartbeatResponse;
-import com.uber.cadence.WorkflowExecution;
-import com.uber.cadence.WorkflowExecutionAlreadyCompletedError;
 import com.uber.cadence.activity.ActivityTask;
 import com.uber.cadence.client.ActivityCancelledException;
 import com.uber.cadence.client.ActivityCompletionException;
@@ -30,7 +24,14 @@ import com.uber.cadence.client.ActivityCompletionFailureException;
 import com.uber.cadence.client.ActivityNotExistsException;
 import com.uber.cadence.client.ActivityWorkerShutdownException;
 import com.uber.cadence.converter.DataConverter;
-import com.uber.cadence.serviceclient.IWorkflowService;
+import com.uber.cadence.entities.BadRequestError;
+import com.uber.cadence.entities.BaseError;
+import com.uber.cadence.entities.EntityNotExistsError;
+import com.uber.cadence.entities.RecordActivityTaskHeartbeatRequest;
+import com.uber.cadence.entities.RecordActivityTaskHeartbeatResponse;
+import com.uber.cadence.entities.WorkflowExecution;
+import com.uber.cadence.entities.WorkflowExecutionAlreadyCompletedError;
+import com.uber.cadence.serviceclient.IWorkflowServiceV4;
 import java.lang.reflect.Type;
 import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
@@ -38,7 +39,6 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import org.apache.thrift.TException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,7 +54,7 @@ class ActivityExecutionContextImpl implements ActivityExecutionContext {
   private static final long HEARTBEAT_RETRY_WAIT_MILLIS = 1000;
   private static final long MAX_HEARTBEAT_INTERVAL_MILLIS = 30000;
 
-  private final IWorkflowService service;
+  private final IWorkflowServiceV4 service;
   private final String domain;
   private final ActivityTask task;
   private final DataConverter dataConverter;
@@ -69,7 +69,7 @@ class ActivityExecutionContextImpl implements ActivityExecutionContext {
 
   /** Create an ActivityExecutionContextImpl with the given attributes. */
   ActivityExecutionContextImpl(
-      IWorkflowService service,
+      IWorkflowServiceV4 service,
       String domain,
       ActivityTask task,
       DataConverter dataConverter,
@@ -132,7 +132,7 @@ class ActivityExecutionContextImpl implements ActivityExecutionContext {
       sendHeartbeatRequest(details);
       hasOutstandingHeartbeat = false;
       nextHeartbeatDelay = heartbeatIntervalMillis;
-    } catch (TException e) {
+    } catch (BaseError e) {
       // Not rethrowing to not fail activity implementation on intermittent connection or Cadence
       // errors.
       log.warn("Heartbeat failed.", e);
@@ -162,7 +162,7 @@ class ActivityExecutionContextImpl implements ActivityExecutionContext {
             TimeUnit.MILLISECONDS);
   }
 
-  private void sendHeartbeatRequest(Object details) throws TException {
+  private void sendHeartbeatRequest(Object details) throws BaseError {
     RecordActivityTaskHeartbeatRequest r = new RecordActivityTaskHeartbeatRequest();
     r.setTaskToken(task.getTaskToken());
     byte[] serialized = dataConverter.toData(details);
@@ -202,7 +202,7 @@ class ActivityExecutionContextImpl implements ActivityExecutionContext {
 
   /** @see ActivityExecutionContext#getService() */
   @Override
-  public IWorkflowService getService() {
+  public IWorkflowServiceV4 getService() {
     return service;
   }
 

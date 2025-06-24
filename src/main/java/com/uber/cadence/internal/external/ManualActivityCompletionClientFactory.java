@@ -17,7 +17,7 @@
 
 package com.uber.cadence.internal.external;
 
-import com.uber.cadence.WorkflowExecution;
+import com.uber.cadence.entities.WorkflowExecution;
 
 public abstract class ManualActivityCompletionClientFactory {
 

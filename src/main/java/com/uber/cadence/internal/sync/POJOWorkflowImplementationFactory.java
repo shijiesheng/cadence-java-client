@@ -21,10 +21,10 @@ import static com.uber.cadence.internal.errors.ErrorType.UNKNOWN_WORKFLOW_TYPE;
 import static com.uber.cadence.worker.NonDeterministicWorkflowPolicy.FailWorkflow;
 
 import com.google.common.reflect.TypeToken;
-import com.uber.cadence.WorkflowType;
 import com.uber.cadence.context.ContextPropagator;
 import com.uber.cadence.converter.DataConverter;
 import com.uber.cadence.converter.DataConverterException;
+import com.uber.cadence.entities.WorkflowType;
 import com.uber.cadence.internal.common.CheckedExceptionWrapper;
 import com.uber.cadence.internal.common.InternalUtils;
 import com.uber.cadence.internal.metrics.MetricsType;

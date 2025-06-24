@@ -17,11 +17,11 @@
 
 package com.uber.cadence.internal.replay;
 
-import com.uber.cadence.CancelTimerDecisionAttributes;
-import com.uber.cadence.Decision;
-import com.uber.cadence.DecisionType;
-import com.uber.cadence.HistoryEvent;
-import com.uber.cadence.StartTimerDecisionAttributes;
+import com.uber.cadence.entities.CancelTimerDecisionAttributes;
+import com.uber.cadence.entities.Decision;
+import com.uber.cadence.entities.DecisionType;
+import com.uber.cadence.entities.HistoryEvent;
+import com.uber.cadence.entities.StartTimerDecisionAttributes;
 
 /**
  * Timer doesn't have separate initiation decision as it is started immediately. But from the state

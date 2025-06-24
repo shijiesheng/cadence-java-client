@@ -17,8 +17,8 @@
 
 package com.uber.cadence.workflow;
 
-import com.uber.cadence.WorkflowIdReusePolicy;
 import com.uber.cadence.client.WorkflowOptions;
+import com.uber.cadence.entities.WorkflowIdReusePolicy;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

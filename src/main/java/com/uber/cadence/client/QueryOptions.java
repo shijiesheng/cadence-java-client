@@ -17,8 +17,8 @@
 
 package com.uber.cadence.client;
 
-import com.uber.cadence.QueryConsistencyLevel;
-import com.uber.cadence.QueryRejectCondition;
+import com.uber.cadence.entities.QueryConsistencyLevel;
+import com.uber.cadence.entities.QueryRejectCondition;
 import java.util.Objects;
 
 public final class QueryOptions {

@@ -17,7 +17,7 @@
 
 package com.uber.cadence.client;
 
-import com.uber.cadence.WorkflowExecution;
+import com.uber.cadence.entities.WorkflowExecution;
 import com.uber.cadence.internal.common.CheckedExceptionWrapper;
 import java.util.Optional;
 

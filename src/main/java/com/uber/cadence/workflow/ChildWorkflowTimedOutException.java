@@ -17,8 +17,8 @@
 
 package com.uber.cadence.workflow;
 
-import com.uber.cadence.WorkflowExecution;
-import com.uber.cadence.WorkflowType;
+import com.uber.cadence.entities.WorkflowExecution;
+import com.uber.cadence.entities.WorkflowType;
 
 /**
  * Indicates that a child workflow exceeded its execution timeout and was forcefully terminated by

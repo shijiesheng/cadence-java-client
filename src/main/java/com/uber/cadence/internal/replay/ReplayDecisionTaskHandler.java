@@ -19,23 +19,23 @@ package com.uber.cadence.internal.replay;
 
 import static com.uber.cadence.internal.common.InternalUtils.createStickyTaskList;
 
-import com.uber.cadence.GetWorkflowExecutionHistoryRequest;
-import com.uber.cadence.GetWorkflowExecutionHistoryResponse;
-import com.uber.cadence.HistoryEvent;
-import com.uber.cadence.PollForDecisionTaskResponse;
-import com.uber.cadence.QueryTaskCompletedType;
-import com.uber.cadence.RespondDecisionTaskCompletedRequest;
-import com.uber.cadence.RespondDecisionTaskFailedRequest;
-import com.uber.cadence.RespondQueryTaskCompletedRequest;
-import com.uber.cadence.StickyExecutionAttributes;
-import com.uber.cadence.WorkflowExecution;
-import com.uber.cadence.WorkflowType;
+import com.uber.cadence.entities.GetWorkflowExecutionHistoryRequest;
+import com.uber.cadence.entities.GetWorkflowExecutionHistoryResponse;
+import com.uber.cadence.entities.HistoryEvent;
+import com.uber.cadence.entities.PollForDecisionTaskResponse;
+import com.uber.cadence.entities.QueryTaskCompletedType;
+import com.uber.cadence.entities.RespondDecisionTaskCompletedRequest;
+import com.uber.cadence.entities.RespondDecisionTaskFailedRequest;
+import com.uber.cadence.entities.RespondQueryTaskCompletedRequest;
+import com.uber.cadence.entities.StickyExecutionAttributes;
+import com.uber.cadence.entities.WorkflowExecution;
+import com.uber.cadence.entities.WorkflowType;
 import com.uber.cadence.internal.common.WorkflowExecutionUtils;
 import com.uber.cadence.internal.metrics.MetricsType;
 import com.uber.cadence.internal.worker.DecisionTaskHandler;
 import com.uber.cadence.internal.worker.LocalActivityWorker;
 import com.uber.cadence.internal.worker.SingleWorkerOptions;
-import com.uber.cadence.serviceclient.IWorkflowService;
+import com.uber.cadence.serviceclient.IWorkflowServiceV4;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
@@ -56,7 +56,7 @@ public final class ReplayDecisionTaskHandler implements DecisionTaskHandler {
   private final DeciderCache cache;
   private final SingleWorkerOptions options;
   private final Duration stickyTaskListScheduleToStartTimeout;
-  private IWorkflowService service;
+  private IWorkflowServiceV4 service;
   private String stickyTaskListName;
   private final BiFunction<LocalActivityWorker.Task, Duration, Boolean> laTaskPoller;
 
@@ -67,7 +67,7 @@ public final class ReplayDecisionTaskHandler implements DecisionTaskHandler {
       SingleWorkerOptions options,
       String stickyTaskListName,
       Duration stickyTaskListScheduleToStartTimeout,
-      IWorkflowService service,
+      IWorkflowServiceV4 service,
       BiFunction<LocalActivityWorker.Task, Duration, Boolean> laTaskPoller) {
     this.domain = domain;
     this.workflowFactory = asyncWorkflowFactory;
@@ -119,7 +119,7 @@ public final class ReplayDecisionTaskHandler implements DecisionTaskHandler {
 
   private Result handleDecisionTaskImpl(PollForDecisionTaskResponse decisionTask) throws Throwable {
 
-    if (decisionTask.isSetQuery()) {
+    if (decisionTask.getQuery() != null) {
       return processQuery(decisionTask);
     } else {
       return processDecision(decisionTask);

@@ -17,12 +17,12 @@
 package com.uber.cadence.worker;
 
 import com.google.common.base.MoreObjects;
-import com.uber.cadence.StartWorkflowExecutionRequest;
-import com.uber.cadence.TaskList;
-import com.uber.cadence.WorkflowExecutionAlreadyStartedError;
-import com.uber.cadence.WorkflowIdReusePolicy;
-import com.uber.cadence.WorkflowType;
 import com.uber.cadence.client.WorkflowClient;
+import com.uber.cadence.entities.StartWorkflowExecutionRequest;
+import com.uber.cadence.entities.TaskList;
+import com.uber.cadence.entities.WorkflowExecutionAlreadyStartedError;
+import com.uber.cadence.entities.WorkflowIdReusePolicy;
+import com.uber.cadence.entities.WorkflowType;
 import com.uber.cadence.internal.common.InternalUtils;
 import com.uber.cadence.internal.common.RpcRetryer;
 import com.uber.cadence.internal.metrics.MetricsTag;
@@ -33,7 +33,7 @@ import com.uber.cadence.internal.shadowing.ScanWorkflowActivityImpl;
 import com.uber.cadence.internal.sync.SyncActivityWorker;
 import com.uber.cadence.internal.worker.SingleWorkerOptions;
 import com.uber.cadence.internal.worker.Suspendable;
-import com.uber.cadence.serviceclient.IWorkflowService;
+import com.uber.cadence.serviceclient.IWorkflowServiceV4;
 import com.uber.cadence.shadower.WorkflowParams;
 import com.uber.cadence.shadower.shadowerConstants;
 import com.uber.cadence.testing.TestEnvironmentOptions;
@@ -49,7 +49,7 @@ import org.apache.thrift.protocol.TSimpleJSONProtocol;
 
 public final class ShadowingWorker implements Suspendable {
 
-  private final IWorkflowService service;
+  private final IWorkflowServiceV4 service;
   private final SyncActivityWorker activityWorker;
   private final ReplayWorkflowActivity replayActivity;
   private final String taskList;

@@ -19,13 +19,13 @@ package com.uber.cadence.internal.sync;
 
 import static com.uber.cadence.internal.errors.ErrorType.UNKNOWN_WORKFLOW_TYPE;
 
-import com.uber.cadence.EventType;
-import com.uber.cadence.HistoryEvent;
-import com.uber.cadence.WorkflowQuery;
-import com.uber.cadence.WorkflowType;
 import com.uber.cadence.client.WorkflowClient;
 import com.uber.cadence.context.ContextPropagator;
 import com.uber.cadence.converter.DataConverter;
+import com.uber.cadence.entities.EventType;
+import com.uber.cadence.entities.HistoryEvent;
+import com.uber.cadence.entities.WorkflowQuery;
+import com.uber.cadence.entities.WorkflowType;
 import com.uber.cadence.internal.replay.DeciderCache;
 import com.uber.cadence.internal.replay.DecisionContext;
 import com.uber.cadence.internal.replay.ReplayWorkflow;

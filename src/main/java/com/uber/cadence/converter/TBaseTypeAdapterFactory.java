@@ -23,12 +23,12 @@ import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import com.uber.cadence.entities.BaseError;
 import com.uber.m3.tally.Scope;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import org.apache.thrift.TBase;
 import org.apache.thrift.TDeserializer;
-import org.apache.thrift.TException;
 import org.apache.thrift.TSerializer;
 import org.apache.thrift.protocol.TJSONProtocol;
 import org.slf4j.Logger;
@@ -67,7 +67,7 @@ public class TBaseTypeAdapterFactory implements TypeAdapterFactory {
               logger.warn(
                   "TBase message will no longer be support in cadence-java-client V4, payload {}",
                   result);
-            } catch (TException e) {
+            } catch (BaseError e) {
               throw new DataConverterException("Failed to serialize TBase", e);
             }
           }

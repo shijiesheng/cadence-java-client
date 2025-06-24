@@ -21,11 +21,11 @@ import static com.uber.cadence.internal.common.InternalUtils.getWorkflowMethod;
 import static com.uber.cadence.internal.common.InternalUtils.getWorkflowType;
 
 import com.google.common.base.Defaults;
-import com.uber.cadence.WorkflowExecution;
-import com.uber.cadence.WorkflowIdReusePolicy;
 import com.uber.cadence.client.*;
 import com.uber.cadence.common.CronSchedule;
 import com.uber.cadence.common.MethodRetry;
+import com.uber.cadence.entities.WorkflowExecution;
+import com.uber.cadence.entities.WorkflowIdReusePolicy;
 import com.uber.cadence.internal.common.InternalUtils;
 import com.uber.cadence.internal.external.GenericWorkflowClientExternal;
 import com.uber.cadence.workflow.QueryMethod;

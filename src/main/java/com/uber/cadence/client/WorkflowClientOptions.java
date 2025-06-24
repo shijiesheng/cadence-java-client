@@ -17,10 +17,10 @@
 
 package com.uber.cadence.client;
 
-import com.uber.cadence.QueryRejectCondition;
 import com.uber.cadence.context.ContextPropagator;
 import com.uber.cadence.converter.DataConverter;
 import com.uber.cadence.converter.JsonDataConverter;
+import com.uber.cadence.entities.QueryRejectCondition;
 import com.uber.cadence.internal.metrics.MetricsTag;
 import com.uber.cadence.internal.metrics.NoopScope;
 import com.uber.m3.tally.Scope;

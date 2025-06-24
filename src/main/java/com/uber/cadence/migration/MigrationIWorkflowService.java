@@ -18,18 +18,18 @@
 package com.uber.cadence.migration;
 
 import com.google.common.base.Strings;
-import com.uber.cadence.*;
+import com.uber.cadence.entities.*;
+import com.uber.cadence.entities.BaseError;
 import com.uber.cadence.serviceclient.ClientOptions;
-import com.uber.cadence.serviceclient.IWorkflowService;
 import com.uber.cadence.serviceclient.IWorkflowServiceBase;
+import com.uber.cadence.serviceclient.IWorkflowServiceV4;
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
-import org.apache.thrift.TException;
 
 public class MigrationIWorkflowService extends IWorkflowServiceBase {
 
-  private IWorkflowService serviceOld, serviceNew;
+  private IWorkflowServiceV4 serviceOld, serviceNew;
   private String domainOld, domainNew;
   private static final int _defaultPageSize = 10;
   private static final String _listWorkflow = "_listWorkflow";
@@ -37,9 +37,9 @@ public class MigrationIWorkflowService extends IWorkflowServiceBase {
   byte[] _marker = "to".getBytes();
 
   public MigrationIWorkflowService(
-      IWorkflowService serviceOld,
+      IWorkflowServiceV4 serviceOld,
       String domainOld,
-      IWorkflowService serviceNew,
+      IWorkflowServiceV4 serviceNew,
       String domainNew) {
     this.serviceOld = serviceOld;
     this.domainOld = domainOld;
@@ -54,7 +54,7 @@ public class MigrationIWorkflowService extends IWorkflowServiceBase {
 
   @Override
   public StartWorkflowExecutionResponse StartWorkflowExecution(
-      StartWorkflowExecutionRequest startRequest) throws TException {
+      StartWorkflowExecutionRequest startRequest) throws BaseError {
 
     if (shouldStartInNew(startRequest.getWorkflowId()))
       return serviceNew.StartWorkflowExecution(startRequest);
@@ -67,7 +67,7 @@ public class MigrationIWorkflowService extends IWorkflowServiceBase {
       StartWorkflowExecutionAsyncRequest startRequest)
       throws BadRequestError, WorkflowExecutionAlreadyStartedError, ServiceBusyError,
           DomainNotActiveError, LimitExceededError, EntityNotExistsError,
-          ClientVersionNotSupportedError, TException {
+          ClientVersionNotSupportedError, BaseError {
 
     if (shouldStartInNew(startRequest.getRequest().getWorkflowId())) {
       return serviceNew.StartWorkflowExecutionAsync(startRequest);
@@ -85,7 +85,7 @@ public class MigrationIWorkflowService extends IWorkflowServiceBase {
    */
   @Override
   public StartWorkflowExecutionResponse SignalWithStartWorkflowExecution(
-      SignalWithStartWorkflowExecutionRequest signalWithStartRequest) throws TException {
+      SignalWithStartWorkflowExecutionRequest signalWithStartRequest) throws BaseError {
     if (shouldStartInNew(signalWithStartRequest.getWorkflowId()))
       return serviceNew.SignalWithStartWorkflowExecution(signalWithStartRequest);
     return serviceOld.SignalWithStartWorkflowExecution(signalWithStartRequest);
@@ -96,7 +96,7 @@ public class MigrationIWorkflowService extends IWorkflowServiceBase {
       SignalWithStartWorkflowExecutionAsyncRequest signalWithStartRequest)
       throws BadRequestError, WorkflowExecutionAlreadyStartedError, ServiceBusyError,
           DomainNotActiveError, LimitExceededError, EntityNotExistsError,
-          ClientVersionNotSupportedError, TException {
+          ClientVersionNotSupportedError, BaseError {
     if (shouldStartInNew(signalWithStartRequest.getRequest().getWorkflowId())) {
       return serviceNew.SignalWithStartWorkflowExecutionAsync(signalWithStartRequest);
     }
@@ -111,7 +111,7 @@ public class MigrationIWorkflowService extends IWorkflowServiceBase {
    */
   @Override
   public void SignalWorkflowExecution(SignalWorkflowExecutionRequest signalRequest)
-      throws TException {
+      throws BaseError {
     if (shouldStartInNew(signalRequest.getWorkflowExecution().getWorkflowId()))
       serviceNew.SignalWorkflowExecution(signalRequest);
     else serviceOld.SignalWorkflowExecution(signalRequest);
@@ -121,7 +121,7 @@ public class MigrationIWorkflowService extends IWorkflowServiceBase {
   public RestartWorkflowExecutionResponse RestartWorkflowExecution(
       RestartWorkflowExecutionRequest restartRequest)
       throws BadRequestError, ServiceBusyError, DomainNotActiveError, LimitExceededError,
-          EntityNotExistsError, ClientVersionNotSupportedError, TException {
+          EntityNotExistsError, ClientVersionNotSupportedError, BaseError {
     if (shouldStartInNew(restartRequest.getWorkflowExecution().getWorkflowId())) {
       return serviceNew.RestartWorkflowExecution(restartRequest);
     }
@@ -131,8 +131,8 @@ public class MigrationIWorkflowService extends IWorkflowServiceBase {
 
   @Override
   public GetWorkflowExecutionHistoryResponse GetWorkflowExecutionHistory(
-      GetWorkflowExecutionHistoryRequest getRequest) throws TException {
-    if (shouldStartInNew(getRequest.execution.getWorkflowId()))
+      GetWorkflowExecutionHistoryRequest getRequest) throws BaseError {
+    if (shouldStartInNew(getRequest.getExecution().getWorkflowId()))
       return serviceNew.GetWorkflowExecutionHistory(getRequest);
     return serviceOld.GetWorkflowExecutionHistory(getRequest);
   }
@@ -141,7 +141,7 @@ public class MigrationIWorkflowService extends IWorkflowServiceBase {
       ListWorkflowExecutionsRequest listWorkflowExecutionsRequest,
       int pageSizeOverride,
       String searchType)
-      throws TException {
+      throws BaseError {
 
     if (pageSizeOverride != 0) {
       listWorkflowExecutionsRequest.setPageSize(pageSizeOverride);
@@ -159,7 +159,7 @@ public class MigrationIWorkflowService extends IWorkflowServiceBase {
       ListWorkflowExecutionsRequest listWorkflowExecutionsRequest,
       ListWorkflowExecutionsResponse response,
       String searchType)
-      throws TException {
+      throws BaseError {
     int responsePageSize = response.getExecutions().size();
     int neededPageSize = listWorkflowExecutionsRequest.getPageSize() - responsePageSize;
 
@@ -196,24 +196,24 @@ public class MigrationIWorkflowService extends IWorkflowServiceBase {
    * @return The ListWorkflowExecutionsResponse containing a list of WorkflowExecutionInfo
    *     representing the workflow executions that match the query criteria. The response also
    *     includes a nextPageToken to support pagination.
-   * @throws TException if there's any communication error with the underlying workflow service.
+   * @throws BaseError if there's any communication error with the underlying workflow service.
    * @throws BadRequestError if the provided ListWorkflowExecutionsRequest is invalid (null or lacks
    *     a domain).
    */
   @Override
   public ListWorkflowExecutionsResponse ListWorkflowExecutions(
-      ListWorkflowExecutionsRequest listRequest) throws TException {
+      ListWorkflowExecutionsRequest listRequest) throws BaseError {
 
     if (listRequest == null) {
       throw new BadRequestError("List request is null");
     } else if (Strings.isNullOrEmpty(listRequest.getDomain())) {
       throw new BadRequestError("Domain is null or empty");
     }
-    if (!listRequest.isSetPageSize()) {
-      listRequest.pageSize = _defaultPageSize;
+    if (listRequest.getPageSize() == 0) {
+      listRequest.setPageSize(_defaultPageSize);
     }
 
-    if (!listRequest.isSetNextPageToken()
+    if (listRequest.getNextPageToken() == null
         || listRequest.getNextPageToken().length == 0
         || hasPrefix(listRequest.getNextPageToken(), _marker)) {
       if (hasPrefix(listRequest.getNextPageToken(), _marker) == true) {
@@ -253,23 +253,23 @@ public class MigrationIWorkflowService extends IWorkflowServiceBase {
    *
    * @param listRequest The ListWorkflowExecutionsRequest containing query parameters.
    * @return The ListWorkflowExecutionsResponse with WorkflowExecutionInfo and nextPageToken.
-   * @throws TException if there's any communication error with the workflow service.
+   * @throws BaseError if there's any communication error with the workflow service.
    * @throws BadRequestError if the provided ListWorkflowExecutionsRequest is invalid.
    */
   @Override
   public ListWorkflowExecutionsResponse ScanWorkflowExecutions(
-      ListWorkflowExecutionsRequest listRequest) throws TException {
+      ListWorkflowExecutionsRequest listRequest) throws BaseError {
     ListWorkflowExecutionsResponse response;
     if (listRequest == null) {
       throw new BadRequestError("List request is null");
     } else if (Strings.isNullOrEmpty(listRequest.getDomain())) {
       throw new BadRequestError("Domain is null or empty");
     }
-    if (!listRequest.isSetPageSize()) {
-      listRequest.pageSize = _defaultPageSize;
+    if (listRequest.getPageSize() == 0) {
+      listRequest.setPageSize(_defaultPageSize);
     }
 
-    if (!listRequest.isSetNextPageToken()
+    if (listRequest.getNextPageToken() == null
         || listRequest.getNextPageToken().length == 0
         || hasPrefix(listRequest.getNextPageToken(), _marker)) {
       if (hasPrefix(listRequest.getNextPageToken(), _marker)) {
@@ -302,18 +302,18 @@ public class MigrationIWorkflowService extends IWorkflowServiceBase {
 
   @Override
   public ListOpenWorkflowExecutionsResponse ListOpenWorkflowExecutions(
-      ListOpenWorkflowExecutionsRequest listRequest) throws TException {
+      ListOpenWorkflowExecutionsRequest listRequest) throws BaseError {
     ListOpenWorkflowExecutionsResponse response;
     if (listRequest == null) {
       throw new BadRequestError("List request is null");
     } else if (Strings.isNullOrEmpty(listRequest.getDomain())) {
       throw new BadRequestError("Domain is null or empty");
     }
-    if (!listRequest.isSetMaximumPageSize()) {
-      listRequest.maximumPageSize = _defaultPageSize;
+    if (listRequest.getMaximumPageSize() == 0) {
+      listRequest.setMaximumPageSize(_defaultPageSize);
     }
 
-    if (!listRequest.isSetNextPageToken()
+    if (listRequest.getNextPageToken() == null
         || listRequest.getNextPageToken().length == 0
         || hasPrefix(listRequest.getNextPageToken(), _marker)) {
       if (hasPrefix(listRequest.getNextPageToken(), _marker)) {
@@ -326,13 +326,11 @@ public class MigrationIWorkflowService extends IWorkflowServiceBase {
       response = serviceNew.ListOpenWorkflowExecutions(listRequest);
       if (response == null) return serviceOld.ListOpenWorkflowExecutions(listRequest);
 
-      if (response.getExecutionsSize() < listRequest.getMaximumPageSize()) {
-        int neededPageSize = listRequest.getMaximumPageSize() - response.getExecutionsSize();
-        ListOpenWorkflowExecutionsRequest copiedRequest =
-            new ListOpenWorkflowExecutionsRequest(listRequest);
-        copiedRequest.maximumPageSize = neededPageSize;
+      if (response.getExecutions().size() < listRequest.getMaximumPageSize()) {
+        int neededPageSize = listRequest.getMaximumPageSize() - response.getExecutions().size();
+        listRequest.setMaximumPageSize(neededPageSize);
         ListOpenWorkflowExecutionsResponse fromResponse =
-            serviceOld.ListOpenWorkflowExecutions(copiedRequest);
+            serviceOld.ListOpenWorkflowExecutions(listRequest);
         if (fromResponse == null) return response;
 
         fromResponse.getExecutions().addAll(response.getExecutions());
@@ -355,18 +353,18 @@ public class MigrationIWorkflowService extends IWorkflowServiceBase {
 
   @Override
   public ListClosedWorkflowExecutionsResponse ListClosedWorkflowExecutions(
-      ListClosedWorkflowExecutionsRequest listRequest) throws TException {
+      ListClosedWorkflowExecutionsRequest listRequest) throws BaseError {
     ListClosedWorkflowExecutionsResponse response;
     if (listRequest == null) {
       throw new BadRequestError("List request is null");
     } else if (Strings.isNullOrEmpty(listRequest.getDomain())) {
       throw new BadRequestError("Domain is null or empty");
     }
-    if (!listRequest.isSetMaximumPageSize()) {
-      listRequest.maximumPageSize = _defaultPageSize;
+    if (listRequest.getMaximumPageSize() == 0) {
+      listRequest.setMaximumPageSize(_defaultPageSize);
     }
 
-    if (!listRequest.isSetNextPageToken()
+    if (listRequest.getNextPageToken() == null
         || listRequest.getNextPageToken().length == 0
         || hasPrefix(listRequest.getNextPageToken(), _marker)) {
       if (hasPrefix(listRequest.getNextPageToken(), _marker)) {
@@ -379,13 +377,11 @@ public class MigrationIWorkflowService extends IWorkflowServiceBase {
       response = serviceNew.ListClosedWorkflowExecutions(listRequest);
       if (response == null) return serviceOld.ListClosedWorkflowExecutions(listRequest);
 
-      if (response.getExecutionsSize() < listRequest.getMaximumPageSize()) {
-        int neededPageSize = listRequest.getMaximumPageSize() - response.getExecutionsSize();
-        ListClosedWorkflowExecutionsRequest copiedRequest =
-            new ListClosedWorkflowExecutionsRequest(listRequest);
-        copiedRequest.maximumPageSize = neededPageSize;
+      if (response.getExecutions().size() < listRequest.getMaximumPageSize()) {
+        int neededPageSize = listRequest.getMaximumPageSize() - response.getExecutions().size();
+        listRequest.setMaximumPageSize(neededPageSize);
         ListClosedWorkflowExecutionsResponse fromResponse =
-            serviceOld.ListClosedWorkflowExecutions(copiedRequest);
+            serviceOld.ListClosedWorkflowExecutions(listRequest);
         if (fromResponse == null) return response;
 
         fromResponse.getExecutions().addAll(response.getExecutions());
@@ -407,7 +403,7 @@ public class MigrationIWorkflowService extends IWorkflowServiceBase {
   }
 
   @Override
-  public QueryWorkflowResponse QueryWorkflow(QueryWorkflowRequest queryRequest) throws TException {
+  public QueryWorkflowResponse QueryWorkflow(QueryWorkflowRequest queryRequest) throws BaseError {
 
     try {
       if (shouldStartInNew(queryRequest.getExecution().getWorkflowId()))
@@ -421,7 +417,7 @@ public class MigrationIWorkflowService extends IWorkflowServiceBase {
 
   @Override
   public CountWorkflowExecutionsResponse CountWorkflowExecutions(
-      CountWorkflowExecutionsRequest countRequest) throws TException {
+      CountWorkflowExecutionsRequest countRequest) throws BaseError {
 
     CountWorkflowExecutionsResponse countResponseNew =
         serviceNew.CountWorkflowExecutions(countRequest);
@@ -436,7 +432,7 @@ public class MigrationIWorkflowService extends IWorkflowServiceBase {
 
   @Override
   public void TerminateWorkflowExecution(TerminateWorkflowExecutionRequest terminateRequest)
-      throws TException {
+      throws BaseError {
     try {
       serviceNew.TerminateWorkflowExecution(terminateRequest);
     } catch (EntityNotExistsError e) {
@@ -444,7 +440,7 @@ public class MigrationIWorkflowService extends IWorkflowServiceBase {
     }
   }
 
-  private Boolean shouldStartInNew(String workflowID) throws TException {
+  private Boolean shouldStartInNew(String workflowID) throws BaseError {
     try {
       return describeWorkflowExecution(serviceNew, domainNew, workflowID)
           .thenCombine(
@@ -452,24 +448,23 @@ public class MigrationIWorkflowService extends IWorkflowServiceBase {
               (respNew, respOld) ->
                   respNew != null // execution already in new
                       || respOld == null // execution not exist in new and not exist in old
-                      || (respOld.isSetWorkflowExecutionInfo()
-                          && respOld
-                              .getWorkflowExecutionInfo()
-                              .isSetCloseStatus()) // execution not exist in new and execution is
+                      || (respOld.getWorkflowExecutionInfo() != null
+                          && respOld.getWorkflowExecutionInfo().getCloseStatus()
+                              != null) // execution not exist in new and execution is
               // closed in old
               )
           .get();
     } catch (CompletionException e) {
-      throw e.getCause() instanceof TException
-          ? (TException) e.getCause()
-          : new TException("unknown error: " + e.getMessage());
+      throw e.getCause() instanceof BaseError
+          ? (BaseError) e.getCause()
+          : new BaseError("unknown error: " + e.getMessage());
     } catch (Exception e) {
-      throw new TException("Unknown error: " + e.getMessage());
+      throw new BaseError("Unknown error: " + e.getMessage());
     }
   }
 
   private CompletableFuture<DescribeWorkflowExecutionResponse> describeWorkflowExecution(
-      IWorkflowService service, String domain, String workflowID) {
+      IWorkflowServiceV4 service, String domain, String workflowID) {
     return CompletableFuture.supplyAsync(
         () -> {
           try {

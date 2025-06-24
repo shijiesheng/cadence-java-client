@@ -15,20 +15,20 @@
 package com.uber.cadence.entities;
 
 import java.util.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import lombok.experimental.Accessors;
 
-@Getter
-@Setter
+@Data
 @Accessors(chain = true)
-@AllArgsConstructor
 public class ServiceBusyError extends BaseError {
   private String reason;
 
   public ServiceBusyError() {
     super();
+  }
+
+  public ServiceBusyError(String message) {
+    super(message);
   }
 
   public ServiceBusyError(String message, Throwable cause) {

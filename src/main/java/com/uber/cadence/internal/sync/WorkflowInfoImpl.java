@@ -17,10 +17,10 @@
 
 package com.uber.cadence.internal.sync;
 
-import com.uber.cadence.SearchAttributes;
-import com.uber.cadence.WorkflowExecution;
-import com.uber.cadence.WorkflowExecutionStartedEventAttributes;
 import com.uber.cadence.converter.DataConverter;
+import com.uber.cadence.entities.SearchAttributes;
+import com.uber.cadence.entities.WorkflowExecution;
+import com.uber.cadence.entities.WorkflowExecutionStartedEventAttributes;
 import com.uber.cadence.internal.replay.DecisionContext;
 import com.uber.cadence.workflow.WorkflowInfo;
 import java.time.Duration;

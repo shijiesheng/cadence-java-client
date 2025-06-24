@@ -15,17 +15,19 @@
 package com.uber.cadence.entities;
 
 import java.util.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import lombok.experimental.Accessors;
 
-@Getter
-@Setter
+@Data
 @Accessors(chain = true)
 public class BadRequestError extends BaseError {
 
   public BadRequestError() {
     super();
+  }
+
+  public BadRequestError(String message) {
+    super(message);
   }
 
   public BadRequestError(String message, Throwable cause) {

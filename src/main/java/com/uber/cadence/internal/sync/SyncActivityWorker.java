@@ -21,7 +21,7 @@ import com.uber.cadence.internal.common.InternalUtils;
 import com.uber.cadence.internal.worker.ActivityWorker;
 import com.uber.cadence.internal.worker.SingleWorkerOptions;
 import com.uber.cadence.internal.worker.SuspendableWorker;
-import com.uber.cadence.serviceclient.IWorkflowService;
+import com.uber.cadence.serviceclient.IWorkflowServiceV4;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -34,7 +34,7 @@ public class SyncActivityWorker implements SuspendableWorker {
   private final ScheduledExecutorService heartbeatExecutor;
 
   public SyncActivityWorker(
-      IWorkflowService service, String domain, String taskList, SingleWorkerOptions options) {
+      IWorkflowServiceV4 service, String domain, String taskList, SingleWorkerOptions options) {
     heartbeatExecutor = options.getExecutorWrapper().wrap(Executors.newScheduledThreadPool(4));
     taskHandler =
         new POJOActivityTaskHandler(service, domain, options.getDataConverter(), heartbeatExecutor);

@@ -17,7 +17,7 @@
 
 package com.uber.cadence.internal.replay;
 
-import com.uber.cadence.WorkflowType;
+import com.uber.cadence.entities.WorkflowType;
 
 public interface ReplayWorkflowFactory {
   ReplayWorkflow getWorkflow(WorkflowType workflowType) throws Exception;

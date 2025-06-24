@@ -17,15 +17,15 @@
 
 package com.uber.cadence.internal.external;
 
-import com.uber.cadence.QueryWorkflowResponse;
-import com.uber.cadence.WorkflowExecution;
-import com.uber.cadence.WorkflowExecutionAlreadyStartedError;
+import com.uber.cadence.entities.QueryWorkflowResponse;
+import com.uber.cadence.entities.WorkflowExecution;
+import com.uber.cadence.entities.WorkflowExecutionAlreadyStartedError;
 import com.uber.cadence.internal.common.SignalWithStartWorkflowExecutionParameters;
 import com.uber.cadence.internal.common.StartWorkflowExecutionParameters;
 import com.uber.cadence.internal.common.TerminateWorkflowExecutionParameters;
 import com.uber.cadence.internal.replay.QueryWorkflowParameters;
 import com.uber.cadence.internal.replay.SignalExternalWorkflowParameters;
-import com.uber.cadence.serviceclient.IWorkflowService;
+import com.uber.cadence.serviceclient.IWorkflowServiceV4;
 import java.util.concurrent.CompletableFuture;
 
 public interface GenericWorkflowClientExternal {
@@ -67,7 +67,7 @@ public interface GenericWorkflowClientExternal {
 
   String generateUniqueId();
 
-  IWorkflowService getService();
+  IWorkflowServiceV4 getService();
 
   String getDomain();
 }

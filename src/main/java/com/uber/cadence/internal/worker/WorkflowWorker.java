@@ -18,30 +18,31 @@
 package com.uber.cadence.internal.worker;
 
 import com.google.common.base.Strings;
-import com.uber.cadence.ActivityLocalDispatchInfo;
-import com.uber.cadence.Decision;
-import com.uber.cadence.GetWorkflowExecutionHistoryResponse;
-import com.uber.cadence.History;
-import com.uber.cadence.HistoryEvent;
-import com.uber.cadence.PollForDecisionTaskResponse;
-import com.uber.cadence.RespondDecisionTaskCompletedRequest;
-import com.uber.cadence.RespondDecisionTaskCompletedResponse;
-import com.uber.cadence.RespondDecisionTaskFailedRequest;
-import com.uber.cadence.RespondQueryTaskCompletedRequest;
-import com.uber.cadence.ScheduleActivityTaskDecisionAttributes;
-import com.uber.cadence.WorkflowExecution;
-import com.uber.cadence.WorkflowExecutionStartedEventAttributes;
-import com.uber.cadence.WorkflowQuery;
-import com.uber.cadence.WorkflowType;
 import com.uber.cadence.common.BinaryChecksum;
 import com.uber.cadence.common.WorkflowExecutionHistory;
+import com.uber.cadence.entities.ActivityLocalDispatchInfo;
+import com.uber.cadence.entities.BaseError;
+import com.uber.cadence.entities.Decision;
+import com.uber.cadence.entities.GetWorkflowExecutionHistoryResponse;
+import com.uber.cadence.entities.History;
+import com.uber.cadence.entities.HistoryEvent;
+import com.uber.cadence.entities.PollForDecisionTaskResponse;
+import com.uber.cadence.entities.RespondDecisionTaskCompletedRequest;
+import com.uber.cadence.entities.RespondDecisionTaskCompletedResponse;
+import com.uber.cadence.entities.RespondDecisionTaskFailedRequest;
+import com.uber.cadence.entities.RespondQueryTaskCompletedRequest;
+import com.uber.cadence.entities.ScheduleActivityTaskDecisionAttributes;
+import com.uber.cadence.entities.WorkflowExecution;
+import com.uber.cadence.entities.WorkflowExecutionStartedEventAttributes;
+import com.uber.cadence.entities.WorkflowQuery;
+import com.uber.cadence.entities.WorkflowType;
 import com.uber.cadence.internal.common.RpcRetryer;
 import com.uber.cadence.internal.common.WorkflowExecutionUtils;
 import com.uber.cadence.internal.logging.LoggerTag;
 import com.uber.cadence.internal.metrics.MetricsTag;
 import com.uber.cadence.internal.metrics.MetricsType;
 import com.uber.cadence.internal.worker.LocallyDispatchedActivityWorker.Task;
-import com.uber.cadence.serviceclient.IWorkflowService;
+import com.uber.cadence.serviceclient.IWorkflowServiceV4;
 import com.uber.m3.tally.Scope;
 import com.uber.m3.tally.Stopwatch;
 import com.uber.m3.util.ImmutableMap;
@@ -52,7 +53,6 @@ import java.util.Objects;
 import java.util.concurrent.locks.Lock;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import org.apache.thrift.TException;
 import org.slf4j.MDC;
 
 public final class WorkflowWorker extends SuspendableWorkerBase
@@ -60,7 +60,7 @@ public final class WorkflowWorker extends SuspendableWorkerBase
 
   private static final String POLL_THREAD_NAME_PREFIX = "Workflow Poller taskList=";
   private final DecisionTaskHandler handler;
-  private final IWorkflowService service;
+  private final IWorkflowServiceV4 service;
   private final String domain;
   private final String taskList;
   private final SingleWorkerOptions options;
@@ -70,7 +70,7 @@ public final class WorkflowWorker extends SuspendableWorkerBase
   private PollTaskExecutor<PollForDecisionTaskResponse> pollTaskExecutor;
 
   public WorkflowWorker(
-      IWorkflowService service,
+      IWorkflowServiceV4 service,
       String domain,
       String taskList,
       SingleWorkerOptions options,
@@ -247,10 +247,10 @@ public final class WorkflowWorker extends SuspendableWorkerBase
     }
 
     private void sendReply(
-        IWorkflowService service,
+        IWorkflowServiceV4 service,
         PollForDecisionTaskResponse task,
         DecisionTaskHandler.Result response)
-        throws TException {
+        throws BaseError {
       RespondDecisionTaskCompletedRequest taskCompleted = response.getTaskCompleted();
       if (taskCompleted != null) {
         taskCompleted.setIdentity(options.getIdentity());

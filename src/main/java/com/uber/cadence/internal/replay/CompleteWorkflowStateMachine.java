@@ -17,8 +17,8 @@
 
 package com.uber.cadence.internal.replay;
 
-import com.uber.cadence.Decision;
-import com.uber.cadence.HistoryEvent;
+import com.uber.cadence.entities.Decision;
+import com.uber.cadence.entities.HistoryEvent;
 
 final class CompleteWorkflowStateMachine implements DecisionStateMachine {
 
@@ -36,7 +36,7 @@ final class CompleteWorkflowStateMachine implements DecisionStateMachine {
   }
 
   @Override
-  public com.uber.cadence.Decision getDecision() {
+  public Decision getDecision() {
     return decision;
   }
 

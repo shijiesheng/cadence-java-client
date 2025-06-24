@@ -19,7 +19,7 @@ package com.uber.cadence.testing;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.uber.cadence.internal.sync.TestActivityEnvironmentInternal;
-import com.uber.cadence.serviceclient.IWorkflowService;
+import com.uber.cadence.serviceclient.IWorkflowServiceV4;
 import java.lang.reflect.Type;
 import java.util.function.Consumer;
 
@@ -101,5 +101,5 @@ public interface TestActivityEnvironment {
   <T> void setActivityHeartbeatListener(
       Class<T> detailsClass, Type detailsType, Consumer<T> listener);
 
-  void setWorkflowService(IWorkflowService workflowService);
+  void setWorkflowService(IWorkflowServiceV4 workflowService);
 }

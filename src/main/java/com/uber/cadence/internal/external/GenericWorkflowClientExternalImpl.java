@@ -18,51 +18,49 @@
 package com.uber.cadence.internal.external;
 
 import com.google.common.base.Strings;
-import com.uber.cadence.Header;
-import com.uber.cadence.Memo;
-import com.uber.cadence.QueryWorkflowRequest;
-import com.uber.cadence.QueryWorkflowResponse;
-import com.uber.cadence.RequestCancelWorkflowExecutionRequest;
-import com.uber.cadence.RetryPolicy;
-import com.uber.cadence.SearchAttributes;
-import com.uber.cadence.SignalWithStartWorkflowExecutionAsyncRequest;
-import com.uber.cadence.SignalWithStartWorkflowExecutionRequest;
-import com.uber.cadence.SignalWorkflowExecutionRequest;
-import com.uber.cadence.StartWorkflowExecutionAsyncRequest;
-import com.uber.cadence.StartWorkflowExecutionAsyncResponse;
-import com.uber.cadence.StartWorkflowExecutionRequest;
-import com.uber.cadence.StartWorkflowExecutionResponse;
-import com.uber.cadence.TaskList;
-import com.uber.cadence.TerminateWorkflowExecutionRequest;
-import com.uber.cadence.WorkflowExecution;
-import com.uber.cadence.WorkflowExecutionAlreadyStartedError;
-import com.uber.cadence.WorkflowQuery;
 import com.uber.cadence.common.RetryOptions;
+import com.uber.cadence.entities.BaseError;
+import com.uber.cadence.entities.Header;
+import com.uber.cadence.entities.Memo;
+import com.uber.cadence.entities.QueryWorkflowRequest;
+import com.uber.cadence.entities.QueryWorkflowResponse;
+import com.uber.cadence.entities.RequestCancelWorkflowExecutionRequest;
+import com.uber.cadence.entities.RetryPolicy;
+import com.uber.cadence.entities.SearchAttributes;
+import com.uber.cadence.entities.SignalWithStartWorkflowExecutionAsyncRequest;
+import com.uber.cadence.entities.SignalWithStartWorkflowExecutionRequest;
+import com.uber.cadence.entities.SignalWorkflowExecutionRequest;
+import com.uber.cadence.entities.StartWorkflowExecutionAsyncRequest;
+import com.uber.cadence.entities.StartWorkflowExecutionAsyncResponse;
+import com.uber.cadence.entities.StartWorkflowExecutionRequest;
+import com.uber.cadence.entities.StartWorkflowExecutionResponse;
+import com.uber.cadence.entities.TaskList;
+import com.uber.cadence.entities.TerminateWorkflowExecutionRequest;
+import com.uber.cadence.entities.WorkflowExecution;
+import com.uber.cadence.entities.WorkflowExecutionAlreadyStartedError;
+import com.uber.cadence.entities.WorkflowQuery;
 import com.uber.cadence.internal.common.*;
 import com.uber.cadence.internal.metrics.MetricsTag;
 import com.uber.cadence.internal.metrics.MetricsType;
 import com.uber.cadence.internal.replay.QueryWorkflowParameters;
 import com.uber.cadence.internal.replay.SignalExternalWorkflowParameters;
-import com.uber.cadence.serviceclient.IWorkflowService;
+import com.uber.cadence.serviceclient.AsyncMethodCallback;
+import com.uber.cadence.serviceclient.IWorkflowServiceV4;
 import com.uber.m3.tally.Scope;
 import com.uber.m3.util.ImmutableMap;
-import java.nio.ByteBuffer;
 import java.time.Duration;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import org.apache.thrift.TException;
-import org.apache.thrift.async.AsyncMethodCallback;
 
 public final class GenericWorkflowClientExternalImpl implements GenericWorkflowClientExternal {
 
   private final String domain;
-  private final IWorkflowService service;
+  private final IWorkflowServiceV4 service;
   private final Scope metricsScope;
 
   public GenericWorkflowClientExternalImpl(
-      IWorkflowService service, String domain, Scope metricsScope) {
+      IWorkflowServiceV4 service, String domain, Scope metricsScope) {
     this.service = service;
     this.domain = domain;
     this.metricsScope = metricsScope;
@@ -74,7 +72,7 @@ public final class GenericWorkflowClientExternalImpl implements GenericWorkflowC
   }
 
   @Override
-  public IWorkflowService getService() {
+  public IWorkflowServiceV4 getService() {
     return service;
   }
 
@@ -126,7 +124,7 @@ public final class GenericWorkflowClientExternalImpl implements GenericWorkflowC
               RpcRetryer.DEFAULT_RPC_RETRY_OPTIONS, () -> service.StartWorkflowExecution(request));
     } catch (WorkflowExecutionAlreadyStartedError e) {
       throw e;
-    } catch (TException e) {
+    } catch (BaseError e) {
       throw CheckedExceptionWrapper.wrap(e);
     }
     WorkflowExecution execution = new WorkflowExecution();
@@ -172,7 +170,7 @@ public final class GenericWorkflowClientExternalImpl implements GenericWorkflowC
                   }
                 },
                 timeoutInMillis);
-          } catch (TException e) {
+          } catch (BaseError e) {
             result.completeExceptionally(e);
           }
           return result;
@@ -205,7 +203,7 @@ public final class GenericWorkflowClientExternalImpl implements GenericWorkflowC
           RpcRetryer.DEFAULT_RPC_RETRY_OPTIONS, () -> service.StartWorkflowExecutionAsync(request));
     } catch (WorkflowExecutionAlreadyStartedError e) {
       throw e;
-    } catch (TException e) {
+    } catch (BaseError e) {
       throw CheckedExceptionWrapper.wrap(e);
     }
   }
@@ -235,7 +233,7 @@ public final class GenericWorkflowClientExternalImpl implements GenericWorkflowC
                   }
                 },
                 timeoutInMillis);
-          } catch (TException e) {
+          } catch (BaseError e) {
             result.completeExceptionally(e);
           }
           return result;
@@ -289,14 +287,7 @@ public final class GenericWorkflowClientExternalImpl implements GenericWorkflowC
     if (memo == null || memo.isEmpty()) {
       return null;
     }
-
-    Map<String, ByteBuffer> fields = new HashMap<>();
-    for (Map.Entry<String, byte[]> item : memo.entrySet()) {
-      fields.put(item.getKey(), ByteBuffer.wrap(item.getValue()));
-    }
-    Memo memoThrift = new Memo();
-    memoThrift.setFields(fields);
-    return memoThrift;
+    return new Memo().setFields(memo);
   }
 
   private SearchAttributes toSearchAttributesThrift(Map<String, byte[]> searchAttributes) {
@@ -304,26 +295,14 @@ public final class GenericWorkflowClientExternalImpl implements GenericWorkflowC
       return null;
     }
 
-    Map<String, ByteBuffer> fields = new HashMap<>();
-    for (Map.Entry<String, byte[]> item : searchAttributes.entrySet()) {
-      fields.put(item.getKey(), ByteBuffer.wrap(item.getValue()));
-    }
-    SearchAttributes searchAttrThrift = new SearchAttributes();
-    searchAttrThrift.setIndexedFields(fields);
-    return searchAttrThrift;
+    return new SearchAttributes().setIndexedFields(searchAttributes);
   }
 
   private Header toHeaderThrift(Map<String, byte[]> headers) {
     if (headers == null || headers.isEmpty()) {
       return null;
     }
-    Map<String, ByteBuffer> fields = new HashMap<>();
-    for (Map.Entry<String, byte[]> item : headers.entrySet()) {
-      fields.put(item.getKey(), ByteBuffer.wrap(item.getValue()));
-    }
-    Header headerThrift = new Header();
-    headerThrift.setFields(fields);
-    return headerThrift;
+    return new Header().setFields(headers);
   }
 
   private RetryPolicy toRetryPolicy(RetryParameters retryParameters) {
@@ -342,7 +321,7 @@ public final class GenericWorkflowClientExternalImpl implements GenericWorkflowC
 
     try {
       RpcRetryer.retry(() -> service.SignalWorkflowExecution(request));
-    } catch (TException e) {
+    } catch (BaseError e) {
       throw CheckedExceptionWrapper.wrap(e);
     }
   }
@@ -375,7 +354,7 @@ public final class GenericWorkflowClientExternalImpl implements GenericWorkflowC
                     result.completeExceptionally(exception);
                   }
                 });
-          } catch (TException e) {
+          } catch (BaseError e) {
             result.completeExceptionally(e);
           }
           return result;
@@ -445,7 +424,7 @@ public final class GenericWorkflowClientExternalImpl implements GenericWorkflowC
           RpcRetryer.DEFAULT_RPC_RETRY_OPTIONS,
           () -> service.SignalWithStartWorkflowExecutionAsync(request));
       return new WorkflowExecution().setWorkflowId(request.getRequest().getWorkflowId());
-    } catch (TException e) {
+    } catch (BaseError e) {
       throw CheckedExceptionWrapper.wrap(e);
     }
   }
@@ -461,7 +440,7 @@ public final class GenericWorkflowClientExternalImpl implements GenericWorkflowC
       return new WorkflowExecution()
           .setRunId(result.getRunId())
           .setWorkflowId(request.getWorkflowId());
-    } catch (TException e) {
+    } catch (BaseError e) {
       throw CheckedExceptionWrapper.wrap(e);
     }
   }
@@ -518,7 +497,7 @@ public final class GenericWorkflowClientExternalImpl implements GenericWorkflowC
     request.setWorkflowExecution(execution);
     try {
       RpcRetryer.retry(() -> service.RequestCancelWorkflowExecution(request));
-    } catch (TException e) {
+    } catch (BaseError e) {
       throw CheckedExceptionWrapper.wrap(e);
     }
   }
@@ -541,7 +520,7 @@ public final class GenericWorkflowClientExternalImpl implements GenericWorkflowC
           RpcRetryer.retryWithResult(
               RpcRetryer.DEFAULT_RPC_RETRY_OPTIONS, () -> service.QueryWorkflow(request));
       return response;
-    } catch (TException e) {
+    } catch (BaseError e) {
       throw CheckedExceptionWrapper.wrap(e);
     }
   }
@@ -561,7 +540,7 @@ public final class GenericWorkflowClientExternalImpl implements GenericWorkflowC
     //        request.setChildPolicy(terminateParameters.getChildPolicy());
     try {
       RpcRetryer.retry(() -> service.TerminateWorkflowExecution(request));
-    } catch (TException e) {
+    } catch (BaseError e) {
       throw CheckedExceptionWrapper.wrap(e);
     }
   }

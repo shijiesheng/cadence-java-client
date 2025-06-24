@@ -18,32 +18,31 @@
 package com.uber.cadence.internal.replay;
 
 import com.google.common.base.Strings;
-import com.uber.cadence.ChildWorkflowExecutionCanceledEventAttributes;
-import com.uber.cadence.ChildWorkflowExecutionCompletedEventAttributes;
-import com.uber.cadence.ChildWorkflowExecutionFailedCause;
-import com.uber.cadence.ChildWorkflowExecutionFailedEventAttributes;
-import com.uber.cadence.ChildWorkflowExecutionStartedEventAttributes;
-import com.uber.cadence.ChildWorkflowExecutionTerminatedEventAttributes;
-import com.uber.cadence.ChildWorkflowExecutionTimedOutEventAttributes;
-import com.uber.cadence.ExternalWorkflowExecutionSignaledEventAttributes;
-import com.uber.cadence.Header;
-import com.uber.cadence.HistoryEvent;
-import com.uber.cadence.ParentClosePolicy;
-import com.uber.cadence.RequestCancelExternalWorkflowExecutionDecisionAttributes;
-import com.uber.cadence.SignalExternalWorkflowExecutionDecisionAttributes;
-import com.uber.cadence.SignalExternalWorkflowExecutionFailedEventAttributes;
-import com.uber.cadence.StartChildWorkflowExecutionDecisionAttributes;
-import com.uber.cadence.StartChildWorkflowExecutionFailedEventAttributes;
-import com.uber.cadence.TaskList;
-import com.uber.cadence.WorkflowExecution;
-import com.uber.cadence.WorkflowType;
+import com.uber.cadence.entities.ChildWorkflowExecutionCanceledEventAttributes;
+import com.uber.cadence.entities.ChildWorkflowExecutionCompletedEventAttributes;
+import com.uber.cadence.entities.ChildWorkflowExecutionFailedCause;
+import com.uber.cadence.entities.ChildWorkflowExecutionFailedEventAttributes;
+import com.uber.cadence.entities.ChildWorkflowExecutionStartedEventAttributes;
+import com.uber.cadence.entities.ChildWorkflowExecutionTerminatedEventAttributes;
+import com.uber.cadence.entities.ChildWorkflowExecutionTimedOutEventAttributes;
+import com.uber.cadence.entities.ExternalWorkflowExecutionSignaledEventAttributes;
+import com.uber.cadence.entities.Header;
+import com.uber.cadence.entities.HistoryEvent;
+import com.uber.cadence.entities.ParentClosePolicy;
+import com.uber.cadence.entities.RequestCancelExternalWorkflowExecutionDecisionAttributes;
+import com.uber.cadence.entities.SignalExternalWorkflowExecutionDecisionAttributes;
+import com.uber.cadence.entities.SignalExternalWorkflowExecutionFailedEventAttributes;
+import com.uber.cadence.entities.StartChildWorkflowExecutionDecisionAttributes;
+import com.uber.cadence.entities.StartChildWorkflowExecutionFailedEventAttributes;
+import com.uber.cadence.entities.TaskList;
+import com.uber.cadence.entities.WorkflowExecution;
+import com.uber.cadence.entities.WorkflowType;
 import com.uber.cadence.internal.common.InternalUtils;
 import com.uber.cadence.internal.common.RetryParameters;
 import com.uber.cadence.workflow.ChildWorkflowTerminatedException;
 import com.uber.cadence.workflow.ChildWorkflowTimedOutException;
 import com.uber.cadence.workflow.SignalExternalWorkflowException;
 import com.uber.cadence.workflow.StartChildWorkflowFailedException;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -177,12 +176,8 @@ final class WorkflowDecisionContext {
     if (headers == null || headers.isEmpty()) {
       return null;
     }
-    Map<String, ByteBuffer> fields = new HashMap<>();
-    for (Map.Entry<String, byte[]> item : headers.entrySet()) {
-      fields.put(item.getKey(), ByteBuffer.wrap(item.getValue()));
-    }
     Header headerThrift = new Header();
-    headerThrift.setFields(fields);
+    headerThrift.setFields(headers);
     return headerThrift;
   }
 
@@ -230,7 +225,7 @@ final class WorkflowDecisionContext {
         new RequestCancelExternalWorkflowExecutionDecisionAttributes();
     String workflowId = execution.getWorkflowId();
     attributes.setWorkflowId(workflowId);
-    if (execution.isSetRunId()) {
+    if (execution.getRunId() != null) {
       attributes.setRunId(execution.getRunId());
     }
     decisions.requestCancelExternalWorkflowExecution(attributes);

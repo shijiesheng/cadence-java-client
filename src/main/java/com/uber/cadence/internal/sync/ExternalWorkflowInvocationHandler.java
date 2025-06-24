@@ -19,7 +19,7 @@ package com.uber.cadence.internal.sync;
 
 import static com.uber.cadence.internal.common.InternalUtils.getValueOrDefault;
 
-import com.uber.cadence.WorkflowExecution;
+import com.uber.cadence.entities.WorkflowExecution;
 import com.uber.cadence.internal.common.InternalUtils;
 import com.uber.cadence.workflow.ExternalWorkflowStub;
 import com.uber.cadence.workflow.QueryMethod;

@@ -18,7 +18,7 @@
 package com.uber.cadence.testing;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.uber.cadence.TimeoutType;
+import com.uber.cadence.entities.TimeoutType;
 
 /**
  * SimulatedTimeoutException can be thrown from an activity or child workflow implementation to

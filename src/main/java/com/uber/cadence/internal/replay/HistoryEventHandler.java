@@ -17,8 +17,8 @@
 
 package com.uber.cadence.internal.replay;
 
-import com.uber.cadence.HistoryEvent;
-import com.uber.cadence.TimerFiredEventAttributes;
+import com.uber.cadence.entities.HistoryEvent;
+import com.uber.cadence.entities.TimerFiredEventAttributes;
 
 interface HistoryEventHandler {
 

@@ -21,7 +21,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.uber.cadence.PollForDecisionTaskResponse;
+import com.uber.cadence.entities.PollForDecisionTaskResponse;
 import com.uber.cadence.internal.metrics.MetricsType;
 import com.uber.m3.tally.Scope;
 import java.util.*;

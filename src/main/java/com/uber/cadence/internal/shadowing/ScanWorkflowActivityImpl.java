@@ -15,15 +15,15 @@
  */
 package com.uber.cadence.internal.shadowing;
 
-import com.uber.cadence.BadRequestError;
-import com.uber.cadence.ClientVersionNotSupportedError;
-import com.uber.cadence.EntityNotExistsError;
-import com.uber.cadence.ListWorkflowExecutionsRequest;
-import com.uber.cadence.ListWorkflowExecutionsResponse;
-import com.uber.cadence.WorkflowExecution;
-import com.uber.cadence.WorkflowExecutionInfo;
+import com.uber.cadence.entities.BadRequestError;
+import com.uber.cadence.entities.ClientVersionNotSupportedError;
+import com.uber.cadence.entities.EntityNotExistsError;
+import com.uber.cadence.entities.ListWorkflowExecutionsRequest;
+import com.uber.cadence.entities.ListWorkflowExecutionsResponse;
+import com.uber.cadence.entities.WorkflowExecution;
+import com.uber.cadence.entities.WorkflowExecutionInfo;
 import com.uber.cadence.internal.common.RpcRetryer;
-import com.uber.cadence.serviceclient.IWorkflowService;
+import com.uber.cadence.serviceclient.IWorkflowServiceV4;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -34,9 +34,9 @@ public final class ScanWorkflowActivityImpl implements ScanWorkflowActivity {
 
   private static final Logger log = LoggerFactory.getLogger(ScanWorkflowActivityImpl.class);
 
-  private final IWorkflowService serviceClient;
+  private final IWorkflowServiceV4 serviceClient;
 
-  public ScanWorkflowActivityImpl(IWorkflowService serviceClient) {
+  public ScanWorkflowActivityImpl(IWorkflowServiceV4 serviceClient) {
     this.serviceClient = Objects.requireNonNull(serviceClient);
   }
 

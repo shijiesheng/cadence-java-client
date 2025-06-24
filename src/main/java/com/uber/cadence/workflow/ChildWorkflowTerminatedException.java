@@ -17,8 +17,8 @@
 
 package com.uber.cadence.workflow;
 
-import com.uber.cadence.WorkflowExecution;
-import com.uber.cadence.WorkflowType;
+import com.uber.cadence.entities.WorkflowExecution;
+import com.uber.cadence.entities.WorkflowType;
 
 /**
  * Indicates that child workflow was forcefully terminated by an external command to Cadence

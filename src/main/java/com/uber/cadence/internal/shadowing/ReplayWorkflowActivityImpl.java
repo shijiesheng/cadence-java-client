@@ -18,14 +18,14 @@ package com.uber.cadence.internal.shadowing;
 import static com.uber.cadence.internal.errors.ErrorType.UNKNOWN_WORKFLOW_TYPE;
 
 import com.google.common.collect.Lists;
-import com.uber.cadence.GetWorkflowExecutionHistoryResponse;
-import com.uber.cadence.HistoryEvent;
 import com.uber.cadence.activity.Activity;
 import com.uber.cadence.common.WorkflowExecutionHistory;
+import com.uber.cadence.entities.GetWorkflowExecutionHistoryResponse;
+import com.uber.cadence.entities.HistoryEvent;
 import com.uber.cadence.internal.common.RpcRetryer;
 import com.uber.cadence.internal.common.WorkflowExecutionUtils;
 import com.uber.cadence.internal.metrics.MetricsType;
-import com.uber.cadence.serviceclient.IWorkflowService;
+import com.uber.cadence.serviceclient.IWorkflowServiceV4;
 import com.uber.cadence.testing.TestEnvironmentOptions;
 import com.uber.cadence.testing.TestWorkflowEnvironment;
 import com.uber.cadence.worker.Worker;
@@ -43,17 +43,17 @@ public final class ReplayWorkflowActivityImpl implements ReplayWorkflowActivity 
 
   private static final Logger log = LoggerFactory.getLogger(ReplayWorkflowActivityImpl.class);
 
-  private final IWorkflowService serviceClient;
+  private final IWorkflowServiceV4 serviceClient;
   private final Scope metricsScope;
   private final Worker worker;
 
   public ReplayWorkflowActivityImpl(
-      IWorkflowService serviceClient, Scope metricsScope, String taskList) {
+      IWorkflowServiceV4 serviceClient, Scope metricsScope, String taskList) {
     this(serviceClient, metricsScope, taskList, new TestEnvironmentOptions.Builder().build());
   }
 
   public ReplayWorkflowActivityImpl(
-      IWorkflowService serviceClient,
+      IWorkflowServiceV4 serviceClient,
       Scope metricsScope,
       String taskList,
       TestEnvironmentOptions testOptions) {

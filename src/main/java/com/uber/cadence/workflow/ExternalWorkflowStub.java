@@ -17,7 +17,7 @@
 
 package com.uber.cadence.workflow;
 
-import com.uber.cadence.WorkflowExecution;
+import com.uber.cadence.entities.WorkflowExecution;
 
 /**
  * Supports signalling and cancelling any workflows by the workflow type and their id. This is

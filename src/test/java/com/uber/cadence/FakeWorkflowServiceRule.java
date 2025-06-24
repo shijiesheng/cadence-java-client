@@ -2,7 +2,6 @@ package com.uber.cadence;
 
 import com.uber.cadence.serviceclient.ClientOptions;
 import com.uber.cadence.serviceclient.IWorkflowService;
-import com.uber.cadence.serviceclient.WorkflowServiceTChannel;
 import com.uber.tchannel.api.ResponseCode;
 import com.uber.tchannel.api.TChannel;
 import com.uber.tchannel.api.handlers.ThriftRequestHandler;

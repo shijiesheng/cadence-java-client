@@ -17,9 +17,9 @@
 
 package com.uber.cadence.internal.replay;
 
-import com.uber.cadence.ParentClosePolicy;
-import com.uber.cadence.WorkflowIdReusePolicy;
-import com.uber.cadence.WorkflowType;
+import com.uber.cadence.entities.ParentClosePolicy;
+import com.uber.cadence.entities.WorkflowIdReusePolicy;
+import com.uber.cadence.entities.WorkflowType;
 import com.uber.cadence.internal.common.RetryParameters;
 import java.util.Arrays;
 import java.util.Map;

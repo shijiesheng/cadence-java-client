@@ -17,7 +17,7 @@
 
 package com.uber.cadence.internal.sync;
 
-import com.uber.cadence.WorkflowExecution;
+import com.uber.cadence.entities.WorkflowExecution;
 import com.uber.cadence.workflow.Promise;
 
 /**

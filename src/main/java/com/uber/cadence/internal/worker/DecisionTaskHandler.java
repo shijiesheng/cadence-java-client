@@ -17,10 +17,10 @@
 
 package com.uber.cadence.internal.worker;
 
-import com.uber.cadence.PollForDecisionTaskResponse;
-import com.uber.cadence.RespondDecisionTaskCompletedRequest;
-import com.uber.cadence.RespondDecisionTaskFailedRequest;
-import com.uber.cadence.RespondQueryTaskCompletedRequest;
+import com.uber.cadence.entities.PollForDecisionTaskResponse;
+import com.uber.cadence.entities.RespondDecisionTaskCompletedRequest;
+import com.uber.cadence.entities.RespondDecisionTaskFailedRequest;
+import com.uber.cadence.entities.RespondQueryTaskCompletedRequest;
 
 /**
  * Interface of workflow task handlers.

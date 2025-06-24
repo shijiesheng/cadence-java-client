@@ -17,9 +17,9 @@
 
 package com.uber.cadence.internal.sync;
 
-import com.uber.cadence.PollForDecisionTaskResponse;
 import com.uber.cadence.common.WorkflowExecutionHistory;
 import com.uber.cadence.converter.DataConverter;
+import com.uber.cadence.entities.PollForDecisionTaskResponse;
 import com.uber.cadence.internal.common.InternalUtils;
 import com.uber.cadence.internal.replay.DeciderCache;
 import com.uber.cadence.internal.replay.ReplayDecisionTaskHandler;
@@ -31,7 +31,7 @@ import com.uber.cadence.internal.worker.NoopSuspendableWorker;
 import com.uber.cadence.internal.worker.SingleWorkerOptions;
 import com.uber.cadence.internal.worker.SuspendableWorker;
 import com.uber.cadence.internal.worker.WorkflowWorker;
-import com.uber.cadence.serviceclient.IWorkflowService;
+import com.uber.cadence.serviceclient.IWorkflowServiceV4;
 import com.uber.cadence.worker.ExecutorWrapper;
 import com.uber.cadence.worker.WorkflowImplementationOptions;
 import com.uber.cadence.workflow.Functions.Func;
@@ -56,10 +56,10 @@ public class SyncWorkflowWorker
   private final ScheduledExecutorService ldaHeartbeatExecutor;
   private SuspendableWorker ldaWorker;
   private POJOActivityTaskHandler ldaTaskHandler;
-  private final IWorkflowService service;
+  private final IWorkflowServiceV4 service;
 
   public SyncWorkflowWorker(
-      IWorkflowService service,
+      IWorkflowServiceV4 service,
       String domain,
       String taskList,
       Function<WorkflowInterceptor, WorkflowInterceptor> interceptorFactory,

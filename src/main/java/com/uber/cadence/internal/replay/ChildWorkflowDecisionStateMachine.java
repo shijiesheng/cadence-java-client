@@ -17,11 +17,11 @@
 
 package com.uber.cadence.internal.replay;
 
-import com.uber.cadence.Decision;
-import com.uber.cadence.DecisionType;
-import com.uber.cadence.HistoryEvent;
-import com.uber.cadence.RequestCancelExternalWorkflowExecutionDecisionAttributes;
-import com.uber.cadence.StartChildWorkflowExecutionDecisionAttributes;
+import com.uber.cadence.entities.Decision;
+import com.uber.cadence.entities.DecisionType;
+import com.uber.cadence.entities.HistoryEvent;
+import com.uber.cadence.entities.RequestCancelExternalWorkflowExecutionDecisionAttributes;
+import com.uber.cadence.entities.StartChildWorkflowExecutionDecisionAttributes;
 
 final class ChildWorkflowDecisionStateMachine extends DecisionStateMachineBase {
 

@@ -15,15 +15,11 @@
 package com.uber.cadence.entities;
 
 import java.util.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import lombok.experimental.Accessors;
 
-@Getter
-@Setter
+@Data
 @Accessors(chain = true)
-@AllArgsConstructor
 public class DomainNotActiveError extends BaseError {
   private String domainName;
   private String currentCluster;
@@ -31,6 +27,10 @@ public class DomainNotActiveError extends BaseError {
 
   public DomainNotActiveError() {
     super();
+  }
+
+  public DomainNotActiveError(String message) {
+    super(message);
   }
 
   public DomainNotActiveError(String message, Throwable cause) {

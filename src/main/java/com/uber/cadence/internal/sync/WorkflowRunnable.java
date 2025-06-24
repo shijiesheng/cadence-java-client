@@ -17,7 +17,7 @@
 
 package com.uber.cadence.internal.sync;
 
-import com.uber.cadence.WorkflowExecutionStartedEventAttributes;
+import com.uber.cadence.entities.WorkflowExecutionStartedEventAttributes;
 import com.uber.cadence.workflow.WorkflowInterceptor;
 import java.util.Objects;
 

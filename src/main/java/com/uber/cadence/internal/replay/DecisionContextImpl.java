@@ -17,18 +17,18 @@
 
 package com.uber.cadence.internal.replay;
 
-import com.uber.cadence.DecisionTaskFailedCause;
-import com.uber.cadence.DecisionTaskFailedEventAttributes;
-import com.uber.cadence.HistoryEvent;
-import com.uber.cadence.PollForDecisionTaskResponse;
-import com.uber.cadence.SearchAttributes;
-import com.uber.cadence.TimerFiredEventAttributes;
-import com.uber.cadence.UpsertWorkflowSearchAttributesEventAttributes;
-import com.uber.cadence.WorkflowExecution;
-import com.uber.cadence.WorkflowExecutionStartedEventAttributes;
-import com.uber.cadence.WorkflowType;
 import com.uber.cadence.context.ContextPropagator;
 import com.uber.cadence.converter.DataConverter;
+import com.uber.cadence.entities.DecisionTaskFailedCause;
+import com.uber.cadence.entities.DecisionTaskFailedEventAttributes;
+import com.uber.cadence.entities.HistoryEvent;
+import com.uber.cadence.entities.PollForDecisionTaskResponse;
+import com.uber.cadence.entities.SearchAttributes;
+import com.uber.cadence.entities.TimerFiredEventAttributes;
+import com.uber.cadence.entities.UpsertWorkflowSearchAttributesEventAttributes;
+import com.uber.cadence.entities.WorkflowExecution;
+import com.uber.cadence.entities.WorkflowExecutionStartedEventAttributes;
+import com.uber.cadence.entities.WorkflowType;
 import com.uber.cadence.internal.common.InternalUtils;
 import com.uber.cadence.internal.metrics.ReplayAwareScope;
 import com.uber.cadence.internal.worker.LocalActivityWorker;

@@ -18,9 +18,9 @@
 package com.uber.cadence.testing;
 
 import com.google.common.collect.ObjectArrays;
-import com.uber.cadence.TaskList;
-import com.uber.cadence.WorkflowExecutionStartedEventAttributes;
 import com.uber.cadence.common.WorkflowExecutionHistory;
+import com.uber.cadence.entities.TaskList;
+import com.uber.cadence.entities.WorkflowExecutionStartedEventAttributes;
 import com.uber.cadence.internal.common.WorkflowExecutionUtils;
 import com.uber.cadence.worker.Worker;
 import java.io.File;

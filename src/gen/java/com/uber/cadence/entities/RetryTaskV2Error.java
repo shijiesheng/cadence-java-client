@@ -15,15 +15,11 @@
 package com.uber.cadence.entities;
 
 import java.util.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import lombok.experimental.Accessors;
 
-@Getter
-@Setter
+@Data
 @Accessors(chain = true)
-@AllArgsConstructor
 public class RetryTaskV2Error extends BaseError {
   private String domainId;
   private String workflowId;
@@ -35,6 +31,10 @@ public class RetryTaskV2Error extends BaseError {
 
   public RetryTaskV2Error() {
     super();
+  }
+
+  public RetryTaskV2Error(String message) {
+    super(message);
   }
 
   public RetryTaskV2Error(String message, Throwable cause) {

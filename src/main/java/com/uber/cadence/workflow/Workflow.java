@@ -17,10 +17,10 @@
 
 package com.uber.cadence.workflow;
 
-import com.uber.cadence.WorkflowExecution;
 import com.uber.cadence.activity.ActivityOptions;
 import com.uber.cadence.activity.LocalActivityOptions;
 import com.uber.cadence.common.RetryOptions;
+import com.uber.cadence.entities.WorkflowExecution;
 import com.uber.cadence.internal.sync.WorkflowInternal;
 import com.uber.cadence.worker.WorkerOptions;
 import com.uber.cadence.workflow.Functions.Func;

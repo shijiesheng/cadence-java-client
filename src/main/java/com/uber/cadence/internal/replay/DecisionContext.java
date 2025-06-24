@@ -17,12 +17,12 @@
 
 package com.uber.cadence.internal.replay;
 
-import com.uber.cadence.SearchAttributes;
-import com.uber.cadence.WorkflowExecution;
-import com.uber.cadence.WorkflowExecutionStartedEventAttributes;
-import com.uber.cadence.WorkflowType;
 import com.uber.cadence.context.ContextPropagator;
 import com.uber.cadence.converter.DataConverter;
+import com.uber.cadence.entities.SearchAttributes;
+import com.uber.cadence.entities.WorkflowExecution;
+import com.uber.cadence.entities.WorkflowExecutionStartedEventAttributes;
+import com.uber.cadence.entities.WorkflowType;
 import com.uber.cadence.workflow.Functions.Func;
 import com.uber.cadence.workflow.Functions.Func1;
 import com.uber.cadence.workflow.Promise;

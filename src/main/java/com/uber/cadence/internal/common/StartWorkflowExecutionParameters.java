@@ -17,10 +17,10 @@
 
 package com.uber.cadence.internal.common;
 
-import com.uber.cadence.WorkflowIdReusePolicy;
-import com.uber.cadence.WorkflowType;
 import com.uber.cadence.client.WorkflowOptions;
 import com.uber.cadence.common.RetryOptions;
+import com.uber.cadence.entities.WorkflowIdReusePolicy;
+import com.uber.cadence.entities.WorkflowType;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;

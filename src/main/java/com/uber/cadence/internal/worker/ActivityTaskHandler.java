@@ -17,10 +17,10 @@
 
 package com.uber.cadence.internal.worker;
 
-import com.uber.cadence.PollForActivityTaskResponse;
-import com.uber.cadence.RespondActivityTaskCanceledRequest;
-import com.uber.cadence.RespondActivityTaskCompletedRequest;
-import com.uber.cadence.RespondActivityTaskFailedRequest;
+import com.uber.cadence.entities.PollForActivityTaskResponse;
+import com.uber.cadence.entities.RespondActivityTaskCanceledRequest;
+import com.uber.cadence.entities.RespondActivityTaskCompletedRequest;
+import com.uber.cadence.entities.RespondActivityTaskFailedRequest;
 import com.uber.m3.tally.Scope;
 import java.time.Duration;
 

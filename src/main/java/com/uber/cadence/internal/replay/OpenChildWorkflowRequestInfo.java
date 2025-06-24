@@ -17,7 +17,7 @@
 
 package com.uber.cadence.internal.replay;
 
-import com.uber.cadence.WorkflowExecution;
+import com.uber.cadence.entities.WorkflowExecution;
 import java.util.function.Consumer;
 
 class OpenChildWorkflowRequestInfo extends OpenRequestInfo<byte[], String> {

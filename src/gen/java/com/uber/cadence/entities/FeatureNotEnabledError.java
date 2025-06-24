@@ -15,20 +15,20 @@
 package com.uber.cadence.entities;
 
 import java.util.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import lombok.experimental.Accessors;
 
-@Getter
-@Setter
+@Data
 @Accessors(chain = true)
-@AllArgsConstructor
 public class FeatureNotEnabledError extends BaseError {
   private String featureFlag;
 
   public FeatureNotEnabledError() {
     super();
+  }
+
+  public FeatureNotEnabledError(String message) {
+    super(message);
   }
 
   public FeatureNotEnabledError(String message, Throwable cause) {

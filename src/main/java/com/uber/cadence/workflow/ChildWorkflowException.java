@@ -17,8 +17,8 @@
 
 package com.uber.cadence.workflow;
 
-import com.uber.cadence.WorkflowExecution;
-import com.uber.cadence.WorkflowType;
+import com.uber.cadence.entities.WorkflowExecution;
+import com.uber.cadence.entities.WorkflowType;
 
 /** Base exception for failures of a child workflow. */
 @SuppressWarnings("serial")

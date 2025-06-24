@@ -17,8 +17,8 @@
 
 package com.uber.cadence.internal.replay;
 
-import com.uber.cadence.WorkflowExecution;
-import com.uber.cadence.WorkflowType;
+import com.uber.cadence.entities.WorkflowExecution;
+import com.uber.cadence.entities.WorkflowType;
 
 /** Internal. Do not catch or throw by application level code. */
 @SuppressWarnings("serial")

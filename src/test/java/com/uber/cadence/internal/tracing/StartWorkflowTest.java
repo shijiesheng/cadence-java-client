@@ -29,7 +29,6 @@ import com.uber.cadence.internal.compatibility.Thrift2ProtoAdapter;
 import com.uber.cadence.internal.compatibility.proto.serviceclient.IGrpcServiceStubs;
 import com.uber.cadence.serviceclient.ClientOptions;
 import com.uber.cadence.serviceclient.IWorkflowService;
-import com.uber.cadence.serviceclient.WorkflowServiceTChannel;
 import com.uber.cadence.testUtils.TestEnvironment;
 import com.uber.cadence.worker.Worker;
 import com.uber.cadence.worker.WorkerFactory;
@@ -255,7 +254,7 @@ public class StartWorkflowTest {
   @Test
   public void testSignalWithStartWorkflowGRPC() {
     Assume.assumeTrue(useDockerService);
-    MockTracer mockTracer = new MockTracer();
+    MockgitTracer mockTracer = new MockTracer();
     IWorkflowService service =
         new Thrift2ProtoAdapter(
             IGrpcServiceStubs.newInstance(

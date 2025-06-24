@@ -15,17 +15,19 @@
 package com.uber.cadence.entities;
 
 import java.util.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import lombok.experimental.Accessors;
 
-@Getter
-@Setter
+@Data
 @Accessors(chain = true)
 public class CancellationAlreadyRequestedError extends BaseError {
 
   public CancellationAlreadyRequestedError() {
     super();
+  }
+
+  public CancellationAlreadyRequestedError(String message) {
+    super(message);
   }
 
   public CancellationAlreadyRequestedError(String message, Throwable cause) {

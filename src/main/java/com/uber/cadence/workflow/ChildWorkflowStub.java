@@ -17,7 +17,7 @@
 
 package com.uber.cadence.workflow;
 
-import com.uber.cadence.WorkflowExecution;
+import com.uber.cadence.entities.WorkflowExecution;
 import java.lang.reflect.Type;
 
 /**

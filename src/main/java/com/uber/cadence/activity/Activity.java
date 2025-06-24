@@ -18,9 +18,10 @@
 package com.uber.cadence.activity;
 
 import com.uber.cadence.client.ActivityCompletionException;
+import com.uber.cadence.entities.WorkflowExecution;
 import com.uber.cadence.internal.sync.ActivityInternal;
 import com.uber.cadence.internal.sync.WorkflowInternal;
-import com.uber.cadence.serviceclient.IWorkflowService;
+import com.uber.cadence.serviceclient.IWorkflowServiceV4;
 import com.uber.cadence.workflow.ActivityException;
 import com.uber.cadence.workflow.ActivityTimeoutException;
 import java.lang.reflect.Type;
@@ -246,7 +247,7 @@ public final class Activity {
   }
 
   /** @return workfow execution that requested the activity execution */
-  public static com.uber.cadence.WorkflowExecution getWorkflowExecution() {
+  public static WorkflowExecution getWorkflowExecution() {
     return ActivityInternal.getTask().getWorkflowExecution();
   }
 
@@ -300,7 +301,7 @@ public final class Activity {
    *     operations like sending signal to its parent workflow. @TODO getWorkflowClient method to
    *     hide the service.
    */
-  public static IWorkflowService getService() {
+  public static IWorkflowServiceV4 getService() {
     return ActivityInternal.getService();
   }
 

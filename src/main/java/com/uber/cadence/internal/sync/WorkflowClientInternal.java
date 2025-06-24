@@ -19,8 +19,6 @@ package com.uber.cadence.internal.sync;
 
 import com.google.common.base.Strings;
 import com.google.common.reflect.TypeToken;
-import com.uber.cadence.RefreshWorkflowTasksRequest;
-import com.uber.cadence.WorkflowExecution;
 import com.uber.cadence.client.ActivityCompletionClient;
 import com.uber.cadence.client.BatchRequest;
 import com.uber.cadence.client.WorkflowClient;
@@ -28,12 +26,15 @@ import com.uber.cadence.client.WorkflowClientInterceptor;
 import com.uber.cadence.client.WorkflowClientOptions;
 import com.uber.cadence.client.WorkflowOptions;
 import com.uber.cadence.client.WorkflowStub;
+import com.uber.cadence.entities.BaseError;
+import com.uber.cadence.entities.RefreshWorkflowTasksRequest;
+import com.uber.cadence.entities.WorkflowExecution;
 import com.uber.cadence.internal.external.GenericWorkflowClientExternalImpl;
 import com.uber.cadence.internal.external.ManualActivityCompletionClientFactory;
 import com.uber.cadence.internal.external.ManualActivityCompletionClientFactoryImpl;
 import com.uber.cadence.internal.metrics.ClientVersionEmitter;
 import com.uber.cadence.internal.sync.WorkflowInvocationHandler.InvocationType;
-import com.uber.cadence.serviceclient.IWorkflowService;
+import com.uber.cadence.serviceclient.IWorkflowServiceV4;
 import com.uber.cadence.workflow.Functions;
 import com.uber.cadence.workflow.QueryMethod;
 import com.uber.cadence.workflow.WorkflowMethod;
@@ -46,14 +47,13 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import org.apache.thrift.TException;
 
 public final class WorkflowClientInternal implements WorkflowClient {
 
   private final GenericWorkflowClientExternalImpl genericClient;
   private final ManualActivityCompletionClientFactory manualActivityCompletionClientFactory;
   private final WorkflowClientInterceptor[] interceptors;
-  private final IWorkflowService workflowService;
+  private final IWorkflowServiceV4 workflowService;
   private final WorkflowClientOptions clientOptions;
   private static boolean emittingClientVersion = false;
 
@@ -65,7 +65,7 @@ public final class WorkflowClientInternal implements WorkflowClient {
    *     configuring client.
    */
   public static WorkflowClient newInstance(
-      IWorkflowService service, WorkflowClientOptions options) {
+      IWorkflowServiceV4 service, WorkflowClientOptions options) {
     Objects.requireNonNull(service);
     Objects.requireNonNull(options);
 
@@ -73,7 +73,7 @@ public final class WorkflowClientInternal implements WorkflowClient {
     return new WorkflowClientInternal(service, options);
   }
 
-  private WorkflowClientInternal(IWorkflowService service, WorkflowClientOptions options) {
+  private WorkflowClientInternal(IWorkflowServiceV4 service, WorkflowClientOptions options) {
     this.clientOptions = options;
     this.workflowService = service;
     this.genericClient =
@@ -91,7 +91,7 @@ public final class WorkflowClientInternal implements WorkflowClient {
   }
 
   @Override
-  public IWorkflowService getService() {
+  public IWorkflowServiceV4 getService() {
     return workflowService;
   }
 
@@ -220,7 +220,7 @@ public final class WorkflowClientInternal implements WorkflowClient {
 
   @Override
   public void refreshWorkflowTasks(RefreshWorkflowTasksRequest refreshWorkflowTasksRequest)
-      throws TException {
+      throws BaseError {
     workflowService.RefreshWorkflowTasks(refreshWorkflowTasksRequest);
   }
 

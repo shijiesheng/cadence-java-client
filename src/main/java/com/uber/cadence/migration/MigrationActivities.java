@@ -17,9 +17,9 @@
 
 package com.uber.cadence.migration;
 
-import com.uber.cadence.RequestCancelWorkflowExecutionRequest;
-import com.uber.cadence.StartWorkflowExecutionRequest;
 import com.uber.cadence.activity.ActivityMethod;
+import com.uber.cadence.entities.RequestCancelWorkflowExecutionRequest;
+import com.uber.cadence.entities.StartWorkflowExecutionRequest;
 
 public interface MigrationActivities {
   /**

@@ -15,17 +15,19 @@
 package com.uber.cadence.entities;
 
 import java.util.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import lombok.experimental.Accessors;
 
-@Getter
-@Setter
+@Data
 @Accessors(chain = true)
 public class RemoteSyncMatchedError extends BaseError {
 
   public RemoteSyncMatchedError() {
     super();
+  }
+
+  public RemoteSyncMatchedError(String message) {
+    super(message);
   }
 
   public RemoteSyncMatchedError(String message, Throwable cause) {

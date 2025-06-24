@@ -20,10 +20,10 @@ package com.uber.cadence.internal.sync;
 import static com.uber.cadence.internal.sync.AsyncInternal.AsyncMarker;
 
 import com.google.common.reflect.TypeToken;
-import com.uber.cadence.WorkflowExecution;
 import com.uber.cadence.activity.ActivityOptions;
 import com.uber.cadence.activity.LocalActivityOptions;
 import com.uber.cadence.common.RetryOptions;
+import com.uber.cadence.entities.WorkflowExecution;
 import com.uber.cadence.internal.common.CheckedExceptionWrapper;
 import com.uber.cadence.internal.common.InternalUtils;
 import com.uber.cadence.internal.logging.ReplayAwareLogger;

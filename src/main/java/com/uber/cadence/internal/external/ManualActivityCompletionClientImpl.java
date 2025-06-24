@@ -17,27 +17,27 @@
 
 package com.uber.cadence.internal.external;
 
-import com.uber.cadence.EntityNotExistsError;
-import com.uber.cadence.RecordActivityTaskHeartbeatRequest;
-import com.uber.cadence.RecordActivityTaskHeartbeatResponse;
-import com.uber.cadence.RespondActivityTaskCanceledByIDRequest;
-import com.uber.cadence.RespondActivityTaskCanceledRequest;
-import com.uber.cadence.RespondActivityTaskCompletedByIDRequest;
-import com.uber.cadence.RespondActivityTaskCompletedRequest;
-import com.uber.cadence.RespondActivityTaskFailedByIDRequest;
-import com.uber.cadence.RespondActivityTaskFailedRequest;
-import com.uber.cadence.WorkflowExecution;
-import com.uber.cadence.WorkflowExecutionAlreadyCompletedError;
 import com.uber.cadence.client.ActivityCancelledException;
 import com.uber.cadence.client.ActivityCompletionFailureException;
 import com.uber.cadence.client.ActivityNotExistsException;
 import com.uber.cadence.converter.DataConverter;
+import com.uber.cadence.entities.BaseError;
+import com.uber.cadence.entities.EntityNotExistsError;
+import com.uber.cadence.entities.RecordActivityTaskHeartbeatRequest;
+import com.uber.cadence.entities.RecordActivityTaskHeartbeatResponse;
+import com.uber.cadence.entities.RespondActivityTaskCanceledByIDRequest;
+import com.uber.cadence.entities.RespondActivityTaskCanceledRequest;
+import com.uber.cadence.entities.RespondActivityTaskCompletedByIDRequest;
+import com.uber.cadence.entities.RespondActivityTaskCompletedRequest;
+import com.uber.cadence.entities.RespondActivityTaskFailedByIDRequest;
+import com.uber.cadence.entities.RespondActivityTaskFailedRequest;
+import com.uber.cadence.entities.WorkflowExecution;
+import com.uber.cadence.entities.WorkflowExecutionAlreadyCompletedError;
 import com.uber.cadence.internal.common.RpcRetryer;
 import com.uber.cadence.internal.metrics.MetricsType;
-import com.uber.cadence.serviceclient.IWorkflowService;
+import com.uber.cadence.serviceclient.IWorkflowServiceV4;
 import com.uber.m3.tally.Scope;
 import java.util.concurrent.CancellationException;
-import org.apache.thrift.TException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,7 +47,7 @@ class ManualActivityCompletionClientImpl extends ManualActivityCompletionClient 
   private static final Logger log =
       LoggerFactory.getLogger(ManualActivityCompletionClientImpl.class);
 
-  private final IWorkflowService service;
+  private final IWorkflowServiceV4 service;
 
   private final byte[] taskToken;
 
@@ -58,7 +58,7 @@ class ManualActivityCompletionClientImpl extends ManualActivityCompletionClient 
   private final Scope metricsScope;
 
   ManualActivityCompletionClientImpl(
-      IWorkflowService service,
+      IWorkflowServiceV4 service,
       String domain,
       byte[] taskToken,
       DataConverter dataConverter,
@@ -73,7 +73,7 @@ class ManualActivityCompletionClientImpl extends ManualActivityCompletionClient 
   }
 
   ManualActivityCompletionClientImpl(
-      IWorkflowService service,
+      IWorkflowServiceV4 service,
       String domain,
       WorkflowExecution execution,
       String activityId,
@@ -102,7 +102,7 @@ class ManualActivityCompletionClientImpl extends ManualActivityCompletionClient 
         throw new ActivityNotExistsException(e);
       } catch (WorkflowExecutionAlreadyCompletedError e) {
         throw new ActivityNotExistsException(e);
-      } catch (TException e) {
+      } catch (BaseError e) {
         throw new ActivityCompletionFailureException(e);
       }
     } else {
@@ -124,7 +124,7 @@ class ManualActivityCompletionClientImpl extends ManualActivityCompletionClient 
         throw new ActivityNotExistsException(e);
       } catch (WorkflowExecutionAlreadyCompletedError e) {
         throw new ActivityNotExistsException(e);
-      } catch (TException e) {
+      } catch (BaseError e) {
         throw new ActivityCompletionFailureException(activityId, e);
       }
     }
@@ -148,7 +148,7 @@ class ManualActivityCompletionClientImpl extends ManualActivityCompletionClient 
         throw new ActivityNotExistsException(e);
       } catch (WorkflowExecutionAlreadyCompletedError e) {
         throw new ActivityNotExistsException(e);
-      } catch (TException e) {
+      } catch (BaseError e) {
         throw new ActivityCompletionFailureException(e);
       }
     } else {
@@ -166,7 +166,7 @@ class ManualActivityCompletionClientImpl extends ManualActivityCompletionClient 
         throw new ActivityNotExistsException(e);
       } catch (WorkflowExecutionAlreadyCompletedError e) {
         throw new ActivityNotExistsException(e);
-      } catch (TException e) {
+      } catch (BaseError e) {
         throw new ActivityCompletionFailureException(activityId, e);
       }
     }
@@ -188,7 +188,7 @@ class ManualActivityCompletionClientImpl extends ManualActivityCompletionClient 
         throw new ActivityNotExistsException(e);
       } catch (WorkflowExecutionAlreadyCompletedError e) {
         throw new ActivityNotExistsException(e);
-      } catch (TException e) {
+      } catch (BaseError e) {
         throw new ActivityCompletionFailureException(e);
       }
     } else {
@@ -206,7 +206,7 @@ class ManualActivityCompletionClientImpl extends ManualActivityCompletionClient 
       try {
         service.RespondActivityTaskCanceled(request);
         metricsScope.counter(MetricsType.ACTIVITY_TASK_CANCELED_COUNTER).inc(1);
-      } catch (TException e) {
+      } catch (BaseError e) {
         // There is nothing that can be done at this point.
         // so let's just ignore.
         log.info("reportCancellation", e);
@@ -221,7 +221,7 @@ class ManualActivityCompletionClientImpl extends ManualActivityCompletionClient 
       try {
         service.RespondActivityTaskCanceledByID(request);
         metricsScope.counter(MetricsType.ACTIVITY_TASK_CANCELED_BY_ID_COUNTER).inc(1);
-      } catch (TException e) {
+      } catch (BaseError e) {
         // There is nothing that can be done at this point.
         // so let's just ignore.
         log.info("reportCancellation", e);

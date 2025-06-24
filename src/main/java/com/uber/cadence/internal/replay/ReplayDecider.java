@@ -20,20 +20,21 @@ package com.uber.cadence.internal.replay;
 import static com.uber.cadence.worker.NonDeterministicWorkflowPolicy.FailWorkflow;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.uber.cadence.EventType;
-import com.uber.cadence.GetWorkflowExecutionHistoryRequest;
-import com.uber.cadence.GetWorkflowExecutionHistoryResponse;
-import com.uber.cadence.History;
-import com.uber.cadence.HistoryEvent;
-import com.uber.cadence.PollForDecisionTaskResponse;
-import com.uber.cadence.QueryResultType;
-import com.uber.cadence.TimerFiredEventAttributes;
-import com.uber.cadence.WorkflowExecutionSignaledEventAttributes;
-import com.uber.cadence.WorkflowExecutionStartedEventAttributes;
-import com.uber.cadence.WorkflowQuery;
-import com.uber.cadence.WorkflowQueryResult;
-import com.uber.cadence.WorkflowType;
 import com.uber.cadence.common.RetryOptions;
+import com.uber.cadence.entities.BaseError;
+import com.uber.cadence.entities.EventType;
+import com.uber.cadence.entities.GetWorkflowExecutionHistoryRequest;
+import com.uber.cadence.entities.GetWorkflowExecutionHistoryResponse;
+import com.uber.cadence.entities.History;
+import com.uber.cadence.entities.HistoryEvent;
+import com.uber.cadence.entities.PollForDecisionTaskResponse;
+import com.uber.cadence.entities.QueryResultType;
+import com.uber.cadence.entities.TimerFiredEventAttributes;
+import com.uber.cadence.entities.WorkflowExecutionSignaledEventAttributes;
+import com.uber.cadence.entities.WorkflowExecutionStartedEventAttributes;
+import com.uber.cadence.entities.WorkflowQuery;
+import com.uber.cadence.entities.WorkflowQueryResult;
+import com.uber.cadence.entities.WorkflowType;
 import com.uber.cadence.internal.common.OptionsUtils;
 import com.uber.cadence.internal.common.RpcRetryer;
 import com.uber.cadence.internal.metrics.MetricsTag;
@@ -44,7 +45,7 @@ import com.uber.cadence.internal.worker.DecisionTaskWithHistoryIterator;
 import com.uber.cadence.internal.worker.LocalActivityWorker;
 import com.uber.cadence.internal.worker.SingleWorkerOptions;
 import com.uber.cadence.internal.worker.WorkflowExecutionException;
-import com.uber.cadence.serviceclient.IWorkflowService;
+import com.uber.cadence.serviceclient.IWorkflowServiceV4;
 import com.uber.cadence.workflow.Functions;
 import com.uber.m3.tally.Scope;
 import com.uber.m3.tally.Stopwatch;
@@ -64,7 +65,6 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
-import org.apache.thrift.TException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -80,7 +80,7 @@ class ReplayDecider implements Decider {
 
   private final DecisionsHelper decisionsHelper;
   private final DecisionContextImpl context;
-  private final IWorkflowService service;
+  private final IWorkflowServiceV4 service;
   private final ReplayWorkflow workflow;
   private boolean cancelRequested;
   private boolean completed;
@@ -94,7 +94,7 @@ class ReplayDecider implements Decider {
   private final Consumer<HistoryEvent> localActivityCompletionSink;
 
   ReplayDecider(
-      IWorkflowService service,
+      IWorkflowServiceV4 service,
       String domain,
       WorkflowType workflowType,
       ReplayWorkflow workflow,
@@ -436,7 +436,7 @@ class ReplayDecider implements Decider {
                   + 2) // getNextDecisionEventId() skips over completed.
           && (decisionsHelper.getNextDecisionEventId() != 0
               && historyHelper.getPreviousStartedEventId() != 0)
-          && (decisionTask.getHistory().getEventsSize() > 0)) {
+          && (decisionTask.getHistory().getEvents().size() > 0)) {
         throw new IllegalStateException(
             String.format(
                 "ReplayDecider expects next event id at %d. History's previous started event id is %d",
@@ -643,7 +643,7 @@ class ReplayDecider implements Decider {
           Objects.requireNonNull(decisionTaskStartToCloseTimeout);
 
       History history = task.getHistory();
-      current = history.getEventsIterator();
+      current = history.getEvents().iterator();
       nextPageToken = task.getNextPageToken();
     }
 
@@ -698,20 +698,20 @@ class ReplayDecider implements Decider {
             GetWorkflowExecutionHistoryResponse r =
                 RpcRetryer.retryWithResult(
                     retryOptions, () -> service.GetWorkflowExecutionHistory(request));
-            current = r.getHistory().getEventsIterator();
+            current = r.getHistory().getEvents().iterator();
             nextPageToken = r.getNextPageToken();
             metricsScope.counter(MetricsType.WORKFLOW_GET_HISTORY_SUCCEED_COUNTER).inc(1);
             sw.stop();
-          } catch (TException e) {
+          } catch (BaseError e) {
             metricsScope.counter(MetricsType.WORKFLOW_GET_HISTORY_FAILED_COUNTER).inc(1);
             throw new Error(e);
           }
           if (!current.hasNext()) {
             log.error(
                 "GetWorkflowExecutionHistory returns an empty history, maybe a bug in server, workflowID:{}, runID:{}, domain:{} token:{}",
-                request.execution.workflowId,
-                request.execution.runId,
-                request.domain,
+                request.getExecution().getWorkflowId(),
+                request.getExecution().getRunId(),
+                request.getDomain(),
                 Arrays.toString(request.getNextPageToken()));
             throw new Error(
                 "GetWorkflowExecutionHistory return empty history, maybe a bug in server");

@@ -17,7 +17,7 @@
 
 package com.uber.cadence.internal.replay;
 
-import com.uber.cadence.ActivityType;
+import com.uber.cadence.entities.ActivityType;
 
 /**
  * Internal. Do not catch or throw in application level code. Exception used to communicate failure

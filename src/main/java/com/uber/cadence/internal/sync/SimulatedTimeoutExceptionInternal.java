@@ -17,7 +17,7 @@
 
 package com.uber.cadence.internal.sync;
 
-import com.uber.cadence.TimeoutType;
+import com.uber.cadence.entities.TimeoutType;
 
 /**
  * SimulatedTimeoutExceptionInternal is created from a SimulatedTimeoutException. The main

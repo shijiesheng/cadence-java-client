@@ -18,9 +18,9 @@
 package com.uber.cadence.internal.replay;
 
 import com.google.common.collect.PeekingIterator;
-import com.uber.cadence.EventType;
-import com.uber.cadence.HistoryEvent;
-import com.uber.cadence.PollForDecisionTaskResponse;
+import com.uber.cadence.entities.EventType;
+import com.uber.cadence.entities.HistoryEvent;
+import com.uber.cadence.entities.PollForDecisionTaskResponse;
 import com.uber.cadence.internal.common.WorkflowExecutionUtils;
 import com.uber.cadence.internal.worker.DecisionTaskWithHistoryIterator;
 import java.util.ArrayList;

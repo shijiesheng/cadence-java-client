@@ -19,15 +19,15 @@ package com.uber.cadence.internal.common;
 
 import static com.uber.cadence.internal.common.CheckedExceptionWrapper.unwrap;
 
-import com.uber.cadence.BadRequestError;
-import com.uber.cadence.CancellationAlreadyRequestedError;
-import com.uber.cadence.DomainAlreadyExistsError;
-import com.uber.cadence.DomainNotActiveError;
-import com.uber.cadence.EntityNotExistsError;
-import com.uber.cadence.QueryFailedError;
-import com.uber.cadence.WorkflowExecutionAlreadyCompletedError;
-import com.uber.cadence.WorkflowExecutionAlreadyStartedError;
 import com.uber.cadence.common.RetryOptions;
+import com.uber.cadence.entities.BadRequestError;
+import com.uber.cadence.entities.CancellationAlreadyRequestedError;
+import com.uber.cadence.entities.DomainAlreadyExistsError;
+import com.uber.cadence.entities.DomainNotActiveError;
+import com.uber.cadence.entities.EntityNotExistsError;
+import com.uber.cadence.entities.QueryFailedError;
+import com.uber.cadence.entities.WorkflowExecutionAlreadyCompletedError;
+import com.uber.cadence.entities.WorkflowExecutionAlreadyStartedError;
 import java.time.Duration;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;

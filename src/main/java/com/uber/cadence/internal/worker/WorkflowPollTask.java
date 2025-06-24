@@ -20,21 +20,21 @@ package com.uber.cadence.internal.worker;
 import static com.uber.cadence.internal.metrics.MetricsTagValue.INTERNAL_SERVICE_ERROR;
 import static com.uber.cadence.internal.metrics.MetricsTagValue.SERVICE_BUSY;
 
-import com.uber.cadence.InternalServiceError;
-import com.uber.cadence.PollForDecisionTaskRequest;
-import com.uber.cadence.PollForDecisionTaskResponse;
-import com.uber.cadence.ServiceBusyError;
-import com.uber.cadence.TaskList;
 import com.uber.cadence.common.BinaryChecksum;
+import com.uber.cadence.entities.BaseError;
+import com.uber.cadence.entities.InternalServiceError;
+import com.uber.cadence.entities.PollForDecisionTaskRequest;
+import com.uber.cadence.entities.PollForDecisionTaskResponse;
+import com.uber.cadence.entities.ServiceBusyError;
+import com.uber.cadence.entities.TaskList;
 import com.uber.cadence.internal.metrics.MetricsTag;
 import com.uber.cadence.internal.metrics.MetricsType;
-import com.uber.cadence.serviceclient.IWorkflowService;
+import com.uber.cadence.serviceclient.IWorkflowServiceV4;
 import com.uber.m3.tally.Scope;
 import com.uber.m3.tally.Stopwatch;
 import com.uber.m3.util.Duration;
 import com.uber.m3.util.ImmutableMap;
 import java.util.Objects;
-import org.apache.thrift.TException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,14 +42,14 @@ final class WorkflowPollTask implements Poller.PollTask<PollForDecisionTaskRespo
 
   private static final Logger log = LoggerFactory.getLogger(WorkflowWorker.class);
   private final Scope metricScope;
-  private final IWorkflowService service;
+  private final IWorkflowServiceV4 service;
   private final String domain;
   private final String taskList;
   private final TaskListKind taskListKind;
   private final String identity;
 
   WorkflowPollTask(
-      IWorkflowService service,
+      IWorkflowServiceV4 service,
       String domain,
       String taskList,
       TaskListKind taskListKind,
@@ -64,7 +64,7 @@ final class WorkflowPollTask implements Poller.PollTask<PollForDecisionTaskRespo
   }
 
   @Override
-  public PollForDecisionTaskResponse poll() throws TException {
+  public PollForDecisionTaskResponse poll() throws BaseError {
     metricScope.counter(MetricsType.DECISION_POLL_COUNTER).inc(1);
     Stopwatch sw = metricScope.timer(MetricsType.DECISION_POLL_LATENCY).start();
 
@@ -94,7 +94,7 @@ final class WorkflowPollTask implements Poller.PollTask<PollForDecisionTaskRespo
           .counter(MetricsType.DECISION_POLL_TRANSIENT_FAILED_COUNTER)
           .inc(1);
       throw e;
-    } catch (TException e) {
+    } catch (BaseError e) {
       metricScope.counter(MetricsType.DECISION_POLL_FAILED_COUNTER).inc(1);
       throw e;
     }

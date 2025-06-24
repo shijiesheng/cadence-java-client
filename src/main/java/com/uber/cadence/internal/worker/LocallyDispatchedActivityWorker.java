@@ -17,13 +17,13 @@
 
 package com.uber.cadence.internal.worker;
 
-import com.uber.cadence.ActivityType;
-import com.uber.cadence.Header;
-import com.uber.cadence.PollForActivityTaskResponse;
-import com.uber.cadence.WorkflowExecution;
-import com.uber.cadence.WorkflowType;
+import com.uber.cadence.entities.ActivityType;
+import com.uber.cadence.entities.Header;
+import com.uber.cadence.entities.PollForActivityTaskResponse;
+import com.uber.cadence.entities.WorkflowExecution;
+import com.uber.cadence.entities.WorkflowType;
 import com.uber.cadence.internal.worker.Poller.PollTask;
-import com.uber.cadence.serviceclient.IWorkflowService;
+import com.uber.cadence.serviceclient.IWorkflowServiceV4;
 import java.nio.ByteBuffer;
 import java.util.concurrent.CountDownLatch;
 import java.util.function.Function;
@@ -33,7 +33,7 @@ public final class LocallyDispatchedActivityWorker extends ActivityWorker {
   private LocallyDispatchedActivityPollTask ldaPollTask;
 
   public LocallyDispatchedActivityWorker(
-      IWorkflowService service,
+      IWorkflowServiceV4 service,
       String domain,
       String taskList,
       SingleWorkerOptions options,

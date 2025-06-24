@@ -17,10 +17,10 @@
 
 package com.uber.cadence.internal.replay;
 
-import com.uber.cadence.Decision;
-import com.uber.cadence.PollForDecisionTaskResponse;
-import com.uber.cadence.WorkflowQuery;
-import com.uber.cadence.WorkflowQueryResult;
+import com.uber.cadence.entities.Decision;
+import com.uber.cadence.entities.PollForDecisionTaskResponse;
+import com.uber.cadence.entities.WorkflowQuery;
+import com.uber.cadence.entities.WorkflowQueryResult;
 import java.util.List;
 import java.util.Map;
 

@@ -18,7 +18,7 @@
 package com.uber.cadence.internal.sync;
 
 import com.uber.cadence.activity.ActivityTask;
-import com.uber.cadence.serviceclient.IWorkflowService;
+import com.uber.cadence.serviceclient.IWorkflowServiceV4;
 import java.lang.reflect.Type;
 import java.util.Optional;
 
@@ -42,7 +42,7 @@ public final class ActivityInternal {
     return getContext().getDomain();
   }
 
-  public static IWorkflowService getService() {
+  public static IWorkflowServiceV4 getService() {
     return getContext().getService();
   }
 

@@ -17,8 +17,8 @@
 
 package com.uber.cadence.workflow;
 
-import com.uber.cadence.SignalExternalWorkflowExecutionFailedCause;
-import com.uber.cadence.WorkflowExecution;
+import com.uber.cadence.entities.SignalExternalWorkflowExecutionFailedCause;
+import com.uber.cadence.entities.WorkflowExecution;
 
 /** Exception used to communicate failure of a request to signal an external workflow. */
 @SuppressWarnings("serial")

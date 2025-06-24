@@ -17,8 +17,8 @@
 
 package com.uber.cadence.internal.testservice;
 
-import com.uber.cadence.BadRequestError;
-import com.uber.cadence.InternalServiceError;
+import com.uber.cadence.entities.BadRequestError;
+import com.uber.cadence.entities.InternalServiceError;
 import com.uber.cadence.internal.testservice.StateMachines.Action;
 import com.uber.cadence.internal.testservice.StateMachines.State;
 import java.util.ArrayList;

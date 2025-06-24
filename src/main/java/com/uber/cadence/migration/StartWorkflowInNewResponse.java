@@ -17,7 +17,7 @@
 
 package com.uber.cadence.migration;
 
-import com.uber.cadence.StartWorkflowExecutionResponse;
+import com.uber.cadence.entities.StartWorkflowExecutionResponse;
 
 public class StartWorkflowInNewResponse {
   StartWorkflowExecutionResponse startWorkflowExecutionResponse;

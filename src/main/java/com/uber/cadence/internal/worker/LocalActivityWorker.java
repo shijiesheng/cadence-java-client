@@ -17,12 +17,12 @@
 
 package com.uber.cadence.internal.worker;
 
-import com.uber.cadence.EventType;
-import com.uber.cadence.HistoryEvent;
-import com.uber.cadence.MarkerRecordedEventAttributes;
-import com.uber.cadence.PollForActivityTaskResponse;
 import com.uber.cadence.common.RetryOptions;
 import com.uber.cadence.context.ContextPropagator;
+import com.uber.cadence.entities.EventType;
+import com.uber.cadence.entities.HistoryEvent;
+import com.uber.cadence.entities.MarkerRecordedEventAttributes;
+import com.uber.cadence.entities.PollForActivityTaskResponse;
 import com.uber.cadence.internal.common.LocalActivityMarkerData;
 import com.uber.cadence.internal.metrics.MetricsTag;
 import com.uber.cadence.internal.metrics.MetricsType;

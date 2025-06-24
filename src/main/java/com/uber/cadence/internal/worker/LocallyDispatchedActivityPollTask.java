@@ -17,12 +17,12 @@
 
 package com.uber.cadence.internal.worker;
 
-import com.uber.cadence.PollForActivityTaskResponse;
+import com.uber.cadence.entities.BaseError;
+import com.uber.cadence.entities.PollForActivityTaskResponse;
 import com.uber.cadence.internal.metrics.MetricsType;
 import com.uber.cadence.internal.worker.LocallyDispatchedActivityWorker.Task;
 import java.util.concurrent.SynchronousQueue;
 import java.util.function.Function;
-import org.apache.thrift.TException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +38,7 @@ final class LocallyDispatchedActivityPollTask extends ActivityPollTaskBase
   }
 
   @Override
-  protected PollForActivityTaskResponse pollTask() throws TException {
+  protected PollForActivityTaskResponse pollTask() throws BaseError {
     Task task;
     try {
       task = pendingTasks.take();

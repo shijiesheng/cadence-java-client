@@ -17,10 +17,10 @@
 
 package com.uber.cadence.migration;
 
-import com.uber.cadence.RequestCancelWorkflowExecutionRequest;
-import com.uber.cadence.StartWorkflowExecutionRequest;
-import com.uber.cadence.WorkflowExecutionAlreadyStartedError;
 import com.uber.cadence.client.WorkflowClient;
+import com.uber.cadence.entities.RequestCancelWorkflowExecutionRequest;
+import com.uber.cadence.entities.StartWorkflowExecutionRequest;
+import com.uber.cadence.entities.WorkflowExecutionAlreadyStartedError;
 import com.uber.cadence.workflow.Workflow;
 
 public class MigrationActivitiesImpl implements MigrationActivities {

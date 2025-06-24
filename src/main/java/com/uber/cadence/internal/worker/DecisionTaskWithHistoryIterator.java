@@ -17,8 +17,8 @@
 
 package com.uber.cadence.internal.worker;
 
-import com.uber.cadence.HistoryEvent;
-import com.uber.cadence.PollForDecisionTaskResponse;
+import com.uber.cadence.entities.HistoryEvent;
+import com.uber.cadence.entities.PollForDecisionTaskResponse;
 import java.util.Iterator;
 
 /** Contains DecisionTask and history iterator that paginates history behind the scene. */

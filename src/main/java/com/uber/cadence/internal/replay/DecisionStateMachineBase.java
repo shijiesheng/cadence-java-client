@@ -17,7 +17,7 @@
 
 package com.uber.cadence.internal.replay;
 
-import com.uber.cadence.HistoryEvent;
+import com.uber.cadence.entities.HistoryEvent;
 import java.util.ArrayList;
 import java.util.List;
 

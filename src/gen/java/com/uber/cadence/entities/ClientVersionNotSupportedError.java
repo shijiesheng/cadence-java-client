@@ -15,15 +15,11 @@
 package com.uber.cadence.entities;
 
 import java.util.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import lombok.experimental.Accessors;
 
-@Getter
-@Setter
+@Data
 @Accessors(chain = true)
-@AllArgsConstructor
 public class ClientVersionNotSupportedError extends BaseError {
   private String featureVersion;
   private String clientImpl;
@@ -31,6 +27,10 @@ public class ClientVersionNotSupportedError extends BaseError {
 
   public ClientVersionNotSupportedError() {
     super();
+  }
+
+  public ClientVersionNotSupportedError(String message) {
+    super(message);
   }
 
   public ClientVersionNotSupportedError(String message, Throwable cause) {

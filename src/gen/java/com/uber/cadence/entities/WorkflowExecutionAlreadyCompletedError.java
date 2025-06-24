@@ -15,17 +15,19 @@
 package com.uber.cadence.entities;
 
 import java.util.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import lombok.experimental.Accessors;
 
-@Getter
-@Setter
+@Data
 @Accessors(chain = true)
 public class WorkflowExecutionAlreadyCompletedError extends BaseError {
 
   public WorkflowExecutionAlreadyCompletedError() {
     super();
+  }
+
+  public WorkflowExecutionAlreadyCompletedError(String message) {
+    super(message);
   }
 
   public WorkflowExecutionAlreadyCompletedError(String message, Throwable cause) {

@@ -17,9 +17,9 @@
 
 package com.uber.cadence.workflow;
 
-import com.uber.cadence.ActivityType;
-import com.uber.cadence.TimeoutType;
 import com.uber.cadence.converter.DataConverter;
+import com.uber.cadence.entities.ActivityType;
+import com.uber.cadence.entities.TimeoutType;
 import java.lang.reflect.Type;
 import java.util.Objects;
 

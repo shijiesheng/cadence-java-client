@@ -17,10 +17,10 @@
 
 package com.uber.cadence.internal.replay;
 
-import com.uber.cadence.Decision;
-import com.uber.cadence.DecisionType;
-import com.uber.cadence.HistoryEvent;
-import com.uber.cadence.SignalExternalWorkflowExecutionDecisionAttributes;
+import com.uber.cadence.entities.Decision;
+import com.uber.cadence.entities.DecisionType;
+import com.uber.cadence.entities.HistoryEvent;
+import com.uber.cadence.entities.SignalExternalWorkflowExecutionDecisionAttributes;
 
 class SignalDecisionStateMachine extends DecisionStateMachineBase {
 

@@ -17,9 +17,9 @@
 
 package com.uber.cadence.internal.replay;
 
-import com.uber.cadence.ActivityType;
-import com.uber.cadence.WorkflowExecution;
 import com.uber.cadence.common.RetryOptions;
+import com.uber.cadence.entities.ActivityType;
+import com.uber.cadence.entities.WorkflowExecution;
 import java.util.Arrays;
 import java.util.Map;
 

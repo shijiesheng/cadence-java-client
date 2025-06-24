@@ -17,19 +17,19 @@
 
 package com.uber.cadence.internal.sync;
 
-import com.uber.cadence.WorkflowExecution;
 import com.uber.cadence.activity.ActivityTask;
 import com.uber.cadence.client.ActivityCompletionException;
-import com.uber.cadence.serviceclient.IWorkflowService;
+import com.uber.cadence.entities.WorkflowExecution;
+import com.uber.cadence.serviceclient.IWorkflowServiceV4;
 import java.lang.reflect.Type;
 import java.util.Optional;
 
 class LocalActivityExecutionContextImpl implements ActivityExecutionContext {
-  private final IWorkflowService service;
+  private final IWorkflowServiceV4 service;
   private final String domain;
   private final ActivityTask task;
 
-  LocalActivityExecutionContextImpl(IWorkflowService service, String domain, ActivityTask task) {
+  LocalActivityExecutionContextImpl(IWorkflowServiceV4 service, String domain, ActivityTask task) {
     this.domain = domain;
     this.service = service;
     this.task = task;
@@ -75,7 +75,7 @@ class LocalActivityExecutionContextImpl implements ActivityExecutionContext {
   }
 
   @Override
-  public IWorkflowService getService() {
+  public IWorkflowServiceV4 getService() {
     return service;
   }
 

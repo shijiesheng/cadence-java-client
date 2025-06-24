@@ -17,11 +17,11 @@
 
 package com.uber.cadence.internal.replay;
 
-import com.uber.cadence.Decision;
-import com.uber.cadence.DecisionType;
-import com.uber.cadence.HistoryEvent;
-import com.uber.cadence.RequestCancelActivityTaskDecisionAttributes;
-import com.uber.cadence.ScheduleActivityTaskDecisionAttributes;
+import com.uber.cadence.entities.Decision;
+import com.uber.cadence.entities.DecisionType;
+import com.uber.cadence.entities.HistoryEvent;
+import com.uber.cadence.entities.RequestCancelActivityTaskDecisionAttributes;
+import com.uber.cadence.entities.ScheduleActivityTaskDecisionAttributes;
 
 final class ActivityDecisionStateMachine extends DecisionStateMachineBase {
 

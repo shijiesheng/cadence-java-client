@@ -19,12 +19,12 @@ package com.uber.cadence.workflow;
 
 import static com.uber.cadence.internal.common.OptionsUtils.roundUpToSeconds;
 
-import com.uber.cadence.ParentClosePolicy;
-import com.uber.cadence.WorkflowIdReusePolicy;
 import com.uber.cadence.common.CronSchedule;
 import com.uber.cadence.common.MethodRetry;
 import com.uber.cadence.common.RetryOptions;
 import com.uber.cadence.context.ContextPropagator;
+import com.uber.cadence.entities.ParentClosePolicy;
+import com.uber.cadence.entities.WorkflowIdReusePolicy;
 import com.uber.cadence.internal.common.OptionsUtils;
 import java.time.Duration;
 import java.util.List;

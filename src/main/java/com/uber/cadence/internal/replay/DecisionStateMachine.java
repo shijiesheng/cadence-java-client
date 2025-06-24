@@ -17,11 +17,12 @@
 
 package com.uber.cadence.internal.replay;
 
-import com.uber.cadence.HistoryEvent;
+import com.uber.cadence.entities.Decision;
+import com.uber.cadence.entities.HistoryEvent;
 
 interface DecisionStateMachine {
 
-  com.uber.cadence.Decision getDecision();
+  Decision getDecision();
 
   /** @return true if produced a decision */
   boolean cancel(Runnable immediateCancellationCallback);

@@ -18,7 +18,7 @@
 package com.uber.cadence.internal.testservice;
 
 import com.google.common.base.Throwables;
-import com.uber.cadence.InternalServiceError;
+import com.uber.cadence.entities.InternalServiceError;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;

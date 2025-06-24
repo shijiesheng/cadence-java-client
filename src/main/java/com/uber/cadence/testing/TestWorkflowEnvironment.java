@@ -21,7 +21,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.uber.cadence.client.WorkflowClient;
 import com.uber.cadence.client.WorkflowClientOptions;
 import com.uber.cadence.internal.sync.TestWorkflowEnvironmentInternal;
-import com.uber.cadence.serviceclient.IWorkflowService;
+import com.uber.cadence.serviceclient.IWorkflowServiceV4;
 import com.uber.cadence.worker.Worker;
 import com.uber.cadence.worker.WorkerFactory;
 import com.uber.cadence.worker.WorkerOptions;
@@ -152,7 +152,7 @@ public interface TestWorkflowEnvironment {
   void registerDelayedCallback(Duration delay, Runnable r);
 
   /** Returns the in-memory test Cadence service that is owned by this. */
-  IWorkflowService getWorkflowService();
+  IWorkflowServiceV4 getWorkflowService();
 
   String getDomain();
 

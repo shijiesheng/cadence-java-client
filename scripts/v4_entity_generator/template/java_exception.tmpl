@@ -1,15 +1,11 @@
 package {{.PackageName}};
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import lombok.experimental.Accessors;
-import lombok.AllArgsConstructor;
 import java.util.*;
 
-@Getter
-@Setter
+@Data
 @Accessors(chain = true)
-{{- if .Fields}}@AllArgsConstructor{{- end}}
 public class {{.ClassName}} extends {{.BaseExceptionClassName}} {
   {{- range .Fields}}
   private {{.Type}} {{.Name}};
@@ -17,6 +13,10 @@ public class {{.ClassName}} extends {{.BaseExceptionClassName}} {
 
   public {{.ClassName}}() {
     super();
+  }
+
+  public {{.ClassName}}(String message) {
+    super(message);
   }
 
   public {{.ClassName}}(String message, Throwable cause) {

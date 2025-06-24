@@ -17,8 +17,8 @@
 
 package com.uber.cadence.internal.testservice;
 
-import com.uber.cadence.BadRequestError;
-import com.uber.cadence.RetryPolicy;
+import com.uber.cadence.entities.BadRequestError;
+import com.uber.cadence.entities.RetryPolicy;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 

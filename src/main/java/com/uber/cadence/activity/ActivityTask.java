@@ -17,8 +17,8 @@
 
 package com.uber.cadence.activity;
 
-import com.uber.cadence.WorkflowExecution;
-import com.uber.cadence.WorkflowType;
+import com.uber.cadence.entities.WorkflowExecution;
+import com.uber.cadence.entities.WorkflowType;
 import java.time.Duration;
 
 /**

@@ -17,21 +17,21 @@
 
 package com.uber.cadence.internal.sync;
 
-import com.uber.cadence.EntityNotExistsError;
-import com.uber.cadence.InternalServiceError;
-import com.uber.cadence.QueryConsistencyLevel;
-import com.uber.cadence.QueryFailedError;
-import com.uber.cadence.QueryRejectCondition;
-import com.uber.cadence.QueryWorkflowResponse;
-import com.uber.cadence.WorkflowExecution;
-import com.uber.cadence.WorkflowExecutionAlreadyCompletedError;
-import com.uber.cadence.WorkflowExecutionAlreadyStartedError;
-import com.uber.cadence.WorkflowType;
 import com.uber.cadence.client.*;
 import com.uber.cadence.context.ContextPropagator;
 import com.uber.cadence.converter.DataConverter;
 import com.uber.cadence.converter.DataConverterException;
 import com.uber.cadence.converter.JsonDataConverter;
+import com.uber.cadence.entities.EntityNotExistsError;
+import com.uber.cadence.entities.InternalServiceError;
+import com.uber.cadence.entities.QueryConsistencyLevel;
+import com.uber.cadence.entities.QueryFailedError;
+import com.uber.cadence.entities.QueryRejectCondition;
+import com.uber.cadence.entities.QueryWorkflowResponse;
+import com.uber.cadence.entities.WorkflowExecution;
+import com.uber.cadence.entities.WorkflowExecutionAlreadyCompletedError;
+import com.uber.cadence.entities.WorkflowExecutionAlreadyStartedError;
+import com.uber.cadence.entities.WorkflowType;
 import com.uber.cadence.internal.common.CheckedExceptionWrapper;
 import com.uber.cadence.internal.common.SignalWithStartWorkflowExecutionParameters;
 import com.uber.cadence.internal.common.StartWorkflowExecutionParameters;

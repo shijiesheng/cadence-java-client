@@ -19,8 +19,8 @@ package com.uber.cadence.internal.common;
 
 import static com.uber.cadence.internal.common.OptionsUtils.roundUpToSeconds;
 
-import com.uber.cadence.RetryPolicy;
 import com.uber.cadence.common.RetryOptions;
+import com.uber.cadence.entities.RetryPolicy;
 import com.uber.m3.util.ImmutableList;
 import java.util.ArrayList;
 import java.util.List;

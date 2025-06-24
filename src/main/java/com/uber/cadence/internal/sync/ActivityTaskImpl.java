@@ -17,10 +17,10 @@
 
 package com.uber.cadence.internal.sync;
 
-import com.uber.cadence.PollForActivityTaskResponse;
-import com.uber.cadence.WorkflowExecution;
-import com.uber.cadence.WorkflowType;
 import com.uber.cadence.activity.ActivityTask;
+import com.uber.cadence.entities.PollForActivityTaskResponse;
+import com.uber.cadence.entities.WorkflowExecution;
+import com.uber.cadence.entities.WorkflowType;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 

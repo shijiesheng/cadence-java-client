@@ -17,13 +17,14 @@
 
 package com.uber.cadence.internal.worker;
 
-import com.uber.cadence.Header;
-import com.uber.cadence.PollForActivityTaskResponse;
-import com.uber.cadence.RespondActivityTaskCanceledRequest;
-import com.uber.cadence.RespondActivityTaskCompletedRequest;
-import com.uber.cadence.RespondActivityTaskFailedRequest;
-import com.uber.cadence.WorkflowExecution;
 import com.uber.cadence.context.ContextPropagator;
+import com.uber.cadence.entities.BaseError;
+import com.uber.cadence.entities.Header;
+import com.uber.cadence.entities.PollForActivityTaskResponse;
+import com.uber.cadence.entities.RespondActivityTaskCanceledRequest;
+import com.uber.cadence.entities.RespondActivityTaskCompletedRequest;
+import com.uber.cadence.entities.RespondActivityTaskFailedRequest;
+import com.uber.cadence.entities.WorkflowExecution;
 import com.uber.cadence.internal.common.RpcRetryer;
 import com.uber.cadence.internal.logging.LoggerTag;
 import com.uber.cadence.internal.metrics.MetricsTag;
@@ -31,7 +32,7 @@ import com.uber.cadence.internal.metrics.MetricsType;
 import com.uber.cadence.internal.tracing.TracingPropagator;
 import com.uber.cadence.internal.worker.ActivityTaskHandler.Result;
 import com.uber.cadence.internal.worker.Poller.PollTask;
-import com.uber.cadence.serviceclient.IWorkflowService;
+import com.uber.cadence.serviceclient.IWorkflowServiceV4;
 import com.uber.m3.tally.Scope;
 import com.uber.m3.tally.Stopwatch;
 import com.uber.m3.util.Duration;
@@ -44,21 +45,20 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.TimeUnit;
-import org.apache.thrift.TException;
 import org.slf4j.MDC;
 
 public class ActivityWorker extends SuspendableWorkerBase {
 
   protected final SingleWorkerOptions options;
   private final ActivityTaskHandler handler;
-  private final IWorkflowService service;
+  private final IWorkflowServiceV4 service;
   private final String domain;
   private final String taskList;
   private final Tracer tracer;
   private final TracingPropagator spanFactory;
 
   public ActivityWorker(
-      IWorkflowService service,
+      IWorkflowServiceV4 service,
       String domain,
       String taskList,
       SingleWorkerOptions options,
@@ -67,7 +67,7 @@ public class ActivityWorker extends SuspendableWorkerBase {
   }
 
   public ActivityWorker(
-      IWorkflowService service,
+      IWorkflowServiceV4 service,
       String domain,
       String taskList,
       SingleWorkerOptions options,
@@ -225,7 +225,7 @@ public class ActivityWorker extends SuspendableWorkerBase {
 
     private void sendReply(
         PollForActivityTaskResponse task, ActivityTaskHandler.Result response, Scope metricsScope)
-        throws TException {
+        throws BaseError {
       RespondActivityTaskCompletedRequest taskCompleted = response.getTaskCompleted();
       if (taskCompleted != null) {
         taskCompleted.setTaskToken(task.getTaskToken());

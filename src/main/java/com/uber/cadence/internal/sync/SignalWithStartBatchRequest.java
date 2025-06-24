@@ -17,9 +17,9 @@
 
 package com.uber.cadence.internal.sync;
 
-import com.uber.cadence.WorkflowExecution;
 import com.uber.cadence.client.BatchRequest;
 import com.uber.cadence.client.WorkflowStub;
+import com.uber.cadence.entities.WorkflowExecution;
 import com.uber.cadence.workflow.Functions;
 import java.util.ArrayList;
 import java.util.List;

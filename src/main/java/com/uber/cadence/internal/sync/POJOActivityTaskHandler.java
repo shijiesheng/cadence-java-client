@@ -20,19 +20,19 @@ package com.uber.cadence.internal.sync;
 import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.google.common.util.concurrent.RateLimiter;
-import com.uber.cadence.PollForActivityTaskResponse;
-import com.uber.cadence.RespondActivityTaskCompletedRequest;
-import com.uber.cadence.RespondActivityTaskFailedRequest;
 import com.uber.cadence.activity.ActivityMethod;
 import com.uber.cadence.activity.ActivityTask;
 import com.uber.cadence.client.ActivityCancelledException;
 import com.uber.cadence.common.MethodRetry;
 import com.uber.cadence.converter.DataConverter;
+import com.uber.cadence.entities.PollForActivityTaskResponse;
+import com.uber.cadence.entities.RespondActivityTaskCompletedRequest;
+import com.uber.cadence.entities.RespondActivityTaskFailedRequest;
 import com.uber.cadence.internal.common.CheckedExceptionWrapper;
 import com.uber.cadence.internal.common.InternalUtils;
 import com.uber.cadence.internal.metrics.MetricsType;
 import com.uber.cadence.internal.worker.ActivityTaskHandler;
-import com.uber.cadence.serviceclient.IWorkflowService;
+import com.uber.cadence.serviceclient.IWorkflowServiceV4;
 import com.uber.cadence.testing.SimulatedTimeoutException;
 import com.uber.m3.tally.Scope;
 import java.lang.reflect.InvocationTargetException;
@@ -51,11 +51,11 @@ class POJOActivityTaskHandler implements ActivityTaskHandler {
   private final ScheduledExecutorService heartbeatExecutor;
   private final Map<String, ActivityTaskExecutor> activities =
       Collections.synchronizedMap(new HashMap<>());
-  private IWorkflowService service;
+  private IWorkflowServiceV4 service;
   private final String domain;
 
   POJOActivityTaskHandler(
-      IWorkflowService service,
+      IWorkflowServiceV4 service,
       String domain,
       DataConverter dataConverter,
       ScheduledExecutorService heartbeatExecutor) {
@@ -275,7 +275,7 @@ class POJOActivityTaskHandler implements ActivityTaskHandler {
   }
 
   // This is only for unit test to mock service and set expectations.
-  void setWorkflowService(IWorkflowService service) {
+  void setWorkflowService(IWorkflowServiceV4 service) {
     this.service = service;
   }
 }

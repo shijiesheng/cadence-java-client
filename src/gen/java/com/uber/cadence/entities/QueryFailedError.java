@@ -15,17 +15,19 @@
 package com.uber.cadence.entities;
 
 import java.util.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import lombok.experimental.Accessors;
 
-@Getter
-@Setter
+@Data
 @Accessors(chain = true)
 public class QueryFailedError extends BaseError {
 
   public QueryFailedError() {
     super();
+  }
+
+  public QueryFailedError(String message) {
+    super(message);
   }
 
   public QueryFailedError(String message, Throwable cause) {

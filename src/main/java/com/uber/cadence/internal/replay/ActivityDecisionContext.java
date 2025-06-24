@@ -17,18 +17,17 @@
 
 package com.uber.cadence.internal.replay;
 
-import com.uber.cadence.ActivityTaskCanceledEventAttributes;
-import com.uber.cadence.ActivityTaskCompletedEventAttributes;
-import com.uber.cadence.ActivityTaskFailedEventAttributes;
-import com.uber.cadence.ActivityTaskTimedOutEventAttributes;
-import com.uber.cadence.ActivityType;
-import com.uber.cadence.Header;
-import com.uber.cadence.HistoryEvent;
-import com.uber.cadence.ScheduleActivityTaskDecisionAttributes;
-import com.uber.cadence.TaskList;
-import com.uber.cadence.TimeoutType;
+import com.uber.cadence.entities.ActivityTaskCanceledEventAttributes;
+import com.uber.cadence.entities.ActivityTaskCompletedEventAttributes;
+import com.uber.cadence.entities.ActivityTaskFailedEventAttributes;
+import com.uber.cadence.entities.ActivityTaskTimedOutEventAttributes;
+import com.uber.cadence.entities.ActivityType;
+import com.uber.cadence.entities.Header;
+import com.uber.cadence.entities.HistoryEvent;
+import com.uber.cadence.entities.ScheduleActivityTaskDecisionAttributes;
+import com.uber.cadence.entities.TaskList;
+import com.uber.cadence.entities.TimeoutType;
 import com.uber.cadence.internal.common.RetryParameters;
-import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CancellationException;
@@ -205,12 +204,6 @@ final class ActivityDecisionContext {
     if (headers == null || headers.isEmpty()) {
       return null;
     }
-    Map<String, ByteBuffer> fields = new HashMap<>();
-    for (Map.Entry<String, byte[]> item : headers.entrySet()) {
-      fields.put(item.getKey(), ByteBuffer.wrap(item.getValue()));
-    }
-    Header headerThrift = new Header();
-    headerThrift.setFields(fields);
-    return headerThrift;
+    return new Header().setFields(headers);
   }
 }

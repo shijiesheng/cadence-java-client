@@ -17,8 +17,8 @@
 
 package com.uber.cadence.client;
 
-import com.uber.cadence.QueryRejectCondition;
-import com.uber.cadence.WorkflowExecution;
+import com.uber.cadence.entities.QueryRejectCondition;
+import com.uber.cadence.entities.WorkflowExecution;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;

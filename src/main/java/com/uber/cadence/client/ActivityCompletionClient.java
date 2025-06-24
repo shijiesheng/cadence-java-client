@@ -17,8 +17,8 @@
 
 package com.uber.cadence.client;
 
-import com.uber.cadence.WorkflowExecution;
 import com.uber.cadence.activity.Activity;
+import com.uber.cadence.entities.WorkflowExecution;
 import java.util.concurrent.CancellationException;
 
 /**

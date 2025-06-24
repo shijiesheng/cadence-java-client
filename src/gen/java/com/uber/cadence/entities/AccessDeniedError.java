@@ -15,17 +15,19 @@
 package com.uber.cadence.entities;
 
 import java.util.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import lombok.experimental.Accessors;
 
-@Getter
-@Setter
+@Data
 @Accessors(chain = true)
 public class AccessDeniedError extends BaseError {
 
   public AccessDeniedError() {
     super();
+  }
+
+  public AccessDeniedError(String message) {
+    super(message);
   }
 
   public AccessDeniedError(String message, Throwable cause) {

@@ -24,7 +24,7 @@ import com.uber.cadence.internal.shadowing.ScanWorkflowActivityImpl;
 import com.uber.cadence.internal.shadowing.ScanWorkflowActivityParams;
 import com.uber.cadence.internal.shadowing.ScanWorkflowActivityResult;
 import com.uber.cadence.internal.shadowing.WorkflowExecution;
-import com.uber.cadence.serviceclient.IWorkflowService;
+import com.uber.cadence.serviceclient.IWorkflowServiceV4;
 import com.uber.cadence.shadower.Mode;
 import com.uber.cadence.worker.ShadowingOptions;
 import com.uber.cadence.worker.WorkflowImplementationOptions;
@@ -50,7 +50,7 @@ public final class WorkflowShadower {
    * @param options is the shadowing options.
    * @param taskList is the task list used in the workflows.
    */
-  public WorkflowShadower(IWorkflowService service, ShadowingOptions options, String taskList) {
+  public WorkflowShadower(IWorkflowServiceV4 service, ShadowingOptions options, String taskList) {
     this(service, options, taskList, new NoopScope());
   }
 
@@ -64,7 +64,7 @@ public final class WorkflowShadower {
    * @param testOptions uses to set customized data converter, interceptor and context propagator.
    */
   public WorkflowShadower(
-      IWorkflowService service,
+      IWorkflowServiceV4 service,
       ShadowingOptions options,
       String taskList,
       Scope metricsScope,
@@ -76,7 +76,7 @@ public final class WorkflowShadower {
   }
 
   public WorkflowShadower(
-      IWorkflowService service, ShadowingOptions options, String taskList, Scope metricsScope) {
+      IWorkflowServiceV4 service, ShadowingOptions options, String taskList, Scope metricsScope) {
     this(
         options,
         new ScanWorkflowActivityImpl(service),

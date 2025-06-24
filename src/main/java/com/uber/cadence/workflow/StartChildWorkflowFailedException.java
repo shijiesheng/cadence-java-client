@@ -17,9 +17,9 @@
 
 package com.uber.cadence.workflow;
 
-import com.uber.cadence.ChildWorkflowExecutionFailedCause;
-import com.uber.cadence.WorkflowExecution;
-import com.uber.cadence.WorkflowType;
+import com.uber.cadence.entities.ChildWorkflowExecutionFailedCause;
+import com.uber.cadence.entities.WorkflowExecution;
+import com.uber.cadence.entities.WorkflowType;
 
 /**
  * Indicates that child workflow failed to start. Currently the only cause is that there is already

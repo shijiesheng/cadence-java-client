@@ -17,11 +17,11 @@
 
 package com.uber.cadence.workflow;
 
-import com.uber.cadence.WorkflowExecution;
-import com.uber.cadence.WorkflowExecutionStartedEventAttributes;
-import com.uber.cadence.WorkflowType;
 import com.uber.cadence.activity.ActivityOptions;
 import com.uber.cadence.activity.LocalActivityOptions;
+import com.uber.cadence.entities.WorkflowExecution;
+import com.uber.cadence.entities.WorkflowExecutionStartedEventAttributes;
+import com.uber.cadence.entities.WorkflowType;
 import com.uber.cadence.internal.sync.SyncWorkflowDefinition;
 import com.uber.cadence.internal.worker.WorkflowExecutionException;
 import com.uber.cadence.workflow.Functions.Func;

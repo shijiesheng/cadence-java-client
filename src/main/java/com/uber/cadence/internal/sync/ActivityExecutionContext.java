@@ -19,7 +19,7 @@ package com.uber.cadence.internal.sync;
 
 import com.uber.cadence.activity.ActivityTask;
 import com.uber.cadence.client.ActivityCompletionException;
-import com.uber.cadence.serviceclient.IWorkflowService;
+import com.uber.cadence.serviceclient.IWorkflowServiceV4;
 import java.lang.reflect.Type;
 import java.util.Optional;
 import java.util.concurrent.CancellationException;
@@ -69,7 +69,7 @@ public interface ActivityExecutionContext {
    * @return an instance of the Simple Workflow Java client that is the same used by the invoked
    *     activity worker.
    */
-  IWorkflowService getService();
+  IWorkflowServiceV4 getService();
 
   String getDomain();
 }

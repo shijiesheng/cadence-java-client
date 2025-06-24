@@ -15,17 +15,19 @@
 package com.uber.cadence.entities;
 
 import java.util.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import lombok.experimental.Accessors;
 
-@Getter
-@Setter
+@Data
 @Accessors(chain = true)
 public class LimitExceededError extends BaseError {
 
   public LimitExceededError() {
     super();
+  }
+
+  public LimitExceededError(String message) {
+    super(message);
   }
 
   public LimitExceededError(String message, Throwable cause) {

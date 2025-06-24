@@ -17,8 +17,8 @@
 
 package com.uber.cadence.internal.worker;
 
-import com.uber.cadence.PollForDecisionTaskResponse;
-import com.uber.cadence.serviceclient.IWorkflowService;
+import com.uber.cadence.entities.PollForDecisionTaskResponse;
+import com.uber.cadence.serviceclient.IWorkflowServiceV4;
 import com.uber.m3.tally.Scope;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -26,7 +26,7 @@ import java.util.function.Supplier;
 public class WorkflowPollTaskFactory
     implements Supplier<Poller.PollTask<PollForDecisionTaskResponse>> {
 
-  private final IWorkflowService service;
+  private final IWorkflowServiceV4 service;
   private final String domain;
   private final String taskList;
   private final TaskListKind taskListKind;
@@ -34,7 +34,7 @@ public class WorkflowPollTaskFactory
   private final String identity;
 
   public WorkflowPollTaskFactory(
-      IWorkflowService service,
+      IWorkflowServiceV4 service,
       String domain,
       String taskList,
       TaskListKind taskListKind,

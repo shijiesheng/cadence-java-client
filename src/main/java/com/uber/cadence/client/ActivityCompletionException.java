@@ -17,8 +17,8 @@
 
 package com.uber.cadence.client;
 
-import com.uber.cadence.WorkflowExecution;
 import com.uber.cadence.activity.ActivityTask;
+import com.uber.cadence.entities.WorkflowExecution;
 
 /** Base exception for all failures returned by an activity completion client. */
 public class ActivityCompletionException extends RuntimeException {

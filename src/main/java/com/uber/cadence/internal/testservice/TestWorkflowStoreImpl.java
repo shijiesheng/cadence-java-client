@@ -17,22 +17,22 @@
 
 package com.uber.cadence.internal.testservice;
 
-import com.uber.cadence.BadRequestError;
-import com.uber.cadence.EntityNotExistsError;
-import com.uber.cadence.EventType;
-import com.uber.cadence.GetWorkflowExecutionHistoryRequest;
-import com.uber.cadence.GetWorkflowExecutionHistoryResponse;
-import com.uber.cadence.History;
-import com.uber.cadence.HistoryEvent;
-import com.uber.cadence.HistoryEventFilterType;
-import com.uber.cadence.InternalServiceError;
-import com.uber.cadence.PollForActivityTaskRequest;
-import com.uber.cadence.PollForActivityTaskResponse;
-import com.uber.cadence.PollForDecisionTaskRequest;
-import com.uber.cadence.PollForDecisionTaskResponse;
-import com.uber.cadence.StickyExecutionAttributes;
-import com.uber.cadence.WorkflowExecution;
-import com.uber.cadence.WorkflowExecutionInfo;
+import com.uber.cadence.entities.BadRequestError;
+import com.uber.cadence.entities.EntityNotExistsError;
+import com.uber.cadence.entities.EventType;
+import com.uber.cadence.entities.GetWorkflowExecutionHistoryRequest;
+import com.uber.cadence.entities.GetWorkflowExecutionHistoryResponse;
+import com.uber.cadence.entities.History;
+import com.uber.cadence.entities.HistoryEvent;
+import com.uber.cadence.entities.HistoryEventFilterType;
+import com.uber.cadence.entities.InternalServiceError;
+import com.uber.cadence.entities.PollForActivityTaskRequest;
+import com.uber.cadence.entities.PollForActivityTaskResponse;
+import com.uber.cadence.entities.PollForDecisionTaskRequest;
+import com.uber.cadence.entities.PollForDecisionTaskResponse;
+import com.uber.cadence.entities.StickyExecutionAttributes;
+import com.uber.cadence.entities.WorkflowExecution;
+import com.uber.cadence.entities.WorkflowExecutionInfo;
 import com.uber.cadence.internal.common.WorkflowExecutionUtils;
 import com.uber.cadence.internal.testservice.RequestContext.Timer;
 import java.time.Duration;
@@ -88,7 +88,7 @@ class TestWorkflowStoreImpl implements TestWorkflowStore {
         }
         event.setEventId(history.size() + 1L);
         // It can be set in StateMachines.startActivityTask
-        if (!event.isSetTimestamp()) {
+        if (event.getTimestamp() == 0) {
           event.setTimestamp(timeInNanos);
         }
         history.add(event);
@@ -421,11 +421,12 @@ class TestWorkflowStoreImpl implements TestWorkflowStore {
                   .setExecution(executionId.getExecution())
                   .setHistoryLength(history.size())
                   .setStartTime(history.get(0).getTimestamp())
-                  .setIsCron(
-                      history
+                  .setCron(
+                      !history
                           .get(0)
                           .getWorkflowExecutionStartedEventAttributes()
-                          .isSetCronSchedule())
+                          .getCronSchedule()
+                          .isEmpty())
                   .setType(
                       history
                           .get(0)
@@ -447,11 +448,12 @@ class TestWorkflowStoreImpl implements TestWorkflowStore {
                   .setExecution(executionId.getExecution())
                   .setHistoryLength(history.size())
                   .setStartTime(history.get(0).getTimestamp())
-                  .setIsCron(
-                      history
+                  .setCron(
+                      !history
                           .get(0)
                           .getWorkflowExecutionStartedEventAttributes()
-                          .isSetCronSchedule())
+                          .getCronSchedule()
+                          .isEmpty())
                   .setType(
                       history.get(0).getWorkflowExecutionStartedEventAttributes().getWorkflowType())
                   .setCloseStatus(

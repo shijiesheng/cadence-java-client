@@ -18,9 +18,9 @@
 package com.uber.cadence.workflow;
 
 import com.cronutils.utils.StringUtils;
-import com.uber.cadence.SearchAttributes;
 import com.uber.cadence.converter.DataConverter;
 import com.uber.cadence.converter.JsonDataConverter;
+import com.uber.cadence.entities.SearchAttributes;
 import java.nio.ByteBuffer;
 
 public class WorkflowUtils {
