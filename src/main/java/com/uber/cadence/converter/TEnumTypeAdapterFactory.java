@@ -49,7 +49,7 @@ public class TEnumTypeAdapterFactory implements TypeAdapterFactory {
           @Override
           public void write(JsonWriter jsonWriter, T value) throws IOException {
             logger.warn(
-                "Thrift message will no longer be support in cadence-java-client V4, payload class name {}",
+                "Thrift message will no longer be supported for data convertion in cadence-java-client V4, payload class name {}",
                 value.getClass().getName());
             jsonWriter.value(((TEnum) value).getValue());
           }
@@ -62,7 +62,7 @@ public class TEnumTypeAdapterFactory implements TypeAdapterFactory {
               @SuppressWarnings("unchecked")
               T instance = (T) m.invoke(null, value);
               logger.warn(
-                  "Thrift message will no longer be support in cadence-java-client V4, payload class name {}",
+                  "Thrift message will no longer be supported for data convertion in cadence-java-client V4, payload class name {}",
                   instance.getClass().getName());
               return instance;
             } catch (Exception e) {
