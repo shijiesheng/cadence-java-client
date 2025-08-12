@@ -23,7 +23,7 @@ If this does not work, see instructions for running the Cadence Server at https:
 ## Get CLI
 
 [CLI is avaialable as an executable or as a docker image](https://github.com/uber/cadence/blob/master/tools/cli/README.md)
-balala
+balalaafa 
 ## Build a configuration
 
 Add *cadence-client* as a dependency to your *pom.xml*:
