@@ -328,7 +328,7 @@ public class StartWorkflowTest {
 
   @Test
   public void testSignalStartWorkflowGRPCNoPropagation() {
-    // Assume.assumeTrue(useDockerService);
+    Assume.assumeTrue(useDockerService);
     MockTracer mockTracer = new MockTracer();
     IWorkflowService service =
         new Thrift2ProtoAdapter(
