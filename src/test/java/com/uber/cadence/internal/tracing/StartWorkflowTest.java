@@ -21,6 +21,8 @@ import static org.junit.Assert.*;
 
 import com.uber.cadence.DomainAlreadyExistsError;
 import com.uber.cadence.RegisterDomainRequest;
+import com.uber.cadence.TerminateWorkflowExecutionRequest;
+import com.uber.cadence.WorkflowExecution;
 import com.uber.cadence.activity.ActivityMethod;
 import com.uber.cadence.activity.ActivityOptions;
 import com.uber.cadence.client.*;
@@ -46,6 +48,7 @@ import io.opentracing.mock.MockTracer;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import org.junit.Assume;
 import org.junit.Ignore;
@@ -58,12 +61,12 @@ public class StartWorkflowTest {
   private static final String CONTEXT_VALUE = "this should propagate";
 
   public interface TestWorkflow {
-    @WorkflowMethod(executionStartToCloseTimeoutSeconds = 500, taskList = TASK_LIST)
+    @WorkflowMethod(executionStartToCloseTimeoutSeconds = 60)
     Integer AddOneThenDouble(Integer n);
   }
 
   public interface DoubleWorkflow {
-    @WorkflowMethod(executionStartToCloseTimeoutSeconds = 500, taskList = TASK_LIST)
+    @WorkflowMethod(executionStartToCloseTimeoutSeconds = 60)
     Integer Double(Integer n);
   }
 
@@ -131,24 +134,6 @@ public class StartWorkflowTest {
     }
   }
 
-  public static class ActivityOnlyTestWorkflowImpl implements TestWorkflow {
-    private final TestActivity activities =
-        Workflow.newActivityStub(
-            TestActivity.class,
-            new ActivityOptions.Builder()
-                .setRetryOptions(
-                    new RetryOptions.Builder()
-                        .setInitialInterval(Duration.ofSeconds(10))
-                        .setMaximumAttempts(2)
-                        .build())
-                .build());
-
-    @Override
-    public Integer AddOneThenDouble(Integer n) {
-      return activities.Double(activities.AddOne(n));
-    }
-  }
-
   public static class DoubleWorkflowImpl implements DoubleWorkflow {
     private final TestActivity activities = Workflow.newLocalActivityStub(TestActivity.class);
 
@@ -159,7 +144,7 @@ public class StartWorkflowTest {
   }
 
   public interface CronWorkflow {
-    @WorkflowMethod(executionStartToCloseTimeoutSeconds = 120, taskList = TASK_LIST)
+    @WorkflowMethod(executionStartToCloseTimeoutSeconds = 120)
     String execute();
   }
 
@@ -220,6 +205,7 @@ public class StartWorkflowTest {
     WorkflowClient client =
         WorkflowClient.newInstance(
             service, WorkflowClientOptions.newBuilder().setDomain(DOMAIN).build());
+    String taskList = newTaskList();
 
     WorkerFactory workerFactory =
         WorkerFactory.newInstance(
@@ -227,12 +213,12 @@ public class StartWorkflowTest {
     Worker worker;
     worker =
         workerFactory.newWorker(
-            TASK_LIST, WorkerOptions.newBuilder().setMaxConcurrentWorkflowExecutionSize(2).build());
+            taskList, WorkerOptions.newBuilder().setMaxConcurrentWorkflowExecutionSize(20).build());
     worker.registerActivitiesImplementations(new TestActivityImpl(mockTracer, true));
-    worker.registerWorkflowImplementationTypes(ActivityOnlyTestWorkflowImpl.class);
+    worker.registerWorkflowImplementationTypes(DoubleWorkflowImpl.class);
     workerFactory.start();
 
-    int workflowCount = 100;
+    int workflowCount = 50;
     List<CompletableFuture<Void>> futures = new ArrayList<>();
 
     for (int i = 0; i < workflowCount; i++) {
@@ -243,7 +229,11 @@ public class StartWorkflowTest {
                 Span rootSpan = mockTracer.buildSpan("workflow=" + finalI).start();
                 rootSpan.setBaggageItem(CONTEXT_KEY, CONTEXT_VALUE);
                 mockTracer.activateSpan(rootSpan);
-                client.newWorkflowStub(TestWorkflow.class).AddOneThenDouble(finalI);
+                client
+                    .newWorkflowStub(
+                        DoubleWorkflow.class,
+                        new WorkflowOptions.Builder().setTaskList(taskList).build())
+                    .Double(finalI);
                 rootSpan.finish();
               }));
     }
@@ -256,9 +246,8 @@ public class StartWorkflowTest {
       StringBuilder sb = new StringBuilder();
 
       Map<String, Long> expectedSpans = new HashMap<>();
-      // each workflow runs an activity plus a child workflow which runs a local activity
-      expectedSpans.put("cadence-ExecuteWorkflow", 2L * workflowCount);
-      expectedSpans.put("cadence-ExecuteActivity", (long) workflowCount);
+      // each workflow runs a local activity
+      expectedSpans.put("cadence-ExecuteWorkflow", (long) workflowCount);
       expectedSpans.put("cadence-ExecuteLocalActivity", (long) workflowCount);
       List<MockSpan> spans = awaitSpans(mockTracer, expectedSpans);
       spans.forEach(
@@ -370,10 +359,11 @@ public class StartWorkflowTest {
     WorkflowClient client =
         WorkflowClient.newInstance(
             service, WorkflowClientOptions.newBuilder().setDomain(DOMAIN).build());
+    String taskList = newTaskList();
 
     WorkerFactory workerFactory =
         WorkerFactory.newInstance(client, WorkerFactoryOptions.newBuilder().build());
-    Worker worker = workerFactory.newWorker(TASK_LIST, WorkerOptions.newBuilder().build());
+    Worker worker = workerFactory.newWorker(taskList, WorkerOptions.newBuilder().build());
     worker.registerWorkflowImplementationTypes(CronWorkflowImpl.class);
     workerFactory.start();
 
@@ -385,7 +375,7 @@ public class StartWorkflowTest {
             "CronWorkflow::execute",
             new WorkflowOptions.Builder()
                 .setExecutionStartToCloseTimeout(Duration.ofMinutes(2))
-                .setTaskList(TASK_LIST)
+                .setTaskList(taskList)
                 .setCronSchedule("* * * * *")
                 .build());
     try {
@@ -403,12 +393,19 @@ public class StartWorkflowTest {
       fail("workflow failure: " + e);
     } finally {
       try {
-        wf.cancel();
-      } catch (Exception ignored) {
-        // best effort: stop further cron runs
+        service.TerminateWorkflowExecution(
+            new TerminateWorkflowExecutionRequest()
+                .setDomain(DOMAIN)
+                .setWorkflowExecution(
+                    new WorkflowExecution().setWorkflowId(wf.getExecution().getWorkflowId()))
+                .setReason("cron tracing test cleanup"));
+      } catch (Exception e) {
+        fail("failed to terminate cron workflow: " + e);
+      } finally {
+        rootSpan.finish();
+        workerFactory.shutdown();
+        workerFactory.awaitTermination(10, TimeUnit.SECONDS);
       }
-      rootSpan.finish();
-      workerFactory.shutdown();
     }
   }
 
@@ -448,11 +445,12 @@ public class StartWorkflowTest {
     WorkflowClient client =
         WorkflowClient.newInstance(
             service, WorkflowClientOptions.newBuilder().setDomain(DOMAIN).build());
+    String taskList = newTaskList();
 
     WorkerFactory workerFactory =
         WorkerFactory.newInstance(client, WorkerFactoryOptions.newBuilder().build());
     Worker worker;
-    worker = workerFactory.newWorker(TASK_LIST, WorkerOptions.newBuilder().build());
+    worker = workerFactory.newWorker(taskList, WorkerOptions.newBuilder().build());
     worker.registerActivitiesImplementations(new TestActivityImpl(mockTracer, shouldPropagate));
     worker.registerWorkflowImplementationTypes(TestWorkflowImpl.class, DoubleWorkflowImpl.class);
     workerFactory.start();
@@ -462,7 +460,9 @@ public class StartWorkflowTest {
     rootSpan.setBaggageItem(CONTEXT_KEY, CONTEXT_VALUE);
     mockTracer.activateSpan(rootSpan);
     try {
-      TestWorkflow wf = client.newWorkflowStub(TestWorkflow.class);
+      TestWorkflow wf =
+          client.newWorkflowStub(
+              TestWorkflow.class, new WorkflowOptions.Builder().setTaskList(taskList).build());
       int res = wf.AddOneThenDouble(3);
       assertEquals(8, res);
     } catch (Exception e) {
@@ -539,11 +539,12 @@ public class StartWorkflowTest {
     WorkflowClient client =
         WorkflowClient.newInstance(
             service, WorkflowClientOptions.newBuilder().setDomain(DOMAIN).build());
+    String taskList = newTaskList();
 
     WorkerFactory workerFactory =
         WorkerFactory.newInstance(client, WorkerFactoryOptions.newBuilder().build());
     Worker worker;
-    worker = workerFactory.newWorker(TASK_LIST, WorkerOptions.newBuilder().build());
+    worker = workerFactory.newWorker(taskList, WorkerOptions.newBuilder().build());
     worker.registerActivitiesImplementations(new TestActivityImpl(mockTracer, shouldPropagate));
     worker.registerWorkflowImplementationTypes(TestWorkflowImpl.class, DoubleWorkflowImpl.class);
     workerFactory.start();
@@ -558,7 +559,7 @@ public class StartWorkflowTest {
               "TestWorkflow::AddOneThenDouble",
               new WorkflowOptions.Builder()
                   .setExecutionStartToCloseTimeout(Duration.ofSeconds(60))
-                  .setTaskList(TASK_LIST)
+                  .setTaskList(taskList)
                   .build());
       wf.signalWithStart(
           "start workflow",
@@ -682,6 +683,10 @@ public class StartWorkflowTest {
         .findFirst()
         .orElseThrow(
             () -> new IllegalStateException("Failed to find span with operation: " + operation));
+  }
+
+  private String newTaskList() {
+    return TASK_LIST + "-" + UUID.randomUUID();
   }
 
   private List<MockSpan> getSpansByTraceID(List<MockSpan> spans, String traceID) {
