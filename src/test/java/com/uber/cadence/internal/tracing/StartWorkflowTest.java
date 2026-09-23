@@ -272,7 +272,7 @@ public class StartWorkflowTest {
 
   @Test
   public void testSignalStartWorkflowGRPCNoPropagation() {
-    // Assume.assumeTrue(useDockerService);
+    Assume.assumeTrue(useDockerService);
     MockTracer mockTracer = new MockTracer();
     IWorkflowService service =
         new WorkflowServiceGrpc(ClientOptions.newBuilder().setPort(7833).build());
