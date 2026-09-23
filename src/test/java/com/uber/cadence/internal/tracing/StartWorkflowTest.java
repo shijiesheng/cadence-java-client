@@ -196,9 +196,7 @@ public class StartWorkflowTest {
                 ClientOptions.newBuilder().setTracer(mockTracer).setPort(7833).build()));
     try {
       service.RegisterDomain(
-          new RegisterDomainRequest()
-              .setName(DOMAIN)
-              .setWorkflowExecutionRetentionPeriodInDays(1));
+          new RegisterDomainRequest().setName(DOMAIN).setWorkflowExecutionRetentionPeriodInDays(1));
     } catch (DomainAlreadyExistsError e) {
       logger.info("domain already registered");
     } catch (Exception e) {
@@ -353,9 +351,7 @@ public class StartWorkflowTest {
   private void testCronWorkflowHelper(IWorkflowService service, MockTracer mockTracer) {
     try {
       service.RegisterDomain(
-          new RegisterDomainRequest()
-              .setName(DOMAIN)
-              .setWorkflowExecutionRetentionPeriodInDays(1));
+          new RegisterDomainRequest().setName(DOMAIN).setWorkflowExecutionRetentionPeriodInDays(1));
     } catch (DomainAlreadyExistsError e) {
       logger.info("domain already registered");
     } catch (Exception e) {
@@ -442,9 +438,7 @@ public class StartWorkflowTest {
       IWorkflowService service, MockTracer mockTracer, boolean shouldPropagate) {
     try {
       service.RegisterDomain(
-          new RegisterDomainRequest()
-              .setName(DOMAIN)
-              .setWorkflowExecutionRetentionPeriodInDays(1));
+          new RegisterDomainRequest().setName(DOMAIN).setWorkflowExecutionRetentionPeriodInDays(1));
     } catch (DomainAlreadyExistsError e) {
       logger.info("domain already registered");
     } catch (Exception e) {
@@ -539,9 +533,7 @@ public class StartWorkflowTest {
       IWorkflowService service, MockTracer mockTracer, boolean shouldPropagate) {
     try {
       service.RegisterDomain(
-          new RegisterDomainRequest()
-              .setName(DOMAIN)
-              .setWorkflowExecutionRetentionPeriodInDays(1));
+          new RegisterDomainRequest().setName(DOMAIN).setWorkflowExecutionRetentionPeriodInDays(1));
     } catch (DomainAlreadyExistsError e) {
       logger.info("domain already registered");
     } catch (Exception e) {
