@@ -195,7 +195,10 @@ public class StartWorkflowTest {
             IGrpcServiceStubs.newInstance(
                 ClientOptions.newBuilder().setTracer(mockTracer).setPort(7833).build()));
     try {
-      service.RegisterDomain(new RegisterDomainRequest().setName(DOMAIN));
+      service.RegisterDomain(
+          new RegisterDomainRequest()
+              .setName(DOMAIN)
+              .setWorkflowExecutionRetentionPeriodInDays(1));
     } catch (DomainAlreadyExistsError e) {
       logger.info("domain already registered");
     } catch (Exception e) {
@@ -327,7 +330,7 @@ public class StartWorkflowTest {
 
   @Test
   public void testSignalStartWorkflowGRPCNoPropagation() {
-    Assume.assumeTrue(useDockerService);
+    // Assume.assumeTrue(useDockerService);
     MockTracer mockTracer = new MockTracer();
     IWorkflowService service =
         new Thrift2ProtoAdapter(
@@ -349,7 +352,10 @@ public class StartWorkflowTest {
 
   private void testCronWorkflowHelper(IWorkflowService service, MockTracer mockTracer) {
     try {
-      service.RegisterDomain(new RegisterDomainRequest().setName(DOMAIN));
+      service.RegisterDomain(
+          new RegisterDomainRequest()
+              .setName(DOMAIN)
+              .setWorkflowExecutionRetentionPeriodInDays(1));
     } catch (DomainAlreadyExistsError e) {
       logger.info("domain already registered");
     } catch (Exception e) {
@@ -435,7 +441,10 @@ public class StartWorkflowTest {
   private void testStartWorkflowHelper(
       IWorkflowService service, MockTracer mockTracer, boolean shouldPropagate) {
     try {
-      service.RegisterDomain(new RegisterDomainRequest().setName(DOMAIN));
+      service.RegisterDomain(
+          new RegisterDomainRequest()
+              .setName(DOMAIN)
+              .setWorkflowExecutionRetentionPeriodInDays(1));
     } catch (DomainAlreadyExistsError e) {
       logger.info("domain already registered");
     } catch (Exception e) {
@@ -529,7 +538,10 @@ public class StartWorkflowTest {
   private void testSignalWithStartWorkflowHelper(
       IWorkflowService service, MockTracer mockTracer, boolean shouldPropagate) {
     try {
-      service.RegisterDomain(new RegisterDomainRequest().setName(DOMAIN));
+      service.RegisterDomain(
+          new RegisterDomainRequest()
+              .setName(DOMAIN)
+              .setWorkflowExecutionRetentionPeriodInDays(1));
     } catch (DomainAlreadyExistsError e) {
       logger.info("domain already registered");
     } catch (Exception e) {
