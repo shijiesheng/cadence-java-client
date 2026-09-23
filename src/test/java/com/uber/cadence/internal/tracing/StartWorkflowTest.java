@@ -128,6 +128,24 @@ public class StartWorkflowTest {
     }
   }
 
+  public static class ActivityOnlyTestWorkflowImpl implements TestWorkflow {
+    private final TestActivity activities =
+        Workflow.newActivityStub(
+            TestActivity.class,
+            new ActivityOptions.Builder()
+                .setRetryOptions(
+                    new RetryOptions.Builder()
+                        .setInitialInterval(Duration.ofSeconds(10))
+                        .setMaximumAttempts(2)
+                        .build())
+                .build());
+
+    @Override
+    public Integer AddOneThenDouble(Integer n) {
+      return activities.Double(activities.AddOne(n));
+    }
+  }
+
   public static class DoubleWorkflowImpl implements DoubleWorkflow {
     private final TestActivity activities = Workflow.newLocalActivityStub(TestActivity.class);
 
@@ -192,7 +210,7 @@ public class StartWorkflowTest {
             TASK_LIST,
             WorkerOptions.newBuilder().setMaxConcurrentWorkflowExecutionSize(20).build());
     worker.registerActivitiesImplementations(new TestActivityImpl(mockTracer, true));
-    worker.registerWorkflowImplementationTypes(TestWorkflowImpl.class, DoubleWorkflowImpl.class);
+    worker.registerWorkflowImplementationTypes(ActivityOnlyTestWorkflowImpl.class);
     workerFactory.start();
 
     List<CompletableFuture<Void>> futures = new ArrayList<>();
