@@ -380,6 +380,8 @@ public class StartWorkflowTest {
                 .setTaskList(taskList)
                 .setCronSchedule("* * * * *")
                 .build());
+
+    AssertionError failure = null;
     try {
       wf.start();
 
@@ -391,23 +393,19 @@ public class StartWorkflowTest {
           "cadenceIsCron tag should be true for cron workflows",
           Boolean.TRUE,
           executeWorkflowSpan.tags().get("cadenceIsCron"));
+
+      service.TerminateWorkflowExecution(
+          new TerminateWorkflowExecutionRequest()
+              .setDomain(DOMAIN)
+              .setWorkflowExecution(
+                  new WorkflowExecution().setWorkflowId(wf.getExecution().getWorkflowId()))
+              .setReason("cron tracing test cleanup"));
     } catch (Exception e) {
-      fail("workflow failure: " + e);
+      failure = new AssertionError("workflow failure: " + e);
     } finally {
-      try {
-        service.TerminateWorkflowExecution(
-            new TerminateWorkflowExecutionRequest()
-                .setDomain(DOMAIN)
-                .setWorkflowExecution(
-                    new WorkflowExecution().setWorkflowId(wf.getExecution().getWorkflowId()))
-                .setReason("cron tracing test cleanup"));
-      } catch (Exception e) {
-        fail("failed to terminate cron workflow: " + e);
-      } finally {
-        rootSpan.finish();
-        workerFactory.shutdown();
-        workerFactory.awaitTermination(10, TimeUnit.SECONDS);
-      }
+      rootSpan.finish();
+      workerFactory.shutdown();
+      workerFactory.awaitTermination(10, TimeUnit.SECONDS);
     }
   }
 
