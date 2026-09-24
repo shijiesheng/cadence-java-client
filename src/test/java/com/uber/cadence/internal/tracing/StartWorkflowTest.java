@@ -578,10 +578,11 @@ public class StartWorkflowTest {
     } catch (Exception e) {
       failure = new AssertionError("Workflow failure", e);
     } finally {
+      rootSpan.finish();
+      workerFactory.shutdown();
       if (failure != null) {
         throw failure;
       }
-      rootSpan.finish();
       List<MockSpan> spans =
           shouldPropagate
               ? awaitSpans(
@@ -638,7 +639,6 @@ public class StartWorkflowTest {
         assertEquals(spanExecuteLocalActivity.operationName(), "cadence-ExecuteLocalActivity");
         assertSpanReferences(spanExecuteLocalActivity, "follows_from", spanExecuteChildWF);
       }
-      workerFactory.shutdown();
     }
   }
 
