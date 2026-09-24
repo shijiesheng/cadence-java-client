@@ -497,6 +497,8 @@ public class StartWorkflowTest {
     Span rootSpan = mockTracer.buildSpan("Test Started").start();
     rootSpan.setBaggageItem(CONTEXT_KEY, CONTEXT_VALUE);
     mockTracer.activateSpan(rootSpan);
+
+    AssertionError failure = null;
     try {
       WorkflowStub wf =
           client.newUntypedWorkflowStub(
@@ -514,8 +516,11 @@ public class StartWorkflowTest {
       int res = wf.getResult(Integer.class);
       assertEquals(8, res);
     } catch (Exception e) {
-      fail("workflow failure: " + e);
+      failure = new AssertionError("workflow failure: " + e);
     } finally {
+      if (failure != null) {
+        throw failure;
+      }
       rootSpan.finish();
       List<MockSpan> spans = mockTracer.finishedSpans();
       spans.sort(
